@@ -10,7 +10,7 @@ Closes #
 
 ## Changes
 
-- 
+-
 
 ## Repository structure
 
