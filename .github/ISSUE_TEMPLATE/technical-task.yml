@@ -1,0 +1,60 @@
+name: Technical task
+description: Propose configuration, refactoring, testing, or infrastructure work.
+title: "[Technical Task] "
+labels:
+  - infrastructure
+body:
+  - type: markdown
+    attributes:
+      value: Describe the technical work and the constraints that affect its implementation.
+  - type: textarea
+    id: description
+    attributes:
+      label: Task description
+      description: Describe the technical work to be completed.
+      placeholder: What needs to be changed and why?
+    validations:
+      required: true
+  - type: textarea
+    id: technical_context
+    attributes:
+      label: Technical context
+      description: Explain the current state, constraints, and relevant implementation details.
+    validations:
+      required: true
+  - type: textarea
+    id: scope
+    attributes:
+      label: Scope
+      description: Define what is included and explicitly excluded.
+      placeholder: |
+        In scope:
+        - ...
+
+        Out of scope:
+        - ...
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance_criteria
+    attributes:
+      label: Acceptance criteria
+      description: List verifiable conditions that must be met for completion.
+      placeholder: |
+        - [ ] ...
+        - [ ] ...
+    validations:
+      required: true
+  - type: textarea
+    id: dependencies
+    attributes:
+      label: Dependencies
+      description: List blocking issues, external services, packages, or prerequisites.
+      placeholder: Link dependencies or write "None".
+    validations:
+      required: true
+  - type: textarea
+    id: additional_notes
+    attributes:
+      label: Additional notes
+      description: Add references, risks, alternatives, or other useful information.
