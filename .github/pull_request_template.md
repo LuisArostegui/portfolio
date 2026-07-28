@@ -26,7 +26,7 @@ Closes #
 
 - [ ] I verified the changes locally.
 - [ ] I did not commit generated files, dependencies, secrets, environment variables, or IDE-specific files.
-- [ ] I updated the relevant documentation.
+- [ ] Documentation is not required or has been updated.
 
 ## Screenshots
 
