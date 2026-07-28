@@ -2,7 +2,7 @@ name: Technical task
 description: Propose configuration, refactoring, testing, or infrastructure work.
 title: "[Technical Task] "
 labels:
-  - infrastructure
+  - "type: technical-task"
 body:
   - type: markdown
     attributes:

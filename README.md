@@ -9,6 +9,8 @@ Application code and framework dependencies have intentionally not been added ye
 ```text
 .
 ├── .github/
+│   ├── ISSUE_TEMPLATE/
+│   ├── LABELS.md
 │   └── pull_request_template.md
 ├── docs/
 │   ├── architecture/
@@ -24,6 +26,7 @@ Application code and framework dependencies have intentionally not been added ye
 - `docs/design/` stores design documentation and related resources.
 - `docs/product/` stores product requirements and planning documentation.
 - `.github/` stores repository collaboration templates and configuration.
+- [`.github/LABELS.md`](.github/LABELS.md) documents the repository label taxonomy and usage rules.
 
 ## Git workflow
 
