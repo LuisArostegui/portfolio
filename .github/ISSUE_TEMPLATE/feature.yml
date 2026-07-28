@@ -1,0 +1,62 @@
+name: Feature
+description: Propose user-visible functionality for the portfolio.
+title: "[Feature] "
+labels:
+  - enhancement
+body:
+  - type: markdown
+    attributes:
+      value: Thank you for helping improve the portfolio. Provide enough detail to evaluate and implement the feature.
+  - type: textarea
+    id: description
+    attributes:
+      label: Feature description
+      description: Describe the proposed functionality.
+      placeholder: What should be added or changed?
+    validations:
+      required: true
+  - type: textarea
+    id: user_value
+    attributes:
+      label: User value
+      description: Explain who benefits from this feature and how.
+      placeholder: This helps visitors by...
+    validations:
+      required: true
+  - type: textarea
+    id: scope
+    attributes:
+      label: Scope
+      description: Define what is included and explicitly excluded.
+      placeholder: |
+        In scope:
+        - ...
+
+        Out of scope:
+        - ...
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance_criteria
+    attributes:
+      label: Acceptance criteria
+      description: List observable conditions that must be met for completion.
+      placeholder: |
+        - [ ] ...
+        - [ ] ...
+    validations:
+      required: true
+  - type: textarea
+    id: accessibility
+    attributes:
+      label: Accessibility considerations
+      description: Describe keyboard, screen reader, contrast, motion, or other accessibility needs.
+      placeholder: Note relevant accessibility requirements or explain why none apply.
+    validations:
+      required: true
+  - type: textarea
+    id: additional_context
+    attributes:
+      label: Additional context
+      description: Add references, mockups, examples, or other useful information.
+

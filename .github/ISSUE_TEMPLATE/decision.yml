@@ -1,0 +1,57 @@
+name: Architectural decision
+description: Evaluate alternatives and document a project decision.
+title: "[Decision] "
+labels:
+  - documentation
+body:
+  - type: markdown
+    attributes:
+      value: Capture the context and evaluation needed to make a durable, traceable decision.
+  - type: textarea
+    id: context
+    attributes:
+      label: Decision context
+      description: Describe the situation that requires a decision.
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem to solve
+      description: State the problem and why a decision is needed now.
+    validations:
+      required: true
+  - type: textarea
+    id: options
+    attributes:
+      label: Considered options
+      description: List the viable alternatives to compare.
+      placeholder: |
+        1. Option A
+        2. Option B
+    validations:
+      required: true
+  - type: textarea
+    id: evaluation_criteria
+    attributes:
+      label: Evaluation criteria
+      description: Define how the options will be assessed.
+      placeholder: Consider accessibility, maintainability, performance, cost, and project fit where relevant.
+    validations:
+      required: true
+  - type: textarea
+    id: expected_outcome
+    attributes:
+      label: Expected outcome
+      description: Describe the deliverable or decision record expected from this work.
+    validations:
+      required: true
+  - type: textarea
+    id: related_documentation
+    attributes:
+      label: Related documentation
+      description: Link relevant ADRs, issues, specifications, or external references.
+      placeholder: Add links or write "None".
+    validations:
+      required: true
+

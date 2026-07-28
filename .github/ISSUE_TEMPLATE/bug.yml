@@ -1,0 +1,59 @@
+name: Bug report
+description: Report reproducible incorrect behavior in the portfolio.
+title: "[Bug] "
+labels:
+  - bug
+body:
+  - type: markdown
+    attributes:
+      value: Thank you for reporting a problem. Detailed reproduction information helps us investigate it efficiently.
+  - type: textarea
+    id: description
+    attributes:
+      label: Bug description
+      description: Clearly describe the problem and its impact.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction_steps
+    attributes:
+      label: Steps to reproduce
+      description: Provide the smallest reliable sequence that demonstrates the problem.
+      placeholder: |
+        1. Go to...
+        2. Select...
+        3. Observe...
+    validations:
+      required: true
+  - type: textarea
+    id: expected_behavior
+    attributes:
+      label: Expected behavior
+      description: Explain what should have happened.
+    validations:
+      required: true
+  - type: textarea
+    id: actual_behavior
+    attributes:
+      label: Actual behavior
+      description: Explain what happened instead, including any error messages.
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment information
+      description: Include the device, operating system, browser, browser version, and viewport where relevant.
+      placeholder: |
+        - Device:
+        - Operating system:
+        - Browser and version:
+        - Viewport:
+    validations:
+      required: true
+  - type: textarea
+    id: additional_context
+    attributes:
+      label: Screenshots or additional context
+      description: Add screenshots, recordings, logs, or other information that may help diagnose the issue.
+
