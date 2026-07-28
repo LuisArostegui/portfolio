@@ -56,4 +56,3 @@ body:
     attributes:
       label: Screenshots or additional context
       description: Add screenshots, recordings, logs, or other information that may help diagnose the issue.
-
