@@ -2,7 +2,7 @@ name: Feature
 description: Propose user-visible functionality for the portfolio.
 title: "[Feature] "
 labels:
-  - enhancement
+  - "type: feature"
 body:
   - type: markdown
     attributes:

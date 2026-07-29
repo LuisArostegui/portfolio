@@ -2,7 +2,7 @@ name: Architectural decision
 description: Evaluate alternatives and document a project decision.
 title: "[Decision] "
 labels:
-  - documentation
+  - "type: decision"
 body:
   - type: markdown
     attributes:
