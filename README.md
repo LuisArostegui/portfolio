@@ -28,6 +28,7 @@ Application code and framework dependencies have intentionally not been added ye
 - `.github/` stores repository collaboration templates and configuration.
 - [`.github/LABELS.md`](.github/LABELS.md) documents the repository label taxonomy and usage rules.
 - [Product vision](docs/product/product-vision.md) defines the portfolio purpose, target audience, professional positioning, and product boundaries.
+- [Information architecture](docs/product/information-architecture.md) defines the portfolio sitemap, navigation hierarchy, visitor journeys, and MVP content structure.
 
 ## Git workflow
 
