@@ -30,6 +30,7 @@ Application code and framework dependencies have intentionally not been added ye
 - [Product vision](docs/product/product-vision.md) defines the portfolio purpose, target audience, professional positioning, and product boundaries.
 - [Information architecture](docs/product/information-architecture.md) defines the portfolio sitemap, navigation hierarchy, visitor journeys, and MVP content structure.
 - [Content strategy](docs/product/content-strategy.md) defines tone, professional-content guidelines, project and case-study structures, confidentiality rules, and language strategy.
+- [Product success criteria](docs/product/product-success-criteria.md) defines the measurable communication, usability, accessibility, performance, content, maintainability, and production-readiness expectations for the portfolio.
 
 ## Git workflow
 
