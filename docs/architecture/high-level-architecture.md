@@ -129,30 +129,28 @@ flowchart LR
     Dist["Portable dist directory"]
     Delivery["Cloudflare Workers Static Assets"]
     Browser["Visitor browser"]
-    Future["Future external integrations"]
+    Future["Separately approved external integrations"]
 
     Markdown --> Loading
     Media --> Astro
     Config --> Astro
     Loading --> Queries
     Queries --> Astro
-    Astro -. "Approved interaction" .-> Islands
+    Islands -. Approved interactive component .-> Astro
     CSS --> Astro
-    CSS -. "Island styles" .-> Islands
+    CSS -. Island styles .-> Islands
     Astro --> Build
-    Islands --> Build
     Build --> Dist
     Dist --> Delivery
     Delivery --> Browser
-    Future -. "Separately approved boundary" .-> Astro
-    Future -. "Separately approved boundary" .-> Islands
+    Future -. Future integration boundary .-> Astro
 ```
 
 The authoring boundary contains public-safe Markdown, media, and stable configuration. Collections and project-owned schemas load and validate Markdown, after which the query and mapping boundary produces intentional page-facing data. Media and stable configuration enter page composition directly where appropriate without becoming editorial duplicates.
 
-Astro pages, layouts, and static components own the document, routes, metadata, semantic structure, and ordinary presentation. Modern CSS supplies global foundations and component-owned styles. An optional React island joins composition only for approved interaction; CSS Modules retain style ownership within that island. The dashed arrows mark optional relationships, not required runtime dependencies.
+Astro pages, layouts, and static components own the document, routes, metadata, semantic structure, and ordinary presentation. Modern CSS supplies global foundations and component-owned styles. An optional React island is an approved interactive component within Astro's composition rather than a parallel application or build entry point; CSS Modules retain style ownership within that island. The dashed arrows mark optional relationships, not required runtime dependencies.
 
-The Astro production build combines these inputs and emits `dist`. Cloudflare Workers Static Assets distributes that portable directory, and the visitor browser receives static HTML, CSS, assets, and only the JavaScript required by approved enhancements. Future integrations sit outside the core boundary and may connect only after a separate requirement and assessment; the core content remains available if they are absent or fail.
+The single Astro production build combines these inputs and emits `dist`. Cloudflare Workers Static Assets distributes that portable directory, and the visitor browser receives static HTML, CSS, assets, and only the JavaScript required by approved enhancements. Future integrations sit outside the core boundary and may connect through a separately assessed, project-owned integration boundary; the exact build-time, client, or possible future runtime placement depends on the approved requirement. Core content remains available if they are absent or fail.
 
 ## 9. Deployment and environment model
 
@@ -185,37 +183,38 @@ flowchart TD
         Review["Public-safe preview review"]
         Merge["Approval and merge into main"]
         ProductionBuild["Cloudflare production build from main"]
+        History["Cloudflare deployment history"]
         Active["Active production deployment"]
         Smoke["Post-deployment smoke validation"]
-        Previous["Previous deployment version"]
 
         Branch --> PR
-        PR -. "Future workflow responsibility" .-> Checks
+        PR -. Future workflow responsibility .-> Checks
         PR --> PreviewBuild
-        Checks -. "Required when introduced" .-> Review
         PreviewBuild --> Preview
         Preview --> Review
         Review --> Merge
+        Checks -. Required gate when introduced .-> Merge
         Merge --> ProductionBuild
-        ProductionBuild --> Active
+        ProductionBuild --> History
+        History --> Active
         Active --> Smoke
-        Previous -. "Rollback source" .-> Active
+        History -. Rollback previous version .-> Active
     end
 
     subgraph Private["Optional private experimentation"]
         LocalBuild["Local Astro build and dist"]
         NAS["Private Synology NAS"]
-        LocalBuild -. "Optional private copy" .-> NAS
+        LocalBuild -. Optional private copy .-> NAS
     end
 ```
 
 1. The maintainer works on a feature branch and opens a pull request into `main`.
-2. Repository quality checks may gate review when those workflows are implemented; the diagram does not claim that GitHub Actions or any particular runner already exists.
+2. Repository quality checks become a required merge gate when those workflows are implemented; the diagram does not claim that GitHub Actions or any particular runner already exists.
 3. Cloudflare builds the non-production branch as a distinct, non-promoted version and exposes a public-safe preview for review.
 4. Review considers the preview and available quality evidence. A preview is never promoted directly to production.
 5. Approval leads to a Git merge into `main`; this new Git revision, rather than the preview artefact, triggers a separate Cloudflare production build.
-6. A successful production build becomes the active deployment. The implemented workflow then performs a smoke validation against production.
-7. Cloudflare's previous deployment version is the rollback source if the new deployment fails. Rollback restores a deployment version; it does not make the NAS part of recovery.
+6. A successful production build enters Cloudflare's deployment history and its selected version becomes the active deployment. The implemented workflow then performs a smoke validation against production.
+7. Cloudflare's deployment history supplies the previous version used for rollback if the new deployment fails. Rollback restores a deployment version; it does not make the NAS part of recovery.
 8. Separately, a maintainer may copy a locally generated `dist` to a private NAS. This optional path has no arrow into the canonical release flow.
 
 Failure boundaries are explicit. A branch build or preview failure blocks review or merge but cannot alter active production. A quality-check failure blocks progress once that gate exists. A production build failure must leave the prior active deployment serving traffic. A smoke-check failure triggers investigation and, where needed, rollback to a previous Cloudflare version. NAS failure affects only the private experiment. External services are not in the release path, and no developer workstation normally deploys production manually.
