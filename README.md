@@ -14,7 +14,11 @@ Application code and framework dependencies have intentionally not been added ye
 │   └── pull_request_template.md
 ├── docs/
 │   ├── architecture/
+│   │   ├── high-level-architecture.md
 │   │   └── decisions/
+│   │       ├── README.md
+│   │       ├── template.md
+│   │       └── 0001-... through 0006-...
 │   ├── design/
 │   └── product/
 ├── .gitignore
@@ -31,6 +35,11 @@ Application code and framework dependencies have intentionally not been added ye
 - [Information architecture](docs/product/information-architecture.md) defines the portfolio sitemap, navigation hierarchy, visitor journeys, and MVP content structure.
 - [Content strategy](docs/product/content-strategy.md) defines tone, professional-content guidelines, project and case-study structures, confidentiality rules, and language strategy.
 - [Product success criteria](docs/product/product-success-criteria.md) defines the measurable communication, usability, accessibility, performance, content, maintainability, and production-readiness expectations for the portfolio.
+
+## Architecture
+
+- [High-level architecture](docs/architecture/high-level-architecture.md)
+- [Architecture decision records](docs/architecture/decisions/README.md)
 
 ## Git workflow
 
