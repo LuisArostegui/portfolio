@@ -35,7 +35,7 @@ The reviewed Figma source consolidates the work into three pages because the Sta
 
 Navigation remains shallow and exposes equivalent destinations on mobile and desktop. Home, Projects, Experience, About and Contact form the primary hierarchy; CV, GitHub and LinkedIn remain secondary professional resources. About and Contact point to Home content rather than introducing routes.
 
-The desktop frame presents the primary destinations in the shared header, with CV visible as a professional resource and GitHub and LinkedIn remaining secondary. The mobile source shows both closed and open states. The approved starting pattern expands the mobile navigation inline beneath the header; its final presentation remains provisional and must not become a nested menu or require a focus trap without a later justified decision.
+The desktop frame presents the primary destinations in the shared header, with CV visible as a professional resource and GitHub and LinkedIn remaining secondary. The mobile source shows both closed and open states. The current wireframe proposal expands the mobile navigation inline beneath the header; its final presentation remains provisional and must not become a nested menu or require a focus trap without a later justified decision.
 
 The mobile control needs an accessible name that reflects its action, exposes its expanded state and identifies the controlled navigation region. The intended focus order follows the visible order: brand or Home destination, navigation control, expanded destinations, then professional resources and page content. The current location must be communicated programmatically and visually without depending only on colour.
 
