@@ -41,6 +41,10 @@ Application code and framework dependencies have intentionally not been added ye
 - [High-level architecture](docs/architecture/high-level-architecture.md)
 - [Architecture decision records](docs/architecture/decisions/README.md)
 
+## Design
+
+- [Design principles and visual direction](docs/design/design-principles.md)
+
 ## Git workflow
 
 1. Create a branch from the latest `main` using a descriptive name such as `feature/<issue>-short-description`, `fix/<issue>-short-description`, or `chore/<issue>-short-description`.
