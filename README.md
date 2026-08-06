@@ -44,6 +44,7 @@ Application code and framework dependencies have intentionally not been added ye
 ## Design
 
 - [Design principles and visual direction](docs/design/design-principles.md)
+- [Responsive wireframes](docs/design/responsive-wireframes.md)
 
 ## Git workflow
 
