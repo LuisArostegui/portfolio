@@ -23,15 +23,13 @@ Figma is the canonical editable wireframe source. This document records the stru
 
 ## 4. Source organisation
 
-The reviewed Figma source consolidates the work into three pages rather than maintaining a separate page for every route or decision topic.
+The reviewed Figma source consolidates the work into three pages because the Starter plan limits the file to three pages. This organisation preserves the complete functional coverage without maintaining a separate page for every route or decision topic.
 
 | Figma page | Purpose | Principal frames |
 | --- | --- | --- |
 | `00 — Overview & decisions` | Introduces the wireframe conventions, established structural decisions and deferred work. | `PT-17 overview canvas` |
 | `01 — Shared navigation & Home` | Defines shared navigation states and the Home hierarchy at the representative mobile and desktop widths. | `Mobile navigation — closed`, `Mobile navigation — open`, `Desktop navigation`, `Home — mobile 390`, `Home — desktop 1440` |
 | `02 — Routes & journeys` | Covers the remaining MVP routes and the five primary visitor journeys. | Mobile and desktop frames for Projects, Project detail and Experience; `Visitor journeys` |
-
-The functional areas originally planned as `00 — Overview`, `01 — Shared navigation`, `02 — Home`, `03 — Projects`, `04 — Project detail`, `05 — Experience`, `06 — Journeys` and `07 — Decisions` are all present within those three consolidated pages. The names in this list describe logical areas, not additional pages in the canonical source.
 
 ## 5. Shared navigation
 
