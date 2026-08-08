@@ -8,9 +8,9 @@ They do not establish final colour, typography, design tokens, components, motio
 
 ## 2. Canonical editable source
 
-[Open the canonical responsive wireframes in Figma](https://www.figma.com/design/kYIbXQszzYSVJnQzQCKHAh/Portfolio-%E2%80%94-PT-17-Responsive-Wireframes)
+[Open the canonical responsive wireframes in Penpot](https://design.penpot.app/#/workspace?team-id=81f57451-85cc-819d-8008-7273b4e9b9c5&file-id=3be9e5e1-190f-8090-8008-72747b79701e&page-id=fb8ba77d-4b1c-8053-8008-727504dc8a9a&layout=layers)
 
-Figma is the canonical editable wireframe source. This document records the structural decisions represented by that source so they remain discoverable and reviewable from the repository. When later design work changes an approved structural decision, the Figma source and this documentation must be updated together.
+Penpot is the canonical editable wireframe source. This document records the structural decisions represented by that source so they remain discoverable and reviewable from the repository. When later design work changes an approved structural decision, the Penpot source and this documentation must be updated together.
 
 ## 3. Wireframe conventions
 
@@ -23,9 +23,9 @@ Figma is the canonical editable wireframe source. This document records the stru
 
 ## 4. Source organisation
 
-The reviewed Figma source consolidates the work into three pages because the Starter plan limits the file to three pages. This organisation preserves the complete functional coverage without maintaining a separate page for every route or decision topic.
+The reviewed Penpot source preserves the three-page organisation established during PT-17 because it keeps shared navigation, route wireframes and decisions easy to review together. The organisation is intentional rather than a tooling limitation.
 
-| Figma page | Purpose | Principal frames |
+| Penpot page | Purpose | Principal frames |
 | --- | --- | --- |
 | `00 — Overview & decisions` | Introduces the wireframe conventions, established structural decisions and deferred work. | `PT-17 overview canvas` |
 | `01 — Shared navigation & Home` | Defines shared navigation states and the Home hierarchy at the representative mobile and desktop widths. | `Mobile navigation — closed`, `Mobile navigation — open`, `Desktop navigation`, `Home — mobile 390`, `Home — desktop 1440` |
