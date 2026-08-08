@@ -18,7 +18,7 @@ Primitive value
 
 ### Primitive tokens
 
-Primitives are raw, reusable values with no page or component meaning. Initial groups are `colour.neutral.*`, `colour.accent.*`, `space.*`, `radius.*`, `container.*` and `font.*`.
+Primitives are raw, reusable values with no page or component meaning. Initial groups are `colour.neutral.*`, `colour.accent.*`, `space.*`, `radius.*` and `container.*`.
 
 ### Semantic tokens
 
@@ -45,7 +45,16 @@ Token additions must demonstrate reuse, meaning or a valuable shared relationshi
 
 Representative names include `colour.text.primary`, `colour.text.secondary`, `colour.surface.page`, `colour.surface.elevated`, `colour.border.subtle`, `colour.accent.default`, `colour.focus.ring`, `layout.content.readable` and `layout.gutter.desktop`.
 
-Names such as `dark-grey-text`, `card-grey`, `project-page-blue`, `nice-shadow` and `big-spacing` obscure intent and must be avoided. A future CSS mapping converts dot notation to kebab-cased custom properties—for example, `colour.text.primary` becomes `--colour-text-primary`. PT-18 does not implement those properties.
+Names such as `dark-grey-text`, `card-grey`, `project-page-blue`, `nice-shadow` and `big-spacing` obscure intent and must be avoided. A future CSS mapping converts dot notation to kebab-cased custom properties:
+
+```text
+colour.text.primary     → --colour-text-primary
+space.5                 → --space-5
+radius.1                → --radius-1
+layout.content.readable → --layout-content-readable
+```
+
+PT-18 does not implement those properties.
 
 ## 4. Primitive colour foundations
 
@@ -94,7 +103,7 @@ The controlled periwinkle accent is a signal, not a large-area surface system. A
 | `colour.accent.active` | `colour.accent.600` | `#6F7FEA` | Pressed or active feedback. | Pair persistent state with semantic and non-colour cues. |
 | `colour.focus.ring` | `colour.accent.400` | `#A9B4FF` | Clearly perceivable focus-visible ring. | Must not be replaced by a subtle colour shift. |
 
-Exact combinations require contrast review in their real context. Colour must never be the sole carrier of meaning. The dark direction does not imply alternative themes; no theme switcher is required.
+Exact combinations require contrast review in their real context. Colour must never be the sole carrier of meaning. The initial foundation is dark. If a future design needs a light surface or embedded light context, it must use semantic foreground, border and state combinations validated for that context rather than reuse dark-context values by assumption. This does not establish a light theme: the dark direction does not imply alternative themes, and no theme switcher is required.
 
 ## 6. Typography foundations
 
@@ -157,6 +166,14 @@ Interactive controls should normally offer approximately 44–48px of usable tar
 | `container.wide` | `layout.content.wide` | 1360px | Diagrams, screenshots, tables and technical evidence that benefits from width. |
 
 Wide viewports must not stretch prose beyond readable line lengths. Media and evidence may expand independently while captions return to the ordinary reading hierarchy.
+
+### Full-width presentation regions
+
+An intentionally full-width or full-bleed region may extend beyond the wide container when the presentation itself benefits from uninterrupted viewport space—for example, a meaningful media study or visual transition between major sections. It does not create a new content-width token. Readable text and controls inside it must return to the appropriate content container, outer edges must preserve safe gutters where content could otherwise collide with the viewport, and the region must not create page-level horizontal overflow.
+
+### Grid and column principles
+
+Columns emerge from available space, content requirements and useful minimum widths rather than fixed device categories. Compositions may add columns when each column remains readable and collapse them before content or targets become cramped. Collapse must preserve logical source, reading and focus order. Fixed column counts must not become device rules, and grids must accommodate variable content instead of relying on equal text length or fixed card height.
 
 ### Gutters
 
