@@ -289,7 +289,7 @@ PT-18 introduces no Tailwind, Sass, CSS-in-JS, runtime token library, Style Dict
 
 ## 19. Penpot design source
 
-The visual foundations and native design tokens were designed and reviewed in Penpot. Penpot contains the editable visual source; this repository document records the implementation-neutral decisions and remains useful independently. No canonical PT-18 URL is currently recorded in the repository or task context, so none is invented here. Later implementation should follow the documented semantic system rather than copy incidental board geometry.
+The visual foundations and native design tokens were designed and reviewed in the [PT-18 design foundations shared library in Penpot](https://design.penpot.app/#/workspace?team-id=81f57451-85cc-819d-8008-7273b4e9b9c5&project-id=3be9e5e1-190f-8090-8008-727473508846&file-id=81f57451-85cc-819d-8008-7289fce2780a&page-id=81f57451-85cc-819d-8008-7289fce2780b). Penpot contains the editable visual source; this repository document records the implementation-neutral decisions and remains useful independently. Later implementation should follow the documented semantic system rather than copy incidental board geometry.
 
 ## 20. Validation and design-tool workflow
 
