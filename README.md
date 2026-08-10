@@ -48,6 +48,7 @@ Application code and framework dependencies have intentionally not been added ye
 - [Design foundations and token system](docs/design/design-foundations.md)
 - [Component foundations and accessibility states](docs/design/component-foundations.md)
 - [Motion and interaction guidelines](docs/design/motion-interaction-guidelines.md)
+- [Home high-fidelity design](docs/design/home-design.md)
 
 ## Git workflow
 
