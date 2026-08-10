@@ -80,7 +80,7 @@ These are **provisional design and prototype ranges**, not final implementation 
 | Standard   | 180–300 ms        | Opening or closing a bounded component, a small spatial relationship or local repositioning that aids orientation; for example, a mobile navigation panel.                       |
 | Deliberate | 300–450 ms        | A larger spatial change, navigation continuity or a transition needing additional orientation. This requires stronger justification and is not the default for prominent design. |
 
-Anything substantially longer than Deliberate requires design review rather than a new timing category by default. Final values require prototype and implementation validation. PT-20 creates no production motion tokens; repeated implementation evidence may later justify semantic duration or easing tokens under PT-18 and ADR 0002.
+Anything substantially longer than Deliberate requires design review rather than a new timing category by default. Final values require prototype and implementation validation. PT-20 creates no production motion tokens; repeated implementation evidence may later justify semantic motion tokens through the design-foundation process.
 
 ## 8. Easing intent
 
@@ -133,7 +133,7 @@ Navigation hover may use **Fast**, local CSS feedback. Current location is a per
 
 - **Context / trigger:** the visitor opens or closes the bounded mobile navigation from its trigger.
 - **User-facing purpose:** reinforce the relationship between trigger and panel and preserve orientation.
-- **Elements affected:** the trigger's persistent state treatment and navigation panel; destinations remain present regardless of animation support.
+- **Elements affected:** the trigger's persistent state treatment and navigation panel; essential destinations remain available through the navigation interaction regardless of animation support.
 - **Preferred mechanism:** CSS when the final interaction can be expressed clearly; React is not prescribed.
 - **Timing and easing:** **Standard** with balanced, predictable reversible behaviour.
 - **Semantic/state requirements:** `aria-expanded` and any control relationship reflect the actual interaction immediately; animation never defines state.
@@ -142,7 +142,7 @@ Navigation hover may use **Fast**, local CSS feedback. Current location is a per
 - **Unsupported fallback:** complete, accessible navigation without animation.
 - **Keyboard/focus:** focus behaviour and restoration follow PT-19 and are independent of visual timing. Animation must not move focus unexpectedly.
 - **Performance:** keep work bounded to the owned surface and avoid avoidable layout shifts.
-- **Validation:** check keyboard and touch use, visible focus, rapid reversal, reduced motion, no JavaScript where applicable and animation failure.
+- **Validation:** check keyboard and touch use, visible focus, rapid reversal, reduced motion, animation failure and, where the implementation provides a reasonable no-JavaScript fallback, that fallback. JavaScript remains permissible when the interaction justifies it.
 
 ## 12. Project and content interactions
 
