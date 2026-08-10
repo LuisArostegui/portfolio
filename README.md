@@ -47,6 +47,7 @@ Application code and framework dependencies have intentionally not been added ye
 - [Responsive wireframes](docs/design/responsive-wireframes.md)
 - [Design foundations and token system](docs/design/design-foundations.md)
 - [Component foundations and accessibility states](docs/design/component-foundations.md)
+- [Motion and interaction guidelines](docs/design/motion-interaction-guidelines.md)
 
 ## Git workflow
 
