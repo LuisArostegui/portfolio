@@ -79,9 +79,9 @@ Detailed professional history belongs to Experience, and complete project eviden
 
 ## 6. Hero and professional positioning
 
-The approved position is a Frontend Engineer specialised in React and TypeScript, focused on scalable, accessible, maintainable and well-tested digital products. The hero communicates:
+The approved professional positioning is Frontend Engineer specialised in React and TypeScript, focused on scalable, accessible, maintainable and well-tested digital products. The hero communicates:
 
-- the name through the shared site identity and header;
+- the professional's name through the shared site identity in the header, rather than repeating it in the main hero content;
 - the professional role and React and TypeScript specialisation;
 - a concise quality-oriented value proposition;
 - one primary internal continuation, represented as **View selected projects**; and
