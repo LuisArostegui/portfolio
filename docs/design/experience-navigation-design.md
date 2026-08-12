@@ -21,7 +21,7 @@ Experience is the canonical location for detailed professional history. It commu
 
 ## 2. Canonical editable source
 
-The approved editable visual source is [Portfolio — Product Design in Penpot](https://design.penpot.app/#/workspace?team-id=81f57451-85cc-819d-8008-7273b4e9b9c5&file-id=81f57451-85cc-819d-8008-762cda1b22f8).
+The approved editable visual source is [Portfolio — Product Design, PT-23 page in Penpot](https://design.penpot.app/#/workspace?team-id=81f57451-85cc-819d-8008-7273b4e9b9c5&file-id=81f57451-85cc-819d-8008-762cda1b22f8&page-id=6e0a7da9-2dab-8004-8008-77bd68893a39).
 
 The reviewed source is organised as follows:
 
@@ -35,7 +35,7 @@ Portfolio — Product Design
 
 Penpot is the canonical editable visual source. This Markdown document is the canonical implementation-facing written record and remains independently understandable when Penpot cannot be accessed. Incidental Penpot geometry is not a production contract, and manual line breaks introduced for design or import tooling are not implementation requirements. Production must use resilient content flow instead of copying fixed canvas geometry.
 
-No Penpot artwork, exports or intermediate design artefacts are stored in the repository. The supplied source identifies the file but does not establish a PT-23 page or board identifier; none is inferred here.
+No Penpot artwork, exports or intermediate design artefacts are stored in the repository. The link records the supplied PT-23 page identifier; no board identifier is inferred.
 
 ## 3. Relationship to prior foundations
 
