@@ -303,6 +303,8 @@ expanded
 - **Pressed** is temporary input confirmation. It does not mean current or selected.
 - **Collapsed** and **expanded** are persistent states of the mobile disclosure and must be exposed programmatically during implementation.
 
+Representative foreground, surface, focus and state combinations consume the established semantic colour roles and carry a contrast intent; implementation must verify actual contrast rather than treating the design canvas as conformance evidence.
+
 ## 22. Keyboard and focus management
 
 Navigation follows a predictable focus order. Focus-visible remains distinct from hover, the disclosure trigger remains focusable and expanded links enter the normal keyboard sequence.
@@ -417,7 +419,7 @@ Validate narrow mobile, mobile, tablet or intermediate, desktop and large-deskto
 
 ### Accessibility
 
-Validate semantic landmarks, heading hierarchy, keyboard navigation, current location, focus-visible, programmatically exposed expanded state, no unexpected focus movement, touch targets, section links, external links, CV download semantics, reduced motion and reflow.
+Validate semantic landmarks, heading hierarchy, keyboard navigation, current location, focus-visible, programmatically exposed expanded state, no unexpected focus movement, touch targets, section links, external links, CV download semantics, representative colour contrast, reduced motion and reflow.
 
 ### Content
 
