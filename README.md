@@ -50,6 +50,7 @@ Application code and framework dependencies have intentionally not been added ye
 - [Motion and interaction guidelines](docs/design/motion-interaction-guidelines.md)
 - [Home high-fidelity design](docs/design/home-design.md)
 - [Projects and project-detail high-fidelity design](docs/design/projects-design.md)
+- [Experience and shared navigation high-fidelity design](docs/design/experience-navigation-design.md)
 
 ## Git workflow
 
