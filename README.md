@@ -51,6 +51,7 @@ Application code and framework dependencies have intentionally not been added ye
 - [Home high-fidelity design](docs/design/home-design.md)
 - [Projects and project-detail high-fidelity design](docs/design/projects-design.md)
 - [Experience and shared navigation high-fidelity design](docs/design/experience-navigation-design.md)
+- [Interactive prototype and interaction contract](docs/design/interactive-prototype.md)
 
 ## Git workflow
 
