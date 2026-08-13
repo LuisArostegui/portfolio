@@ -52,6 +52,7 @@ Application code and framework dependencies have intentionally not been added ye
 - [Projects and project-detail high-fidelity design](docs/design/projects-design.md)
 - [Experience and shared navigation high-fidelity design](docs/design/experience-navigation-design.md)
 - [Interactive prototype and interaction contract](docs/design/interactive-prototype.md)
+- [Design validation and implementation handoff](docs/design/design-validation-handoff.md)
 
 ## Git workflow
 
