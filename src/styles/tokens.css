@@ -1,0 +1,116 @@
+@font-face {
+  font-family: 'Manrope';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400 800;
+  src: url('@fontsource-variable/manrope/files/manrope-latin-wght-normal.woff2')
+    format('woff2-variations');
+}
+
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400;
+  src: url('@fontsource/ibm-plex-mono/files/ibm-plex-mono-latin-400-normal.woff2')
+    format('woff2');
+}
+
+:root {
+  --colour-neutral-0: #ffffff;
+  --colour-neutral-100: #f5f7fa;
+  --colour-neutral-300: #d4d9e1;
+  --colour-neutral-500: #8a93a3;
+  --colour-neutral-700: #444c5a;
+  --colour-neutral-800: #2b313b;
+  --colour-neutral-850: #22272f;
+  --colour-neutral-900: #171b21;
+  --colour-neutral-950: #0d0f12;
+
+  --colour-accent-400: #a9b4ff;
+  --colour-accent-500: #8b9cff;
+  --colour-accent-600: #6f7fea;
+
+  --colour-surface-page: var(--colour-neutral-950);
+  --colour-surface-default: var(--colour-neutral-900);
+  --colour-surface-subtle: var(--colour-neutral-850);
+  --colour-surface-elevated: var(--colour-neutral-800);
+  --colour-text-primary: var(--colour-neutral-100);
+  --colour-text-secondary: var(--colour-neutral-300);
+  --colour-text-muted: var(--colour-neutral-500);
+  --colour-text-accent: var(--colour-accent-400);
+  --colour-text-on-accent: var(--colour-neutral-950);
+  --colour-border-subtle: var(--colour-neutral-800);
+  --colour-border-strong: var(--colour-neutral-700);
+  --colour-border-accent: var(--colour-accent-500);
+  --colour-accent-default: var(--colour-accent-500);
+  --colour-accent-hover: var(--colour-accent-400);
+  --colour-accent-active: var(--colour-accent-600);
+  --colour-focus-ring: var(--colour-accent-400);
+
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 64px;
+  --space-9: 96px;
+
+  --radius-0: 0px;
+  --radius-1: 8px;
+  --radius-2: 16px;
+  --radius-pill: 999px;
+
+  --container-readable: 720px;
+  --container-standard: 1120px;
+  --container-wide: 1360px;
+  --layout-content-readable: var(--container-readable);
+  --layout-content-standard: var(--container-standard);
+  --layout-content-wide: var(--container-wide);
+  --layout-gutter-mobile: 20px;
+  --layout-gutter-tablet: 32px;
+  --layout-gutter-desktop: 48px;
+
+  --type-display-font-family: 'Manrope', 'Inter', system-ui, sans-serif;
+  --type-display-font-size: 64px;
+  --type-display-line-height: 68px;
+  --type-display-font-weight: 800;
+  --type-heading-1-font-family: 'Manrope', 'Inter', system-ui, sans-serif;
+  --type-heading-1-font-size: 48px;
+  --type-heading-1-line-height: 56px;
+  --type-heading-1-font-weight: 700;
+  --type-heading-2-font-family: 'Manrope', 'Inter', system-ui, sans-serif;
+  --type-heading-2-font-size: 36px;
+  --type-heading-2-line-height: 44px;
+  --type-heading-2-font-weight: 700;
+  --type-heading-3-font-family: 'Manrope', 'Inter', system-ui, sans-serif;
+  --type-heading-3-font-size: 28px;
+  --type-heading-3-line-height: 36px;
+  --type-heading-3-font-weight: 600;
+  --type-body-large-font-family: 'Manrope', 'Inter', system-ui, sans-serif;
+  --type-body-large-font-size: 20px;
+  --type-body-large-line-height: 30px;
+  --type-body-large-font-weight: 400;
+  --type-body-font-family: 'Manrope', 'Inter', system-ui, sans-serif;
+  --type-body-font-size: 16px;
+  --type-body-line-height: 26px;
+  --type-body-font-weight: 400;
+  --type-body-small-font-family: 'Manrope', 'Inter', system-ui, sans-serif;
+  --type-body-small-font-size: 14px;
+  --type-body-small-line-height: 22px;
+  --type-body-small-font-weight: 400;
+  --type-label-font-family: 'Manrope', 'Inter', system-ui, sans-serif;
+  --type-label-font-size: 14px;
+  --type-label-line-height: 20px;
+  --type-label-font-weight: 600;
+  --type-metadata-font-family: 'Manrope', 'Inter', system-ui, sans-serif;
+  --type-metadata-font-size: 12px;
+  --type-metadata-line-height: 18px;
+  --type-metadata-font-weight: 500;
+  --type-code-font-family: 'IBM Plex Mono', ui-monospace, monospace;
+  --type-code-font-size: 14px;
+  --type-code-line-height: 22px;
+  --type-code-font-weight: 400;
+}

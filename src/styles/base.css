@@ -1,0 +1,107 @@
+:root {
+  color-scheme: dark;
+  background-color: var(--colour-surface-page);
+  color: var(--colour-text-primary);
+  font-family: var(--type-body-font-family);
+  font-size: var(--type-body-font-size);
+  font-weight: var(--type-body-font-weight);
+  line-height: var(--type-body-line-height);
+}
+
+body {
+  min-block-size: 100vh;
+  background-color: var(--colour-surface-page);
+  color: var(--colour-text-primary);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--colour-text-primary);
+  font-family: var(--type-heading-3-font-family);
+}
+
+h1 {
+  font-size: var(--type-heading-1-font-size);
+  font-weight: var(--type-heading-1-font-weight);
+  line-height: var(--type-heading-1-line-height);
+}
+
+h2 {
+  font-size: var(--type-heading-2-font-size);
+  font-weight: var(--type-heading-2-font-weight);
+  line-height: var(--type-heading-2-line-height);
+}
+
+h3 {
+  font-size: var(--type-heading-3-font-size);
+  font-weight: var(--type-heading-3-font-weight);
+  line-height: var(--type-heading-3-line-height);
+}
+
+small {
+  font-family: var(--type-body-small-font-family);
+  font-size: var(--type-body-small-font-size);
+  font-weight: var(--type-body-small-font-weight);
+  line-height: var(--type-body-small-line-height);
+}
+
+label {
+  font-family: var(--type-label-font-family);
+  font-size: var(--type-label-font-size);
+  font-weight: var(--type-label-font-weight);
+  line-height: var(--type-label-line-height);
+}
+
+code,
+kbd,
+samp,
+pre {
+  font-family: var(--type-code-font-family);
+  font-size: var(--type-code-font-size);
+  font-weight: var(--type-code-font-weight);
+  line-height: var(--type-code-line-height);
+}
+
+a {
+  color: var(--colour-text-accent);
+  text-decoration-line: underline;
+  text-decoration-thickness: from-font;
+}
+
+a:hover {
+  color: var(--colour-accent-hover);
+}
+
+a:active {
+  color: var(--colour-accent-active);
+}
+
+:focus-visible {
+  outline: var(--space-1) solid var(--colour-focus-ring);
+  outline-offset: var(--space-1);
+}
+
+::selection {
+  background-color: var(--colour-accent-default);
+  color: var(--colour-text-on-accent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto;
+    animation: none;
+    transition: none;
+  }
+}
+
+@media (forced-colors: active) {
+  :focus-visible {
+    outline-color: Highlight;
+  }
+}
