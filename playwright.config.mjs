@@ -14,7 +14,7 @@ export default defineConfig({
   testDir: './tests/e2e',
   fullyParallel: true,
   forbidOnly: !!env.CI,
-  reporter: env.CI ? 'html' : 'list',
+  reporter: 'list',
   use: {
     baseURL: 'http://127.0.0.1:4321',
     trace: 'on-first-retry',

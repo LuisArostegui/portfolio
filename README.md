@@ -21,6 +21,12 @@ pnpm install
 pnpm dev
 ```
 
+Before running browser tests on a new machine, install the only browser used by the focused suite:
+
+```sh
+pnpm exec playwright install chromium
+```
+
 The other project commands are:
 
 ```sh

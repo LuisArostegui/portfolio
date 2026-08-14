@@ -28,7 +28,7 @@ React is configured in the application, but there is currently no interactive Re
 
 ## Browser and manual boundaries
 
-Playwright runs with `pnpm test:e2e` against a freshly generated Astro production build. The command builds Astro first; Playwright then supervises Vite's static preview of `dist/` directly because the installed Astro CLI starts its own preview process in the background. The suite never uses the development server. The initial projects are Chromium and an emulated Pixel 7, which gives the focused suite one desktop and one representative mobile execution without an exhaustive browser matrix. The Playwright HTML report and test result directories are generated locally and ignored by Git.
+Playwright runs with `pnpm test:e2e` against a freshly generated Astro production build. The command builds Astro first; Playwright then supervises Vite's static preview of `dist/` directly because the installed Astro CLI starts its own preview process in the background. The suite never uses the development server. The initial projects are Chromium and an emulated Pixel 7, which gives the focused suite one desktop and one representative mobile execution without an exhaustive browser matrix. A new machine must run `pnpm exec playwright install chromium` before browser tests; generated test results are ignored by Git.
 
 The current smoke test proves that the available Home route loads, exposes its keyboard-reachable skip link and has no axe-detectable violations in either configured project. Its axe result is an automated signal only; it does not establish WCAG 2.2 AA conformance.
 
