@@ -41,6 +41,11 @@ Application code and framework dependencies have intentionally not been added ye
 - [High-level architecture](docs/architecture/high-level-architecture.md)
 - [Architecture decision records](docs/architecture/decisions/README.md)
 
+## Agent guidance
+
+- [Agent guidance](docs/architecture/agent-guidance.md) defines the repository-specific agent configuration, curated skills, source policy, and maintenance approach.
+- [AGENTS.md](AGENTS.md) provides the concise instructions that apply to every repository task.
+
 ## Design
 
 - [Design principles and visual direction](docs/design/design-principles.md)
