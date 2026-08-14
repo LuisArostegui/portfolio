@@ -27,6 +27,8 @@ The other project commands are:
 pnpm lint          # Lint Astro, TypeScript, and React source files
 pnpm format:check  # Check source and Markdown formatting
 pnpm format:write  # Format source and Markdown files
+pnpm test          # Run the Vitest unit and component suite once
+pnpm test:watch    # Run Vitest in watch mode during development
 pnpm check         # Run Astro and TypeScript static checks
 pnpm build         # Generate the static production output in dist/
 pnpm preview       # Preview the production build locally
@@ -61,6 +63,8 @@ Commit only `pnpm-lock.yaml`; do not create or commit lockfiles from other packa
 │   ├── env.d.ts
 │   └── pages/
 │       └── index.astro
+├── tests/
+│   └── setup.ts
 ├── .gitignore
 ├── .nvmrc
 ├── .prettierignore
@@ -74,6 +78,7 @@ Commit only `pnpm-lock.yaml`; do not create or commit lockfiles from other packa
 ├── pnpm-lock.yaml
 ├── pnpm-workspace.yaml
 ├── prettier.config.mjs
+├── vitest.config.ts
 └── README.md
 ```
 
@@ -84,6 +89,7 @@ Commit only `pnpm-lock.yaml`; do not create or commit lockfiles from other packa
 - `src/content/` stores canonical, public-safe Markdown for projects and experience.
 - `src/lib/content/` maps Astro collection entries to presentation-facing models.
 - `src/pages/` stores Astro routes; the initial route only verifies the framework foundation.
+- `tests/setup.ts` configures shared DOM matchers and React Testing Library cleanup; behaviour tests stay beside the source they protect.
 - `pnpm-workspace.yaml` records the root pnpm install policy, including the single approved dependency build script; it does not define a multi-package workspace.
 - `.github/` stores repository collaboration templates and configuration.
 - [`.github/LABELS.md`](.github/LABELS.md) documents the repository label taxonomy and usage rules.
@@ -97,6 +103,7 @@ Commit only `pnpm-lock.yaml`; do not create or commit lockfiles from other packa
 
 - [High-level architecture](docs/architecture/high-level-architecture.md)
 - [Architecture decision records](docs/architecture/decisions/README.md)
+- [Testing conventions and responsibilities](docs/testing.md)
 
 ## Agent guidance
 
