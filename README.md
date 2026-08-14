@@ -21,6 +21,12 @@ pnpm install
 pnpm dev
 ```
 
+Before running browser tests on a new machine, install the only browser used by the focused suite:
+
+```sh
+pnpm exec playwright install chromium
+```
+
 The other project commands are:
 
 ```sh
@@ -29,6 +35,7 @@ pnpm format:check  # Check source and Markdown formatting
 pnpm format:write  # Format source and Markdown files
 pnpm test          # Run the Vitest unit and component suite once
 pnpm test:watch    # Run Vitest in watch mode during development
+pnpm test:e2e      # Build the site and run focused Playwright browser tests
 pnpm check         # Run Astro and TypeScript static checks
 pnpm build         # Generate the static production output in dist/
 pnpm preview       # Preview the production build locally
@@ -77,6 +84,7 @@ Commit only `pnpm-lock.yaml`; do not create or commit lockfiles from other packa
 ├── package.json
 ├── pnpm-lock.yaml
 ├── pnpm-workspace.yaml
+├── playwright.config.mjs
 ├── prettier.config.mjs
 ├── vitest.config.ts
 └── README.md

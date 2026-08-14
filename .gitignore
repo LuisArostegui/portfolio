@@ -15,6 +15,10 @@ coverage/
 .nyc_output/
 *.lcov
 
+# Playwright results and reports
+playwright-report/
+test-results/
+
 # Build and tooling caches
 *.tsbuildinfo
 .eslintcache
