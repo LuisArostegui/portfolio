@@ -23,6 +23,10 @@ Review every entry and asset for factual accuracy, attribution, confidentiality,
 
 Do not add relations, a CMS, MDX, or new collections until a real approved requirement justifies them. A project-to-experience relation should use Astro `reference()` only after a genuine public relationship exists.
 
+## Consumption boundary
+
+Pages and components must use the modules in `src/lib/content/` rather than importing Astro's collection APIs directly. `getProjectById()` returns `{ data, Content }`: `data` is the deliberate `ProjectDetail` model and `Content` is the rendered Markdown component for the canonical project body. This keeps `getCollection()`, `CollectionEntry`, and `render()` inside the content boundary.
+
 ## Validation
 
 Run the repository quality gates after editing content:

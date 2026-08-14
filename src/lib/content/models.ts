@@ -1,3 +1,5 @@
+import type { RenderResult } from 'astro:content';
+
 export type ProjectStatus =
   'planned' | 'experimental' | 'active' | 'completed' | 'archived';
 
@@ -21,6 +23,11 @@ export interface ProjectPreview {
 export interface ProjectDetail extends ProjectPreview {
   period?: ContentPeriod;
   publicLinks?: string[];
+}
+
+export interface ProjectDocument {
+  data: ProjectDetail;
+  Content: RenderResult['Content'];
 }
 
 export interface ExperiencePreview {

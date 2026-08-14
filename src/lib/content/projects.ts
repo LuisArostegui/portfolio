@@ -1,8 +1,8 @@
-import { getCollection, type CollectionEntry } from "astro:content";
+import { getCollection, render, type CollectionEntry } from 'astro:content';
 
-import type { ProjectDetail, ProjectPreview } from "./models";
+import type { ProjectDetail, ProjectDocument, ProjectPreview } from './models';
 
-type ProjectEntry = CollectionEntry<"projects">;
+type ProjectEntry = CollectionEntry<'projects'>;
 
 function toProjectPreview({ id, data }: ProjectEntry): ProjectPreview {
   return {
@@ -39,7 +39,7 @@ function compareProjects(left: ProjectPreview, right: ProjectPreview): number {
 }
 
 export async function getProjects(): Promise<ProjectPreview[]> {
-  const entries = await getCollection("projects");
+  const entries = await getCollection('projects');
 
   return entries.map(toProjectPreview).sort(compareProjects);
 }
@@ -55,9 +55,18 @@ export async function getFeaturedProjects(
 
 export async function getProjectById(
   id: string,
-): Promise<ProjectDetail | undefined> {
-  const entries = await getCollection("projects");
+): Promise<ProjectDocument | undefined> {
+  const entries = await getCollection('projects');
   const entry = entries.find((candidate) => candidate.id === id);
 
-  return entry === undefined ? undefined : toProjectDetail(entry);
+  if (entry === undefined) {
+    return undefined;
+  }
+
+  const { Content } = await render(entry);
+
+  return {
+    data: toProjectDetail(entry),
+    Content,
+  };
 }
