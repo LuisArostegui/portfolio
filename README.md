@@ -52,8 +52,12 @@ Commit only `pnpm-lock.yaml`; do not create or commit lockfiles from other packa
 │   │       ├── template.md
 │   │       └── 0001-... through 0006-...
 │   ├── design/
+│   ├── content/
 │   └── product/
 ├── src/
+│   ├── content/
+│   ├── lib/content/
+│   ├── content.config.ts
 │   ├── env.d.ts
 │   └── pages/
 │       └── index.astro
@@ -75,7 +79,10 @@ Commit only `pnpm-lock.yaml`; do not create or commit lockfiles from other packa
 
 - `docs/architecture/decisions/` stores architectural decision records.
 - `docs/design/` stores design documentation and related resources.
+- `docs/content/` stores public content-authoring guidance.
 - `docs/product/` stores product requirements and planning documentation.
+- `src/content/` stores canonical, public-safe Markdown for projects and experience.
+- `src/lib/content/` maps Astro collection entries to presentation-facing models.
 - `src/pages/` stores Astro routes; the initial route only verifies the framework foundation.
 - `pnpm-workspace.yaml` records the root pnpm install policy, including the single approved dependency build script; it does not define a multi-package workspace.
 - `.github/` stores repository collaboration templates and configuration.
@@ -84,6 +91,7 @@ Commit only `pnpm-lock.yaml`; do not create or commit lockfiles from other packa
 - [Information architecture](docs/product/information-architecture.md) defines the portfolio sitemap, navigation hierarchy, visitor journeys, and MVP content structure.
 - [Content strategy](docs/product/content-strategy.md) defines tone, professional-content guidelines, project and case-study structures, confidentiality rules, and language strategy.
 - [Product success criteria](docs/product/product-success-criteria.md) defines the measurable communication, usability, accessibility, performance, content, maintainability, and production-readiness expectations for the portfolio.
+- [Content authoring](docs/content/authoring.md) defines collection locations, frontmatter contracts, ordering, and the public-safety boundary.
 
 ## Architecture
 
