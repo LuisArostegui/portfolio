@@ -2,7 +2,34 @@
 
 This repository contains the source, product documentation, design resources, and architectural decisions for a personal portfolio. The project will showcase professional experience, selected projects, and software engineering practices.
 
-Application code and framework dependencies have intentionally not been added yet. The initial repository establishes a clean foundation for future development.
+The application uses Astro with static output, strict TypeScript, and React prepared for future interactive islands. pnpm is the canonical package manager.
+
+## Local development
+
+Use Node.js 24.19.0 and pnpm 11.21.0. The Node version is recorded in `.nvmrc`, and the pnpm version is pinned through the `packageManager` field in `package.json`.
+
+After installing the supported Node.js version, enable Corepack once so it can provide the pinned pnpm version:
+
+```sh
+corepack enable
+```
+
+Install dependencies and start the local development server:
+
+```sh
+pnpm install
+pnpm dev
+```
+
+The other project commands are:
+
+```sh
+pnpm check    # Run Astro and TypeScript static checks
+pnpm build    # Generate the static production output in dist/
+pnpm preview  # Preview the production build locally
+```
+
+Commit only `pnpm-lock.yaml`; do not create or commit lockfiles from other package managers.
 
 ## Repository structure
 
@@ -21,14 +48,25 @@ Application code and framework dependencies have intentionally not been added ye
 │   │       └── 0001-... through 0006-...
 │   ├── design/
 │   └── product/
+├── src/
+│   ├── env.d.ts
+│   └── pages/
+│       └── index.astro
 ├── .gitignore
+├── .nvmrc
+├── astro.config.mjs
 ├── LICENSE
+├── package.json
+├── pnpm-lock.yaml
+├── pnpm-workspace.yaml
 └── README.md
 ```
 
 - `docs/architecture/decisions/` stores architectural decision records.
 - `docs/design/` stores design documentation and related resources.
 - `docs/product/` stores product requirements and planning documentation.
+- `src/pages/` stores Astro routes; the initial route only verifies the framework foundation.
+- `pnpm-workspace.yaml` records the root pnpm install policy, including the single approved dependency build script; it does not define a multi-package workspace.
 - `.github/` stores repository collaboration templates and configuration.
 - [`.github/LABELS.md`](.github/LABELS.md) documents the repository label taxonomy and usage rules.
 - [Product vision](docs/product/product-vision.md) defines the portfolio purpose, target audience, professional positioning, and product boundaries.
