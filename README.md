@@ -112,6 +112,7 @@ Commit only `pnpm-lock.yaml`; do not create or commit lockfiles from other packa
 - [High-level architecture](docs/architecture/high-level-architecture.md)
 - [Architecture decision records](docs/architecture/decisions/README.md)
 - [Testing conventions and responsibilities](docs/testing.md)
+- [Continuous integration](docs/continuous-integration.md)
 
 ## Agent guidance
 

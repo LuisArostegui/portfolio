@@ -26,6 +26,9 @@ test-results/
 .cache/
 .parcel-cache/
 
+# Superpower docs
+docs/superpowers
+
 # Debug logs
 logs/
 *.log
