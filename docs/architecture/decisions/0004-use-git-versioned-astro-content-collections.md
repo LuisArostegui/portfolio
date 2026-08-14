@@ -29,36 +29,36 @@ The options named in the issue occupy different layers and are not mutually excl
 
 The following criteria are weighted for this portfolio, not for content systems in general.
 
-| Criterion | Weight | Interpretation for this product |
-| --- | ---: | --- |
-| Type safety and validation | 16% | Project-owned schemas, useful editor types, and build-time failure for invalid metadata |
-| Product and authoring fit | 15% | Efficient technical authoring for structured metadata and long-form case studies |
-| Version control and review | 12% | Clear diffs, branch previews, history, attribution, and rollback |
-| Portability and canonical ownership | 12% | Open formats, one public source per entity, and limited vendor coupling |
-| Operational simplicity and cost | 12% | No unnecessary service, database, authentication, maintenance, or subscription |
-| Offline development | 8% | Complete local authoring, validation, and builds without a content API |
-| Media and localisation evolution | 7% | Proportionate initial handling with credible future options |
-| Preview and collaboration evolution | 7% | A path to richer editorial workflows when measured requirements emerge |
-| Build and hosting fit | 6% | Predictable static builds without a runtime content dependency |
-| Migration boundary | 5% | Ability to map a future source into stable project-owned contracts |
+| Criterion                           | Weight | Interpretation for this product                                                         |
+| ----------------------------------- | -----: | --------------------------------------------------------------------------------------- |
+| Type safety and validation          |    16% | Project-owned schemas, useful editor types, and build-time failure for invalid metadata |
+| Product and authoring fit           |    15% | Efficient technical authoring for structured metadata and long-form case studies        |
+| Version control and review          |    12% | Clear diffs, branch previews, history, attribution, and rollback                        |
+| Portability and canonical ownership |    12% | Open formats, one public source per entity, and limited vendor coupling                 |
+| Operational simplicity and cost     |    12% | No unnecessary service, database, authentication, maintenance, or subscription          |
+| Offline development                 |     8% | Complete local authoring, validation, and builds without a content API                  |
+| Media and localisation evolution    |     7% | Proportionate initial handling with credible future options                             |
+| Preview and collaboration evolution |     7% | A path to richer editorial workflows when measured requirements emerge                  |
+| Build and hosting fit               |     6% | Predictable static builds without a runtime content dependency                          |
+| Migration boundary                  |     5% | Ability to map a future source into stable project-owned contracts                      |
 
 ## Options considered
 
 The matrix compares complete content-source strategies. Authoring formats and supporting mechanisms are evaluated separately below. Scores use a five-point scale; weighted totals are normalised to 100 and rounded. They reflect this portfolio's present requirements, not a universal CMS ranking.
 
-| Strategy | Types and validation | Authoring fit | Git review | Portability | Simplicity and cost | Offline | Media and i18n | Preview and collaboration | Build fit | Migration | Total |
-| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| **Astro Content Collections, Markdown, and Git** | 5 | 5 | 5 | 5 | 5 | 5 | 3 | 3 | 5 | 4 | **93** |
-| Decap CMS over Git content | 4 | 4 | 5 | 5 | 4 | 3 | 3 | 4 | 5 | 4 | **83** |
-| TinaCMS over Git content | 4 | 5 | 4 | 4 | 3 | 2 | 4 | 5 | 4 | 4 | **79** |
-| Sanity | 4 | 5 | 2 | 3 | 3 | 1 | 5 | 5 | 4 | 3 | **70** |
-| DatoCMS | 4 | 5 | 2 | 3 | 3 | 1 | 5 | 5 | 4 | 3 | **70** |
-| Contentful | 4 | 4 | 2 | 3 | 2 | 1 | 5 | 5 | 4 | 3 | **65** |
-| Storyblok | 3 | 5 | 2 | 3 | 3 | 1 | 5 | 5 | 4 | 3 | **67** |
-| Strapi | 4 | 4 | 2 | 4 | 1 | 2 | 5 | 4 | 3 | 4 | **65** |
-| Directus | 4 | 4 | 2 | 4 | 1 | 2 | 5 | 4 | 3 | 4 | **65** |
-| Payload CMS | 5 | 4 | 2 | 4 | 1 | 2 | 5 | 4 | 2 | 4 | **67** |
-| Custom backend and database | 3 | 1 | 2 | 4 | 1 | 2 | 2 | 2 | 2 | 3 | **44** |
+| Strategy                                         | Types and validation | Authoring fit | Git review | Portability | Simplicity and cost | Offline | Media and i18n | Preview and collaboration | Build fit | Migration |  Total |
+| ------------------------------------------------ | -------------------: | ------------: | ---------: | ----------: | ------------------: | ------: | -------------: | ------------------------: | --------: | --------: | -----: |
+| **Astro Content Collections, Markdown, and Git** |                    5 |             5 |          5 |           5 |                   5 |       5 |              3 |                         3 |         5 |         4 | **93** |
+| Decap CMS over Git content                       |                    4 |             4 |          5 |           5 |                   4 |       3 |              3 |                         4 |         5 |         4 | **83** |
+| TinaCMS over Git content                         |                    4 |             5 |          4 |           4 |                   3 |       2 |              4 |                         5 |         4 |         4 | **79** |
+| Sanity                                           |                    4 |             5 |          2 |           3 |                   3 |       1 |              5 |                         5 |         4 |         3 | **70** |
+| DatoCMS                                          |                    4 |             5 |          2 |           3 |                   3 |       1 |              5 |                         5 |         4 |         3 | **70** |
+| Contentful                                       |                    4 |             4 |          2 |           3 |                   2 |       1 |              5 |                         5 |         4 |         3 | **65** |
+| Storyblok                                        |                    3 |             5 |          2 |           3 |                   3 |       1 |              5 |                         5 |         4 |         3 | **67** |
+| Strapi                                           |                    4 |             4 |          2 |           4 |                   1 |       2 |              5 |                         4 |         3 |         4 | **65** |
+| Directus                                         |                    4 |             4 |          2 |           4 |                   1 |       2 |              5 |                         4 |         3 |         4 | **65** |
+| Payload CMS                                      |                    5 |             4 |          2 |           4 |                   1 |       2 |              5 |                         4 |         2 |         4 | **67** |
+| Custom backend and database                      |                    3 |             1 |          2 |           4 |                   1 |       2 |              2 |                         2 |         2 |         3 | **44** |
 
 ### Astro Content Collections with Markdown and Git
 
@@ -277,21 +277,21 @@ Demonstrating sound content modelling, schema design, validation, canonical owne
 
 ## Risks and mitigations
 
-| Risk | Mitigation |
-| --- | --- |
-| Frontmatter becomes excessive | Keep concise metadata in frontmatter and narrative prose in the body |
-| Schemas become too rigid | Validate stable structural contracts, not every editorial choice |
-| Confidential content is committed | Complete public-safety and confidentiality review before commit |
-| A draft flag is mistaken for privacy | Document that every committed file and asset is public |
-| Canonical content is duplicated across pages | Derive previews and selections from one canonical entry |
-| Speculative collections or relationships proliferate | Require independent content, reuse, or navigation before adding them |
-| MDX becomes a presentation shortcut | Keep Markdown as the default and require an approved embedded-component need |
-| Components depend on raw collection details | Centralise access and mapping in small query modules |
-| Media causes repository growth | Optimise assets, prohibit large archives, and measure before externalising media |
-| Localisation is designed prematurely | Preserve IDs and boundaries without adding unused locale infrastructure |
-| Invalid entries break production builds | Run schema and production-build validation locally and in CI before merge |
-| CMS migration cost is underestimated | Treat migration as explicit modelling, mapping, asset, workflow, and rollback work |
-| A CMS is selected for perceived employability | Require a measured editorial or operational need |
+| Risk                                                 | Mitigation                                                                         |
+| ---------------------------------------------------- | ---------------------------------------------------------------------------------- |
+| Frontmatter becomes excessive                        | Keep concise metadata in frontmatter and narrative prose in the body               |
+| Schemas become too rigid                             | Validate stable structural contracts, not every editorial choice                   |
+| Confidential content is committed                    | Complete public-safety and confidentiality review before commit                    |
+| A draft flag is mistaken for privacy                 | Document that every committed file and asset is public                             |
+| Canonical content is duplicated across pages         | Derive previews and selections from one canonical entry                            |
+| Speculative collections or relationships proliferate | Require independent content, reuse, or navigation before adding them               |
+| MDX becomes a presentation shortcut                  | Keep Markdown as the default and require an approved embedded-component need       |
+| Components depend on raw collection details          | Centralise access and mapping in small query modules                               |
+| Media causes repository growth                       | Optimise assets, prohibit large archives, and measure before externalising media   |
+| Localisation is designed prematurely                 | Preserve IDs and boundaries without adding unused locale infrastructure            |
+| Invalid entries break production builds              | Run schema and production-build validation locally and in CI before merge          |
+| CMS migration cost is underestimated                 | Treat migration as explicit modelling, mapping, asset, workflow, and rollback work |
+| A CMS is selected for perceived employability        | Require a measured editorial or operational need                                   |
 
 ## Validation
 

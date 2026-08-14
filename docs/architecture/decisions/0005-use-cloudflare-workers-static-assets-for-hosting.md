@@ -33,44 +33,44 @@ Cloudflare Pages requires particular clarification. Pages remains functional and
 
 The weights and scores are specific to this portfolio, not a universal hosting ranking. Scores use a five-point scale, where 1 is a poor fit and 5 is an excellent fit. Weighted totals are normalised to 100 and rounded.
 
-| Criterion | Weight | Interpretation for this product |
-| --- | ---: | --- |
-| Static Astro compatibility | 10% | Deploy standard `dist` output without an application adapter or server |
-| GitHub integration | 7% | Build automatically from the canonical repository and report useful status |
-| Pull-request or branch previews | 9% | Produce isolated, reviewable deployments without changing production |
-| Global CDN and edge delivery | 7% | Serve public assets close to visitors without operating an origin |
-| Custom domains and TLS | 6% | Manage certificates and support one canonical production hostname |
-| Redirects and response headers | 6% | Keep routing and security policy reviewable with the project |
-| Rollback and versioning | 7% | Restore a known deployment without rebuilding it |
-| Deployment logs and observability | 5% | Inspect builds, deployments, availability, and later runtime behaviour |
-| Future serverless or edge functionality | 6% | Add small approved server features without replacing static delivery |
-| Operational complexity | 9% | Remain proportionate for one maintainer and avoid server administration |
-| Pricing predictability | 7% | Keep a static MVP inexpensive with understandable growth costs |
-| Vendor coupling | 4% | Avoid requiring proprietary runtime or data services for the MVP |
-| Privacy and data considerations | 4% | Permit public-safe previews and avoid unnecessary collection or processing |
-| Portability of generated output | 5% | Retain deployable standard files and a credible migration path |
-| Independence from the home network | 5% | Keep production, CI, previews, and recovery separate from the NAS |
-| Suitability for one maintainer | 3% | Keep routine release and recovery understandable and supportable |
+| Criterion                               | Weight | Interpretation for this product                                            |
+| --------------------------------------- | -----: | -------------------------------------------------------------------------- |
+| Static Astro compatibility              |    10% | Deploy standard `dist` output without an application adapter or server     |
+| GitHub integration                      |     7% | Build automatically from the canonical repository and report useful status |
+| Pull-request or branch previews         |     9% | Produce isolated, reviewable deployments without changing production       |
+| Global CDN and edge delivery            |     7% | Serve public assets close to visitors without operating an origin          |
+| Custom domains and TLS                  |     6% | Manage certificates and support one canonical production hostname          |
+| Redirects and response headers          |     6% | Keep routing and security policy reviewable with the project               |
+| Rollback and versioning                 |     7% | Restore a known deployment without rebuilding it                           |
+| Deployment logs and observability       |     5% | Inspect builds, deployments, availability, and later runtime behaviour     |
+| Future serverless or edge functionality |     6% | Add small approved server features without replacing static delivery       |
+| Operational complexity                  |     9% | Remain proportionate for one maintainer and avoid server administration    |
+| Pricing predictability                  |     7% | Keep a static MVP inexpensive with understandable growth costs             |
+| Vendor coupling                         |     4% | Avoid requiring proprietary runtime or data services for the MVP           |
+| Privacy and data considerations         |     4% | Permit public-safe previews and avoid unnecessary collection or processing |
+| Portability of generated output         |     5% | Retain deployable standard files and a credible migration path             |
+| Independence from the home network      |     5% | Keep production, CI, previews, and recovery separate from the NAS          |
+| Suitability for one maintainer          |     3% | Keep routine release and recovery understandable and supportable           |
 
 ## Options considered
 
 The matrix groups related criteria to remain readable. **Static** combines static Astro compatibility and output portability; **delivery** combines global edge delivery, custom domains, and TLS; **workflow** combines GitHub integration and previews; **control** combines redirects, headers, rollback, and versioning; **operations** combines logs, observability, operational complexity, and one-maintainer suitability; **evolution** covers future serverless or edge functionality; **cost** covers pricing predictability; and **risk** combines vendor coupling, privacy and data considerations, and independence from the home network. The underlying criterion weights above, rather than equal column weighting, determine the total.
 
-| Option | Static | Delivery | Workflow | Control | Operations | Evolution | Cost | Risk | Total |
-| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| **Cloudflare Workers Static Assets with Workers Builds** | 5 | 5 | 5 | 5 | 4 | 5 | 5 | 4 | **95** |
-| Vercel | 5 | 5 | 5 | 5 | 5 | 5 | 4 | 4 | **91** |
-| Netlify | 5 | 5 | 5 | 5 | 5 | 5 | 3 | 4 | **88** |
-| Cloudflare Pages | 5 | 5 | 5 | 4 | 3 | 3 | 5 | 3 | **86** |
-| Render Static Sites | 5 | 4 | 4 | 4 | 4 | 3 | 4 | 4 | **84** |
-| Azure Static Web Apps | 4 | 5 | 5 | 4 | 4 | 5 | 4 | 3 | **79** |
-| AWS Amplify Hosting | 4 | 5 | 5 | 4 | 4 | 5 | 3 | 3 | **78** |
-| Firebase Hosting | 4 | 5 | 4 | 4 | 4 | 4 | 4 | 3 | **76** |
-| GitHub Pages | 5 | 4 | 2 | 2 | 3 | 1 | 5 | 5 | **69** |
-| Railway static hosting | 4 | 3 | 4 | 3 | 4 | 4 | 2 | 3 | **65** |
-| Fly.io | 3 | 3 | 2 | 4 | 2 | 5 | 2 | 3 | **51** |
-| Traditional VPS | 5 | 2 | 2 | 4 | 1 | 5 | 2 | 2 | **45** |
-| Synology NAS self-hosting | 5 | 1 | 1 | 3 | 1 | 3 | 3 | 1 | **32** |
+| Option                                                   | Static | Delivery | Workflow | Control | Operations | Evolution | Cost | Risk |  Total |
+| -------------------------------------------------------- | -----: | -------: | -------: | ------: | ---------: | --------: | ---: | ---: | -----: |
+| **Cloudflare Workers Static Assets with Workers Builds** |      5 |        5 |        5 |       5 |          4 |         5 |    5 |    4 | **95** |
+| Vercel                                                   |      5 |        5 |        5 |       5 |          5 |         5 |    4 |    4 | **91** |
+| Netlify                                                  |      5 |        5 |        5 |       5 |          5 |         5 |    3 |    4 | **88** |
+| Cloudflare Pages                                         |      5 |        5 |        5 |       4 |          3 |         3 |    5 |    3 | **86** |
+| Render Static Sites                                      |      5 |        4 |        4 |       4 |          4 |         3 |    4 |    4 | **84** |
+| Azure Static Web Apps                                    |      4 |        5 |        5 |       4 |          4 |         5 |    4 |    3 | **79** |
+| AWS Amplify Hosting                                      |      4 |        5 |        5 |       4 |          4 |         5 |    3 |    3 | **78** |
+| Firebase Hosting                                         |      4 |        5 |        4 |       4 |          4 |         4 |    4 |    3 | **76** |
+| GitHub Pages                                             |      5 |        4 |        2 |       2 |          3 |         1 |    5 |    5 | **69** |
+| Railway static hosting                                   |      4 |        3 |        4 |       3 |          4 |         4 |    2 |    3 | **65** |
+| Fly.io                                                   |      3 |        3 |        2 |       4 |          2 |         5 |    2 |    3 | **51** |
+| Traditional VPS                                          |      5 |        2 |        2 |       4 |          1 |         5 |    2 |    2 | **45** |
+| Synology NAS self-hosting                                |      5 |        1 |        1 |       3 |          1 |         3 |    3 |    1 | **32** |
 
 ### Cloudflare Workers Static Assets with Workers Builds
 
@@ -266,23 +266,23 @@ Frontend roles may value AWS, Cloudflare, Vercel, Netlify, Azure, CDN delivery, 
 
 ## Risks and mitigations
 
-| Risk | Mitigation |
-| --- | --- |
-| Pages is selected from historical familiarity | Follow current Cloudflare guidance; identify Workers Static Assets explicitly in configuration and documentation |
-| Astro and hosting concentrate exposure to Cloudflare | Preserve standard static output and prohibit provider bindings without an approved requirement |
-| Search engines index preview or technical URLs | Add and verify `X-Robots-Tag: noindex`; keep one canonical custom domain |
-| A build secret leaks into static output | Treat client variables as public, inspect output, restrict credentials, and never commit secrets |
-| Preview code reaches production integrations | Separate build variables and use public-safe test integrations |
-| Cloudflare DNS becomes a migration constraint | Keep registrar ownership separate and document DNS records and migration steps |
-| A security-header change breaks the site | Version headers, introduce CSP deliberately, and validate production responses and user journeys |
-| Stale caching hides a correction or rollback | Use hashed immutable assets, revalidatable HTML, and verify non-default cache rules |
-| Rollback is assumed to restore external state | Keep the MVP state-free and require separate migration and compatibility plans for later state |
-| Dashboard-only changes create configuration drift | Prefer Wrangler and project-owned files; record every unavoidable manual setting with its purpose, owner, environment, and reproduction steps; prohibit unrecorded dashboard changes |
-| Dynamic services are added because they are available | Require a concrete feature, cost and privacy assessment, validation, and separate approval |
-| Preview failures cannot be diagnosed through runtime logs | Use build logs and browser diagnostics; revisit the provider or access model if dynamic previews need logs |
-| Functions or observability create unexpected cost | Keep the MVP static, monitor usage, and approve paid services deliberately |
-| Analytics is enabled incidentally | Keep analytics outside this ADR and require a separate privacy decision |
-| The NAS gradually becomes a release dependency | Make Cloudflare previews canonical and include NAS-offline availability in validation |
+| Risk                                                      | Mitigation                                                                                                                                                                           |
+| --------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Pages is selected from historical familiarity             | Follow current Cloudflare guidance; identify Workers Static Assets explicitly in configuration and documentation                                                                     |
+| Astro and hosting concentrate exposure to Cloudflare      | Preserve standard static output and prohibit provider bindings without an approved requirement                                                                                       |
+| Search engines index preview or technical URLs            | Add and verify `X-Robots-Tag: noindex`; keep one canonical custom domain                                                                                                             |
+| A build secret leaks into static output                   | Treat client variables as public, inspect output, restrict credentials, and never commit secrets                                                                                     |
+| Preview code reaches production integrations              | Separate build variables and use public-safe test integrations                                                                                                                       |
+| Cloudflare DNS becomes a migration constraint             | Keep registrar ownership separate and document DNS records and migration steps                                                                                                       |
+| A security-header change breaks the site                  | Version headers, introduce CSP deliberately, and validate production responses and user journeys                                                                                     |
+| Stale caching hides a correction or rollback              | Use hashed immutable assets, revalidatable HTML, and verify non-default cache rules                                                                                                  |
+| Rollback is assumed to restore external state             | Keep the MVP state-free and require separate migration and compatibility plans for later state                                                                                       |
+| Dashboard-only changes create configuration drift         | Prefer Wrangler and project-owned files; record every unavoidable manual setting with its purpose, owner, environment, and reproduction steps; prohibit unrecorded dashboard changes |
+| Dynamic services are added because they are available     | Require a concrete feature, cost and privacy assessment, validation, and separate approval                                                                                           |
+| Preview failures cannot be diagnosed through runtime logs | Use build logs and browser diagnostics; revisit the provider or access model if dynamic previews need logs                                                                           |
+| Functions or observability create unexpected cost         | Keep the MVP static, monitor usage, and approve paid services deliberately                                                                                                           |
+| Analytics is enabled incidentally                         | Keep analytics outside this ADR and require a separate privacy decision                                                                                                              |
+| The NAS gradually becomes a release dependency            | Make Cloudflare previews canonical and include NAS-offline availability in validation                                                                                                |
 
 ## Validation
 

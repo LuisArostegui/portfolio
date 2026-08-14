@@ -18,16 +18,16 @@ One coherent visual system must serve every audience. Recruiters should gain qui
 
 ## 3. Design personality
 
-| Attribute | Meaning and expression | Excess to avoid |
-| --- | --- | --- |
-| **Precise** | Alignment, hierarchy, terminology and interaction feedback should feel considered and consistent. | Sterility, microscopic decoration or complexity presented as rigour. |
-| **Confident** | Direct positioning, decisive composition and legible contrast should let evidence speak clearly. | Loud claims, aggressive scale, false certainty or self-congratulatory effects. |
-| **Editorial** | Pages should establish reading rhythm, narrative sequence and useful transitions between summary and detail. | Resembling a magazine at the expense of navigation or engineering evidence. |
-| **Structured** | Grouping, spacing and relationships should make the content model apparent. | Dashboard chrome, a border around every item or rigid uniformity. |
-| **Technically informed** | Relevant metadata, diagrams, code and engineering artefacts may clarify real decisions. | Fake code, terminal theatre or technology logos used as decoration. |
-| **Restrained** | A limited visual vocabulary should give important content room and make emphasis meaningful. | Blandness, absent hierarchy or minimalism that removes useful context. |
-| **Thoughtful** | Details should reflect visitor needs, content meaning, accessibility and implementation consequences. | Over-explaining ordinary interactions or polishing novelty before substance. |
-| **Approachable** | Readable prose, clear labels and a human voice should make technical depth inviting. | Informality that weakens professional credibility or playful devices that distract. |
+| Attribute                | Meaning and expression                                                                                       | Excess to avoid                                                                     |
+| ------------------------ | ------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------- |
+| **Precise**              | Alignment, hierarchy, terminology and interaction feedback should feel considered and consistent.            | Sterility, microscopic decoration or complexity presented as rigour.                |
+| **Confident**            | Direct positioning, decisive composition and legible contrast should let evidence speak clearly.             | Loud claims, aggressive scale, false certainty or self-congratulatory effects.      |
+| **Editorial**            | Pages should establish reading rhythm, narrative sequence and useful transitions between summary and detail. | Resembling a magazine at the expense of navigation or engineering evidence.         |
+| **Structured**           | Grouping, spacing and relationships should make the content model apparent.                                  | Dashboard chrome, a border around every item or rigid uniformity.                   |
+| **Technically informed** | Relevant metadata, diagrams, code and engineering artefacts may clarify real decisions.                      | Fake code, terminal theatre or technology logos used as decoration.                 |
+| **Restrained**           | A limited visual vocabulary should give important content room and make emphasis meaningful.                 | Blandness, absent hierarchy or minimalism that removes useful context.              |
+| **Thoughtful**           | Details should reflect visitor needs, content meaning, accessibility and implementation consequences.        | Over-explaining ordinary interactions or polishing novelty before substance.        |
+| **Approachable**         | Readable prose, clear labels and a human voice should make technical depth inviting.                         | Informality that weakens professional credibility or playful devices that distract. |
 
 ## 4. Design principles
 

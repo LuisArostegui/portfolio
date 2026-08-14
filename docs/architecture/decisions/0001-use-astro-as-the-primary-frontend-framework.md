@@ -38,33 +38,33 @@ The specific styling, animation, content-management, testing, application-archit
 
 The following criteria are weighted for this portfolio, not for web projects in general.
 
-| Criterion | Weight | Interpretation for this product |
-| --- | ---: | --- |
-| Product fit and static generation | 18% | First-class build-time pages, routing, metadata, and dynamic content routes |
-| Selective hydration and runtime cost | 16% | Static HTML by default and fine-grained control of shipped JavaScript |
-| Content modelling | 12% | Typed, validated Markdown/MDX content and a path to remote sources |
-| Selective React reuse and TypeScript integration | 12% | React reuse where valuable and strict end-to-end typing |
-| Accessibility implications | 8% | Semantic output, progressive enhancement, and predictable navigation |
-| Maintainability and developer experience | 10% | Clear conventions, understandable boundaries, tooling, and low operational burden |
-| Testing ecosystem | 6% | Static validation, unit/component tests, and cross-browser end-to-end tests |
-| Hosting and preview portability | 7% | Standard static output and broad edge/CDN compatibility |
-| Extensibility and migration cost | 6% | A proportionate route to server features or a different architecture |
-| Ecosystem maturity and platform coupling | 5% | Sustainable dependencies without unnecessary provider lock-in |
+| Criterion                                        | Weight | Interpretation for this product                                                   |
+| ------------------------------------------------ | -----: | --------------------------------------------------------------------------------- |
+| Product fit and static generation                |    18% | First-class build-time pages, routing, metadata, and dynamic content routes       |
+| Selective hydration and runtime cost             |    16% | Static HTML by default and fine-grained control of shipped JavaScript             |
+| Content modelling                                |    12% | Typed, validated Markdown/MDX content and a path to remote sources                |
+| Selective React reuse and TypeScript integration |    12% | React reuse where valuable and strict end-to-end typing                           |
+| Accessibility implications                       |     8% | Semantic output, progressive enhancement, and predictable navigation              |
+| Maintainability and developer experience         |    10% | Clear conventions, understandable boundaries, tooling, and low operational burden |
+| Testing ecosystem                                |     6% | Static validation, unit/component tests, and cross-browser end-to-end tests       |
+| Hosting and preview portability                  |     7% | Standard static output and broad edge/CDN compatibility                           |
+| Extensibility and migration cost                 |     6% | A proportionate route to server features or a different architecture              |
+| Ecosystem maturity and platform coupling         |     5% | Sustainable dependencies without unnecessary provider lock-in                     |
 
 ## Options considered
 
 Scores use a five-point scale, where 1 is a poor fit and 5 is an excellent fit. Weighted totals are normalised to 100 and rounded to the nearest whole number. They express suitability for the current portfolio requirements; they are not a universal framework ranking.
 
-| Option | Static and product fit | Hydration and JS | Content | Selective React and TS | Accessibility | Maintainability and DX | Testing | Hosting | Evolution | Maturity and coupling | Total |
-| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| **Astro** | 5 | 5 | 5 | 5 | 4 | 4 | 4 | 5 | 4 | 4 | **93** |
-| Next.js | 4 | 3 | 3 | 5 | 4 | 3 | 5 | 4 | 5 | 4 | **77** |
-| React Router framework mode | 3 | 2 | 2 | 5 | 3 | 3 | 5 | 4 | 5 | 4 | **66** |
-| Vite with React | 2 | 2 | 1 | 5 | 3 | 3 | 5 | 4 | 3 | 5 | **59** |
-| SvelteKit | 5 | 4 | 3 | 2 | 4 | 4 | 4 | 5 | 4 | 4 | **78** |
-| Nuxt | 5 | 3 | 4 | 2 | 4 | 4 | 4 | 5 | 4 | 5 | **78** |
-| Qwik City | 5 | 5 | 3 | 2 | 4 | 3 | 3 | 5 | 4 | 2 | **76** |
-| Eleventy | 5 | 5 | 4 | 1 | 4 | 3 | 3 | 5 | 2 | 4 | **75** |
+| Option                      | Static and product fit | Hydration and JS | Content | Selective React and TS | Accessibility | Maintainability and DX | Testing | Hosting | Evolution | Maturity and coupling |  Total |
+| --------------------------- | ---------------------: | ---------------: | ------: | ---------------------: | ------------: | ---------------------: | ------: | ------: | --------: | --------------------: | -----: |
+| **Astro**                   |                      5 |                5 |       5 |                      5 |             4 |                      4 |       4 |       5 |         4 |                     4 | **93** |
+| Next.js                     |                      4 |                3 |       3 |                      5 |             4 |                      3 |       5 |       4 |         5 |                     4 | **77** |
+| React Router framework mode |                      3 |                2 |       2 |                      5 |             3 |                      3 |       5 |       4 |         5 |                     4 | **66** |
+| Vite with React             |                      2 |                2 |       1 |                      5 |             3 |                      3 |       5 |       4 |         3 |                     5 | **59** |
+| SvelteKit                   |                      5 |                4 |       3 |                      2 |             4 |                      4 |       4 |       5 |         4 |                     4 | **78** |
+| Nuxt                        |                      5 |                3 |       4 |                      2 |             4 |                      4 |       4 |       5 |         4 |                     5 | **78** |
+| Qwik City                   |                      5 |                5 |       3 |                      2 |             4 |                      3 |       3 |       5 |         4 |                     2 | **76** |
+| Eleventy                    |                      5 |                5 |       4 |                      1 |             4 |                      3 |       3 |       5 |         2 |                     4 | **75** |
 
 “Remix” is evaluated through React Router framework mode. The current React Router framework incorporates the relevant framework capabilities and provides the meaningful forward-looking comparison; treating legacy Remix as a separate destination would duplicate the same architectural family.
 
@@ -162,14 +162,14 @@ The detailed content model, CSS approach, animation policy, test tools, performa
 
 ## Risks and mitigations
 
-| Risk | Mitigation |
-| --- | --- |
-| React is used for static presentation out of habit | Default to `.astro`; require concrete interactive value for every React island |
-| Hydration grows unnoticed | Review every `client:*` directive and inspect built JavaScript against budgets |
-| Islands become fragmented | Consolidate tightly coupled features and avoid incidental global stores |
-| A library assumes an SPA | Evaluate progressive enhancement and SSR compatibility before adoption |
+| Risk                                                                                          | Mitigation                                                                                                                    |
+| --------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
+| React is used for static presentation out of habit                                            | Default to `.astro`; require concrete interactive value for every React island                                                |
+| Hydration grows unnoticed                                                                     | Review every `client:*` directive and inspect built JavaScript against budgets                                                |
+| Islands become fragmented                                                                     | Consolidate tightly coupled features and avoid incidental global stores                                                       |
+| A library assumes an SPA                                                                      | Evaluate progressive enhancement and SSR compatibility before adoption                                                        |
 | Astro's organisational relationship with Cloudflare affects governance or platform neutrality | Monitor governance and portability; mitigate through Astro's MIT licence, open governance, and platform-neutral static output |
-| Future dynamic requirements are over-anticipated | Add an adapter or on-demand route only after a concrete requirement and separate decision |
+| Future dynamic requirements are over-anticipated                                              | Add an adapter or on-demand route only after a concrete requirement and separate decision                                     |
 
 ## Revisit this decision when
 

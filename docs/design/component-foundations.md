@@ -46,14 +46,14 @@ Interactive targets should normally provide approximately 44–48px of usable ar
 
 ## 5. Component inventory
 
-| Family | Foundations |
-| --- | --- |
-| Actions | Primary action, secondary action, text link, icon-supported action/link, contact action, CV download action, external link, download link |
-| Navigation | Site header, primary navigation, mobile trigger and panel, current item, skip link, footer, conditional breadcrumbs, resource links |
+| Family                | Foundations                                                                                                                                   |
+| --------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
+| Actions               | Primary action, secondary action, text link, icon-supported action/link, contact action, CV download action, external link, download link     |
+| Navigation            | Site header, primary navigation, mobile trigger and panel, current item, skip link, footer, conditional breadcrumbs, resource links           |
 | Content and hierarchy | Page and section headers, introductory text, content section, prose, capability item, tag, metadata, definition list, statement/quote, notice |
-| Projects | Preview, collection, metadata, status, detail header, case-study section, decision, trade-off, technical evidence, continuation navigation |
-| Experience | Entry, ordered collection/timeline, role metadata, contributions, capability/evidence connections, current role, related evidence |
-| Technical content | Inline code, technical metadata, code excerpt, terminal output, diagram, table, media, caption, wide-content region |
+| Projects              | Preview, collection, metadata, status, detail header, case-study section, decision, trade-off, technical evidence, continuation navigation    |
+| Experience            | Entry, ordered collection/timeline, role metadata, contributions, capability/evidence connections, current role, related evidence             |
+| Technical content     | Inline code, technical metadata, code excerpt, terminal output, diagram, table, media, caption, wide-content region                           |
 
 This inventory names responsibilities, not mandatory implementation components. Closely related patterns may share an implementation when their semantics and contracts remain clear.
 
@@ -194,12 +194,12 @@ Focus-visible is a system requirement for every interactive component. It must b
 
 ### Semantic states
 
-| State | Contract |
-| --- | --- |
-| Current | Identifies the visitor's present location or item with relevant semantics and a non-colour cue. |
-| Selected | Identifies a chosen option or item; it is not interchangeable with current. |
-| Expanded | Exposes whether controlled content is open and preserves an understandable control relationship. |
-| Invalid | Identifies the actual problem in text and uses appropriate form semantics; colour is supplementary. |
+| State    | Contract                                                                                                                             |
+| -------- | ------------------------------------------------------------------------------------------------------------------------------------ |
+| Current  | Identifies the visitor's present location or item with relevant semantics and a non-colour cue.                                      |
+| Selected | Identifies a chosen option or item; it is not interchangeable with current.                                                          |
+| Expanded | Exposes whether controlled content is open and preserves an understandable control relationship.                                     |
+| Invalid  | Identifies the actual problem in text and uses appropriate form semantics; colour is supplementary.                                  |
 | Disabled | Represents genuine control unavailability, remains programmatically meaningful where applicable and is not used for missing content. |
 
 Do not collapse these concepts into a generic “active” state. State is communicated through semantics plus text, structure or shape where appropriate, never colour alone.
