@@ -45,14 +45,14 @@ An animation is not justified solely because it appears polished or modern, or b
 
 The assessment is specific to this portfolio. It compares complete initial strategies separately from specialised tools.
 
-| Strategy | Product fit | Runtime cost | Accessibility control | Capability for expected needs | Initial decision |
-| --- | --- | --- | --- | --- | --- |
-| Native-first: CSS, View Transitions, and WAAPI | High | Low | Direct and standards-based | High | Adopt |
-| Motion as the primary strategy | Medium | Low to medium, depending on imported features and loading strategy | Strong APIs | Higher than currently required | Reassess for React-island features |
-| GSAP as the primary strategy | Low | Medium to high | Requires deliberate configuration | Much higher than currently required | Reject initially |
-| Anime.js as the primary strategy | Medium | Low to medium | Supports scoped handling | Higher than currently required | Reject initially |
-| AutoAnimate as the primary strategy | Low | Low | Built-in reduced-motion behaviour | Too specialised | Reassess for reordering |
-| Only essential feedback, with no navigational enhancement | Medium | Minimal | Strong | Lower than the intended visual opportunity | Not selected as a general limit |
+| Strategy                                                  | Product fit | Runtime cost                                                       | Accessibility control             | Capability for expected needs              | Initial decision                   |
+| --------------------------------------------------------- | ----------- | ------------------------------------------------------------------ | --------------------------------- | ------------------------------------------ | ---------------------------------- |
+| Native-first: CSS, View Transitions, and WAAPI            | High        | Low                                                                | Direct and standards-based        | High                                       | Adopt                              |
+| Motion as the primary strategy                            | Medium      | Low to medium, depending on imported features and loading strategy | Strong APIs                       | Higher than currently required             | Reassess for React-island features |
+| GSAP as the primary strategy                              | Low         | Medium to high                                                     | Requires deliberate configuration | Much higher than currently required        | Reject initially                   |
+| Anime.js as the primary strategy                          | Medium      | Low to medium                                                      | Supports scoped handling          | Higher than currently required             | Reject initially                   |
+| AutoAnimate as the primary strategy                       | Low         | Low                                                                | Built-in reduced-motion behaviour | Too specialised                            | Reassess for reordering            |
+| Only essential feedback, with no navigational enhancement | Medium      | Minimal                                                            | Strong                            | Lower than the intended visual opportunity | Not selected as a general limit    |
 
 Lottie and Rive are excluded from the strategy comparison because they render authored graphical assets rather than replacing CSS, WAAPI, or View Transitions.
 
@@ -238,19 +238,19 @@ The project must not:
 
 ## Risks and mitigations
 
-| Risk | Mitigation |
-| --- | --- |
-| Decorative motion expands without product value | Require a documented purpose for every animation and review site-wide repetition |
-| Reduced-motion handling is incomplete | Design and test an explicit alternative for every non-essential animation |
-| Essential content is hidden before hydration | Render complete semantic content by default and test without client scripts |
-| Client routing is added for visual reasons | Require a separate measured decision before adding `<ClientRouter />` |
-| Animations, listeners, or observers survive their owner | Assign ownership, cancellation, scoped queries, and teardown responsibilities |
-| Layout animation regresses performance or stability | Prefer compositor-friendly properties and inspect production traces and layout shifts |
-| Scroll motion becomes excessive | Require feature approval, reduced-motion fallback, and content availability without it |
-| A dependency is added for one isolated feature | Compare it with CSS and WAAPI and perform bundle analysis before adoption |
-| A Lottie or Rive asset is inaccessible or expensive | Require an approved asset, static fallback, accessibility review, and measurement |
-| Tests become fragile because they assert timing | Assert semantic states and interruption behaviour instead of frames or incidental duration |
-| Components bypass motion tokens | Review styles against ADR 0002's semantic-token and ownership policies |
+| Risk                                                    | Mitigation                                                                                 |
+| ------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
+| Decorative motion expands without product value         | Require a documented purpose for every animation and review site-wide repetition           |
+| Reduced-motion handling is incomplete                   | Design and test an explicit alternative for every non-essential animation                  |
+| Essential content is hidden before hydration            | Render complete semantic content by default and test without client scripts                |
+| Client routing is added for visual reasons              | Require a separate measured decision before adding `<ClientRouter />`                      |
+| Animations, listeners, or observers survive their owner | Assign ownership, cancellation, scoped queries, and teardown responsibilities              |
+| Layout animation regresses performance or stability     | Prefer compositor-friendly properties and inspect production traces and layout shifts      |
+| Scroll motion becomes excessive                         | Require feature approval, reduced-motion fallback, and content availability without it     |
+| A dependency is added for one isolated feature          | Compare it with CSS and WAAPI and perform bundle analysis before adoption                  |
+| A Lottie or Rive asset is inaccessible or expensive     | Require an approved asset, static fallback, accessibility review, and measurement          |
+| Tests become fragile because they assert timing         | Assert semantic states and interruption behaviour instead of frames or incidental duration |
+| Components bypass motion tokens                         | Review styles against ADR 0002's semantic-token and ownership policies                     |
 
 ## Validation
 
@@ -315,7 +315,7 @@ A revisit triggers a feature-specific comparison; it does not automatically appr
 - [Motion for React](https://motion.dev/docs/react)
 - [Motion accessibility](https://motion.dev/docs/react-accessibility)
 - [GSAP documentation](https://gsap.com/docs/v3/)
-- [GSAP `matchMedia()`](https://gsap.com/docs/v3/GSAP/gsap.matchMedia()/)
+- [GSAP `matchMedia()`](<https://gsap.com/docs/v3/GSAP/gsap.matchMedia()/>)
 - [Anime.js documentation](https://animejs.com/documentation/)
 - [AutoAnimate documentation](https://auto-animate.formkit.com/)
 - [Lottie web player](https://github.com/airbnb/lottie-web)

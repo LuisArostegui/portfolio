@@ -509,20 +509,20 @@ Blocking accessibility failures must be distinguished from non-critical known li
 
 ## 16. MVP acceptance matrix
 
-| Area | Criterion | Level | Verification | Evidence |
-| --- | --- | --- | --- | --- |
-| Positioning | Intended frontend specialisation is correctly understood | Required | Structured user validation | Validation notes |
-| Navigation | All required destinations are reachable | Required | Manual and automated checks | Test results |
-| Responsive design | Core content works across representative viewports | Required | Manual viewport testing | Test checklist |
-| Accessibility | Implemented scope targets WCAG 2.2 AA | Required | Automated and manual audit | Accessibility report |
-| Performance | Representative pages meet documented thresholds | Required | Production audit | Audit report |
-| Content | Required content is complete and public-safe | Required | Content review | Review checklist |
-| Engineering credibility | Professional engineering practices are discoverable in the repository | Required | Repository review | Repository evidence review |
-| Maintainability | Local quality checks and content ownership are documented | Required | Repository review | Documentation |
-| Reproducibility | A fresh local setup succeeds using repository documentation | Required | Manual setup validation | Setup notes |
-| Deployment | Production build and smoke test pass | Required | Automated and manual | Workflow and smoke-test results |
-| Contact form | Form is accessible, private, and reliable | Conditional | Form testing | Test results |
-| Analytics | Privacy-compliant behavioural observation | Future | Production observation | Analytics report |
+| Area                    | Criterion                                                             | Level       | Verification                | Evidence                        |
+| ----------------------- | --------------------------------------------------------------------- | ----------- | --------------------------- | ------------------------------- |
+| Positioning             | Intended frontend specialisation is correctly understood              | Required    | Structured user validation  | Validation notes                |
+| Navigation              | All required destinations are reachable                               | Required    | Manual and automated checks | Test results                    |
+| Responsive design       | Core content works across representative viewports                    | Required    | Manual viewport testing     | Test checklist                  |
+| Accessibility           | Implemented scope targets WCAG 2.2 AA                                 | Required    | Automated and manual audit  | Accessibility report            |
+| Performance             | Representative pages meet documented thresholds                       | Required    | Production audit            | Audit report                    |
+| Content                 | Required content is complete and public-safe                          | Required    | Content review              | Review checklist                |
+| Engineering credibility | Professional engineering practices are discoverable in the repository | Required    | Repository review           | Repository evidence review      |
+| Maintainability         | Local quality checks and content ownership are documented             | Required    | Repository review           | Documentation                   |
+| Reproducibility         | A fresh local setup succeeds using repository documentation           | Required    | Manual setup validation     | Setup notes                     |
+| Deployment              | Production build and smoke test pass                                  | Required    | Automated and manual        | Workflow and smoke-test results |
+| Contact form            | Form is accessible, private, and reliable                             | Conditional | Form testing                | Test results                    |
+| Analytics               | Privacy-compliant behavioural observation                             | Future      | Production observation      | Analytics report                |
 
 This matrix summarises the detailed criteria and does not replace them.
 

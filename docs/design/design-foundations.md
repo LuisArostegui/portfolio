@@ -60,9 +60,9 @@ PT-18 does not implement those properties.
 
 ### Neutral scale
 
-| Token | Value |
-| --- | --- |
-| `colour.neutral.0` | `#FFFFFF` |
+| Token                | Value     |
+| -------------------- | --------- |
+| `colour.neutral.0`   | `#FFFFFF` |
 | `colour.neutral.100` | `#F5F7FA` |
 | `colour.neutral.300` | `#D4D9E1` |
 | `colour.neutral.500` | `#8A93A3` |
@@ -74,8 +74,8 @@ PT-18 does not implement those properties.
 
 ### Accent scale
 
-| Token | Value |
-| --- | --- |
+| Token               | Value     |
+| ------------------- | --------- |
 | `colour.accent.400` | `#A9B4FF` |
 | `colour.accent.500` | `#8B9CFF` |
 | `colour.accent.600` | `#6F7FEA` |
@@ -84,24 +84,24 @@ The controlled periwinkle accent is a signal, not a large-area surface system. A
 
 ## 5. Semantic colour foundations
 
-| Role | Alias | Value | Purpose and contrast intent | Inappropriate use and additional cues |
-| --- | --- | --- | --- | --- |
-| `colour.surface.page` | `colour.neutral.950` | `#0D0F12` | Base page canvas supporting light text. | Not an interactive state. |
-| `colour.surface.default` | `colour.neutral.900` | `#171B21` | Ordinary grouped content on the page. | Do not turn every section into a card. |
-| `colour.surface.subtle` | `colour.neutral.850` | `#22272F` | Quiet tonal separation. | Do not rely on tone alone when a boundary is essential. |
-| `colour.surface.elevated` | `colour.neutral.800` | `#2B313B` | Temporary or genuinely raised context. | Not the default content surface; retain a structural boundary where needed. |
-| `colour.text.primary` | `colour.neutral.100` | `#F5F7FA` | Primary reading text on dark surfaces. | Do not use for every level of hierarchy. |
-| `colour.text.secondary` | `colour.neutral.300` | `#D4D9E1` | Supporting text on dark surfaces. | Not a substitute for reduced font size alone. |
-| `colour.text.muted` | `colour.neutral.500` | `#8A93A3` | Genuinely secondary metadata. | Not for essential instructions or low-contrast body copy. |
-| `colour.text.accent` | `colour.accent.400` | `#A9B4FF` | Limited high-emphasis text or links. | Never the sole cue for links or state. |
-| `colour.text.on-accent` | `colour.neutral.950` | `#0D0F12` | Text placed on an accent control or signal. | Use only where the pairing is contrast-validated. |
-| `colour.border.subtle` | `colour.neutral.800` | `#2B313B` | Quiet grouping between dark surfaces. | Not sufficient alone for critical state. |
-| `colour.border.strong` | `colour.neutral.700` | `#444C5A` | Explicit boundaries. | Avoid outlining all content. |
-| `colour.border.accent` | `colour.accent.500` | `#8B9CFF` | Limited high-emphasis boundary. | Add text, structure or another cue for meaning. |
-| `colour.accent.default` | `colour.accent.500` | `#8B9CFF` | Default interactive accent. | Do not use as a large decorative field. |
-| `colour.accent.hover` | `colour.accent.400` | `#A9B4FF` | Pointer-hover feedback. | Hover cannot be the only sign of interactivity. |
-| `colour.accent.active` | `colour.accent.600` | `#6F7FEA` | Pressed or active feedback. | Pair persistent state with semantic and non-colour cues. |
-| `colour.focus.ring` | `colour.accent.400` | `#A9B4FF` | Clearly perceivable focus-visible ring. | Must not be replaced by a subtle colour shift. |
+| Role                      | Alias                | Value     | Purpose and contrast intent                 | Inappropriate use and additional cues                                       |
+| ------------------------- | -------------------- | --------- | ------------------------------------------- | --------------------------------------------------------------------------- |
+| `colour.surface.page`     | `colour.neutral.950` | `#0D0F12` | Base page canvas supporting light text.     | Not an interactive state.                                                   |
+| `colour.surface.default`  | `colour.neutral.900` | `#171B21` | Ordinary grouped content on the page.       | Do not turn every section into a card.                                      |
+| `colour.surface.subtle`   | `colour.neutral.850` | `#22272F` | Quiet tonal separation.                     | Do not rely on tone alone when a boundary is essential.                     |
+| `colour.surface.elevated` | `colour.neutral.800` | `#2B313B` | Temporary or genuinely raised context.      | Not the default content surface; retain a structural boundary where needed. |
+| `colour.text.primary`     | `colour.neutral.100` | `#F5F7FA` | Primary reading text on dark surfaces.      | Do not use for every level of hierarchy.                                    |
+| `colour.text.secondary`   | `colour.neutral.300` | `#D4D9E1` | Supporting text on dark surfaces.           | Not a substitute for reduced font size alone.                               |
+| `colour.text.muted`       | `colour.neutral.500` | `#8A93A3` | Genuinely secondary metadata.               | Not for essential instructions or low-contrast body copy.                   |
+| `colour.text.accent`      | `colour.accent.400`  | `#A9B4FF` | Limited high-emphasis text or links.        | Never the sole cue for links or state.                                      |
+| `colour.text.on-accent`   | `colour.neutral.950` | `#0D0F12` | Text placed on an accent control or signal. | Use only where the pairing is contrast-validated.                           |
+| `colour.border.subtle`    | `colour.neutral.800` | `#2B313B` | Quiet grouping between dark surfaces.       | Not sufficient alone for critical state.                                    |
+| `colour.border.strong`    | `colour.neutral.700` | `#444C5A` | Explicit boundaries.                        | Avoid outlining all content.                                                |
+| `colour.border.accent`    | `colour.accent.500`  | `#8B9CFF` | Limited high-emphasis boundary.             | Add text, structure or another cue for meaning.                             |
+| `colour.accent.default`   | `colour.accent.500`  | `#8B9CFF` | Default interactive accent.                 | Do not use as a large decorative field.                                     |
+| `colour.accent.hover`     | `colour.accent.400`  | `#A9B4FF` | Pointer-hover feedback.                     | Hover cannot be the only sign of interactivity.                             |
+| `colour.accent.active`    | `colour.accent.600`  | `#6F7FEA` | Pressed or active feedback.                 | Pair persistent state with semantic and non-colour cues.                    |
+| `colour.focus.ring`       | `colour.accent.400`  | `#A9B4FF` | Clearly perceivable focus-visible ring.     | Must not be replaced by a subtle colour shift.                              |
 
 Exact combinations require contrast review in their real context. Colour must never be the sole carrier of meaning. The initial foundation is dark. If a future design needs a light surface or embedded light context, it must use semantic foreground, border and state combinations validated for that context rather than reuse dark-context values by assumption. This does not establish a light theme: the dark direction does not imply alternative themes, and no theme switcher is required.
 
@@ -113,18 +113,18 @@ The typographic personality is readable, professional, confident, contemporary a
 
 **Technical family:** IBM Plex Mono only where monospaced notation helps—inline code, code blocks, token names, terminal content and selected technical metadata. Monospace is not the portfolio's default personality. No font files are added by PT-18.
 
-| Role | Size | Line height | Weight |
-| --- | --- | --- | --- |
-| Display | 64px | 68px | ExtraBold |
-| Heading 1 | 48px | 56px | Bold |
-| Heading 2 | 36px | 44px | Bold |
-| Heading 3 | 28px | 36px | SemiBold |
-| Body large | 20px | 30px | Regular |
-| Body | 16px | 26px | Regular |
-| Body small | 14px | 22px | Regular |
-| Label | 14px | 20px | SemiBold |
-| Metadata | 12px | 18px | Medium |
-| Code | 14px | 22px | Regular / mono |
+| Role       | Size | Line height | Weight         |
+| ---------- | ---- | ----------- | -------------- |
+| Display    | 64px | 68px        | ExtraBold      |
+| Heading 1  | 48px | 56px        | Bold           |
+| Heading 2  | 36px | 44px        | Bold           |
+| Heading 3  | 28px | 36px        | SemiBold       |
+| Body large | 20px | 30px        | Regular        |
+| Body       | 16px | 26px        | Regular        |
+| Body small | 14px | 22px        | Regular        |
+| Label      | 14px | 20px        | SemiBold       |
+| Metadata   | 12px | 18px        | Medium         |
+| Code       | 14px | 22px        | Regular / mono |
 
 Display uses slight negative tracking; the largest headings use restrained negative tracking. Body and technical reading retain default tracking unless evidence justifies a change.
 
@@ -134,17 +134,17 @@ Font loading must avoid invisible text and minimise layout shifts. Fallback rend
 
 ## 7. Spacing foundations
 
-| Token | Value |
-| --- | --- |
-| `space.1` | 4px |
-| `space.2` | 8px |
-| `space.3` | 12px |
-| `space.4` | 16px |
-| `space.5` | 24px |
-| `space.6` | 32px |
-| `space.7` | 48px |
-| `space.8` | 64px |
-| `space.9` | 96px |
+| Token     | Value |
+| --------- | ----- |
+| `space.1` | 4px   |
+| `space.2` | 8px   |
+| `space.3` | 12px  |
+| `space.4` | 16px  |
+| `space.5` | 24px  |
+| `space.6` | 32px  |
+| `space.7` | 48px  |
+| `space.8` | 64px  |
+| `space.9` | 96px  |
 
 - **Micro — 4 / 8:** tightly related information.
 - **Element — 12 / 16 / 24:** component internals and control padding.
@@ -159,11 +159,11 @@ Interactive controls should normally offer approximately 44–48px of usable tar
 
 ## 9. Layout foundations
 
-| Primitive | Semantic alias | Value | Use |
-| --- | --- | --- | --- |
-| `container.readable` | `layout.content.readable` | 720px | Long-form prose, case studies and explanatory text. |
-| `container.standard` | `layout.content.standard` | 1120px | Ordinary composition, project grids and grouped sections. |
-| `container.wide` | `layout.content.wide` | 1360px | Diagrams, screenshots, tables and technical evidence that benefits from width. |
+| Primitive            | Semantic alias            | Value  | Use                                                                            |
+| -------------------- | ------------------------- | ------ | ------------------------------------------------------------------------------ |
+| `container.readable` | `layout.content.readable` | 720px  | Long-form prose, case studies and explanatory text.                            |
+| `container.standard` | `layout.content.standard` | 1120px | Ordinary composition, project grids and grouped sections.                      |
+| `container.wide`     | `layout.content.wide`     | 1360px | Diagrams, screenshots, tables and technical evidence that benefits from width. |
 
 Wide viewports must not stretch prose beyond readable line lengths. Media and evidence may expand independently while captions return to the ordinary reading hierarchy.
 
@@ -177,11 +177,11 @@ Columns emerge from available space, content requirements and useful minimum wid
 
 ### Gutters
 
-| Token | Value |
-| --- | --- |
-| `layout.gutter.mobile` | 20px |
-| `layout.gutter.tablet` | 32px |
-| `layout.gutter.desktop` | 48px |
+| Token                   | Value |
+| ----------------------- | ----- |
+| `layout.gutter.mobile`  | 20px  |
+| `layout.gutter.tablet`  | 32px  |
+| `layout.gutter.desktop` | 48px  |
 
 These are representative semantic layout values, not device detection. Transitions must be driven by content.
 
@@ -215,11 +215,11 @@ The surface hierarchy is page → default → subtle → elevated. Elevation is 
 
 Use `colour.border.subtle` for quiet grouping, `colour.border.strong` for explicit boundaries and `colour.border.accent` for limited high emphasis. Do not outline every important item with the accent; dividers belong only where they improve structural comprehension.
 
-| Token | Value | Intended use |
-| --- | --- | --- |
-| `radius.0` | 0px | Structural or technical contexts. |
-| `radius.1` | 8px | Restrained default. |
-| `radius.2` | 16px | Selected prominent surfaces. |
+| Token         | Value | Intended use                            |
+| ------------- | ----- | --------------------------------------- |
+| `radius.0`    | 0px   | Structural or technical contexts.       |
+| `radius.1`    | 8px   | Restrained default.                     |
+| `radius.2`    | 16px  | Selected prominent surfaces.            |
 | `radius.pill` | 999px | Genuinely pill-shaped controls or tags. |
 
 Radius communicates object type and hierarchy. Avoid arbitrary proliferation and excessive rounding.

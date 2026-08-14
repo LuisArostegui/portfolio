@@ -116,14 +116,14 @@ Omit a section only when it is genuinely inapplicable, not for convenience. A we
 
 ## Index
 
-| ADR | Decision | Status | Date | Originating issue | Notes or relationship |
-| --- | --- | --- | --- | --- | --- |
-| [ADR 0001](0001-use-astro-as-the-primary-frontend-framework.md) | Use Astro as the primary frontend framework | Accepted | 2026-07-31 | [PT-8 — Evaluate frontend framework](https://github.com/LuisArostegui/portfolio/issues/11) | Current |
-| [ADR 0002](0002-use-modern-css-as-the-primary-styling-strategy.md) | Use modern CSS as the primary styling strategy | Accepted | 2026-07-31 | [PT-9 — Evaluate styling strategy](https://github.com/LuisArostegui/portfolio/issues/12) | Current |
-| [ADR 0003](0003-use-a-native-first-purpose-driven-animation-strategy.md) | Use a native-first, purpose-driven animation strategy | Accepted | 2026-08-03 | [PT-10 — Evaluate animation strategy](https://github.com/LuisArostegui/portfolio/issues/13) | Current |
-| [ADR 0004](0004-use-git-versioned-astro-content-collections.md) | Use Git-versioned Astro Content Collections | Accepted | 2026-08-04 | [PT-11 — Evaluate content-management strategy](https://github.com/LuisArostegui/portfolio/issues/14) | Current |
-| [ADR 0005](0005-use-cloudflare-workers-static-assets-for-hosting.md) | Use Cloudflare Workers Static Assets for hosting | Accepted | 2026-08-04 | [PT-12 — Evaluate hosting and deployment platform](https://github.com/LuisArostegui/portfolio/issues/15) | Current |
-| [ADR 0006](0006-use-a-pragmatic-risk-based-testing-strategy.md) | Use a pragmatic risk-based testing strategy | Accepted | 2026-08-04 | [PT-13 — Evaluate testing strategy](https://github.com/LuisArostegui/portfolio/issues/16) | Current |
+| ADR                                                                      | Decision                                              | Status   | Date       | Originating issue                                                                                        | Notes or relationship |
+| ------------------------------------------------------------------------ | ----------------------------------------------------- | -------- | ---------- | -------------------------------------------------------------------------------------------------------- | --------------------- |
+| [ADR 0001](0001-use-astro-as-the-primary-frontend-framework.md)          | Use Astro as the primary frontend framework           | Accepted | 2026-07-31 | [PT-8 — Evaluate frontend framework](https://github.com/LuisArostegui/portfolio/issues/11)               | Current               |
+| [ADR 0002](0002-use-modern-css-as-the-primary-styling-strategy.md)       | Use modern CSS as the primary styling strategy        | Accepted | 2026-07-31 | [PT-9 — Evaluate styling strategy](https://github.com/LuisArostegui/portfolio/issues/12)                 | Current               |
+| [ADR 0003](0003-use-a-native-first-purpose-driven-animation-strategy.md) | Use a native-first, purpose-driven animation strategy | Accepted | 2026-08-03 | [PT-10 — Evaluate animation strategy](https://github.com/LuisArostegui/portfolio/issues/13)              | Current               |
+| [ADR 0004](0004-use-git-versioned-astro-content-collections.md)          | Use Git-versioned Astro Content Collections           | Accepted | 2026-08-04 | [PT-11 — Evaluate content-management strategy](https://github.com/LuisArostegui/portfolio/issues/14)     | Current               |
+| [ADR 0005](0005-use-cloudflare-workers-static-assets-for-hosting.md)     | Use Cloudflare Workers Static Assets for hosting      | Accepted | 2026-08-04 | [PT-12 — Evaluate hosting and deployment platform](https://github.com/LuisArostegui/portfolio/issues/15) | Current               |
+| [ADR 0006](0006-use-a-pragmatic-risk-based-testing-strategy.md)          | Use a pragmatic risk-based testing strategy           | Accepted | 2026-08-04 | [PT-13 — Evaluate testing strategy](https://github.com/LuisArostegui/portfolio/issues/16)                | Current               |
 
 ## Related architecture documentation
 

@@ -28,19 +28,19 @@ This decision selects responsibilities and tools, not an implementation. Depende
 
 The weights and scores are specific to this portfolio, not universal rankings of testing tools or strategies. Scores use a five-point scale, where 1 is a poor fit and 5 is an excellent fit. Weighted totals are normalised to 100 and rounded.
 
-| Criterion | Weight | Interpretation for this product |
-| --- | ---: | --- |
-| Confidence in critical user outcomes | 18% | Detect failures in navigation, content access, interaction, and production delivery |
-| Astro, Vite, ESM, and TypeScript fit | 14% | Reuse the selected framework toolchain with little duplicated configuration |
-| Accessibility and semantic testing | 14% | Support automated checks and user-centred interaction without overstating conformance |
-| Production and cross-browser realism | 12% | Exercise built output across relevant engines, viewports, and media preferences |
-| Feedback speed | 10% | Keep common local and pull-request checks fast enough to run consistently |
-| Maintainability for one developer | 12% | Avoid redundant harnesses, brittle assertions, and excessive operational work |
-| Diagnostics and CI integration | 8% | Make failures actionable through reports and retained evidence |
-| React-island testing support | 5% | Test meaningful component behaviour through accessible DOM interaction |
-| Ecosystem maturity and stability | 4% | Prefer dependable APIs and documented integrations |
-| Extensibility without premature infrastructure | 3% | Permit measured expansion without adopting unused platforms now |
-| **Total** | **100%** | |
+| Criterion                                      |   Weight | Interpretation for this product                                                       |
+| ---------------------------------------------- | -------: | ------------------------------------------------------------------------------------- |
+| Confidence in critical user outcomes           |      18% | Detect failures in navigation, content access, interaction, and production delivery   |
+| Astro, Vite, ESM, and TypeScript fit           |      14% | Reuse the selected framework toolchain with little duplicated configuration           |
+| Accessibility and semantic testing             |      14% | Support automated checks and user-centred interaction without overstating conformance |
+| Production and cross-browser realism           |      12% | Exercise built output across relevant engines, viewports, and media preferences       |
+| Feedback speed                                 |      10% | Keep common local and pull-request checks fast enough to run consistently             |
+| Maintainability for one developer              |      12% | Avoid redundant harnesses, brittle assertions, and excessive operational work         |
+| Diagnostics and CI integration                 |       8% | Make failures actionable through reports and retained evidence                        |
+| React-island testing support                   |       5% | Test meaningful component behaviour through accessible DOM interaction                |
+| Ecosystem maturity and stability               |       4% | Prefer dependable APIs and documented integrations                                    |
+| Extensibility without premature infrastructure |       3% | Permit measured expansion without adopting unused platforms now                       |
+| **Total**                                      | **100%** |                                                                                       |
 
 ## Options considered
 
@@ -57,19 +57,19 @@ The grouped columns preserve the weighted evaluation above. **Outcomes** combine
 
 ### Unit and integration runners
 
-| Option | Outcomes | Architecture | Execution | Ownership | Operations | Maturity | Total |
-| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| **Vitest** | 5 | 5 | 4 | 5 | 5 | 5 | **96** |
-| Rstest | 5 | 3 | 5 | 3 | 4 | 3 | **84** |
-| Jest | 5 | 3 | 4 | 3 | 4 | 5 | **81** |
+| Option     | Outcomes | Architecture | Execution | Ownership | Operations | Maturity |  Total |
+| ---------- | -------: | -----------: | --------: | --------: | ---------: | -------: | -----: |
+| **Vitest** |        5 |            5 |         4 |         5 |          5 |        5 | **96** |
+| Rstest     |        5 |            3 |         5 |         3 |          4 |        3 | **84** |
+| Jest       |        5 |            3 |         4 |         3 |          4 |        5 | **81** |
 
 ### Browser and end-to-end platforms
 
-| Option | Outcomes | Architecture | Execution | Ownership | Operations | Maturity | Total |
-| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| **Playwright** | 5 | 5 | 4 | 5 | 5 | 5 | **96** |
-| Cypress | 5 | 4 | 4 | 4 | 5 | 5 | **89** |
-| WebdriverIO | 5 | 4 | 5 | 3 | 4 | 5 | **89** |
+| Option         | Outcomes | Architecture | Execution | Ownership | Operations | Maturity |  Total |
+| -------------- | -------: | -----------: | --------: | --------: | ---------: | -------: | -----: |
+| **Playwright** |        5 |            5 |         4 |         5 |          5 |        5 | **96** |
+| Cypress        |        5 |            4 |         4 |         4 |          5 |        5 | **89** |
+| WebdriverIO    |        5 |            4 |         5 |         3 |          4 |        5 | **89** |
 
 These totals describe present project fit. They do not claim that every project should choose Vitest or Playwright, or that similarly scored alternatives have identical strengths.
 
@@ -281,19 +281,19 @@ A future threshold requires a stable, meaningful code boundary and an explanatio
 
 ## Risks and mitigations
 
-| Risk | Mitigation |
-| --- | --- |
-| Static checks create false confidence about interaction | Preserve critical Playwright journeys and manual keyboard review |
-| Browser suites become slow or flaky | Keep journeys high-value, measure the matrix, isolate causes, and retain traces |
-| Chromium-only pull requests miss engine differences | Run Firefox and WebKit on `main`, scheduled, release, or pre-launch validation |
-| Axe passes are mistaken for conformance | State the limitation in reports and require manual and assistive-technology review |
-| Component tests couple to implementation | Enforce semantic queries, user-event interaction, and public-state assertions |
-| Schema tests duplicate the build | Test only custom transformations and cross-field behaviour not already demonstrated |
-| Screenshot baselines generate noise | Permit narrow, controlled assertions only for demonstrated visual risk |
-| Coverage becomes a vanity target | Keep it diagnostic and require a risk-based case for any future threshold |
-| External-link outages block valid changes | Separate remote checks and schedule or soften them until reliable |
-| Rstest would provide a material advantage but is overlooked | Reassess official Astro support, stability, and measured spikes at the stated triggers |
-| Confidential material reaches preview or production | Retain mandatory human review and add production-output checks without claiming automation proves safety |
+| Risk                                                        | Mitigation                                                                                               |
+| ----------------------------------------------------------- | -------------------------------------------------------------------------------------------------------- |
+| Static checks create false confidence about interaction     | Preserve critical Playwright journeys and manual keyboard review                                         |
+| Browser suites become slow or flaky                         | Keep journeys high-value, measure the matrix, isolate causes, and retain traces                          |
+| Chromium-only pull requests miss engine differences         | Run Firefox and WebKit on `main`, scheduled, release, or pre-launch validation                           |
+| Axe passes are mistaken for conformance                     | State the limitation in reports and require manual and assistive-technology review                       |
+| Component tests couple to implementation                    | Enforce semantic queries, user-event interaction, and public-state assertions                            |
+| Schema tests duplicate the build                            | Test only custom transformations and cross-field behaviour not already demonstrated                      |
+| Screenshot baselines generate noise                         | Permit narrow, controlled assertions only for demonstrated visual risk                                   |
+| Coverage becomes a vanity target                            | Keep it diagnostic and require a risk-based case for any future threshold                                |
+| External-link outages block valid changes                   | Separate remote checks and schedule or soften them until reliable                                        |
+| Rstest would provide a material advantage but is overlooked | Reassess official Astro support, stability, and measured spikes at the stated triggers                   |
+| Confidential material reaches preview or production         | Retain mandatory human review and add production-output checks without claiming automation proves safety |
 
 ## Validation requirements
 

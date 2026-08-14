@@ -42,26 +42,26 @@ This ADR decides the styling architecture and its ownership rules. It does not s
 
 The following criteria and weights are specific to this portfolio. They are not a universal ranking of styling technologies.
 
-| Criterion | Weight | Interpretation for this product |
-| --- | ---: | --- |
-| Distinctive visual design | 8% | Freedom to implement a bespoke editorial identity without fighting defaults |
-| Runtime overhead | 8% | No client-side runtime should be required to generate or inject stylesheet rules |
-| Generated CSS size | 5% | Production CSS should be compact, reusable, and inspectable |
-| Design-token support | 6% | Primitive and semantic values can form a stable, themeable contract |
-| Component encapsulation | 7% | Astro components and React islands can own presentation without leakage |
-| Responsive-design support | 5% | Media queries, intrinsic layout, and fluid values are first-class |
-| Container-query support | 4% | Reusable components can adapt to their containing layout |
-| Theming | 4% | Semantic values can change at runtime through the cascade |
-| Accessible-state styling | 6% | Native state, semantic attributes, and user preferences are straightforward to target |
-| Type safety | 4% | Invalid token and style references can be detected before runtime |
-| Developer experience | 6% | Authoring, debugging, and feedback loops remain productive |
-| Component-markup readability | 6% | Semantic structure remains easy to read without presentation-heavy attributes |
-| Maintainability | 7% | Ownership and conventions remain understandable as the site grows |
-| Refactoring support | 4% | Styles and their consumers can be located and changed safely |
-| Framework coupling | 5% | CSS remains portable across rendering technologies |
-| Build requirements | 4% | Additional plugins, generation, configuration, and failure modes are limited |
-| Learning and employment relevance | 5% | The approach develops useful skills and communicates relevant experience |
-| Fit with Astro's static-first architecture | 6% | The approach complements scoped Astro components and selective React hydration |
+| Criterion                                  | Weight | Interpretation for this product                                                       |
+| ------------------------------------------ | -----: | ------------------------------------------------------------------------------------- |
+| Distinctive visual design                  |     8% | Freedom to implement a bespoke editorial identity without fighting defaults           |
+| Runtime overhead                           |     8% | No client-side runtime should be required to generate or inject stylesheet rules      |
+| Generated CSS size                         |     5% | Production CSS should be compact, reusable, and inspectable                           |
+| Design-token support                       |     6% | Primitive and semantic values can form a stable, themeable contract                   |
+| Component encapsulation                    |     7% | Astro components and React islands can own presentation without leakage               |
+| Responsive-design support                  |     5% | Media queries, intrinsic layout, and fluid values are first-class                     |
+| Container-query support                    |     4% | Reusable components can adapt to their containing layout                              |
+| Theming                                    |     4% | Semantic values can change at runtime through the cascade                             |
+| Accessible-state styling                   |     6% | Native state, semantic attributes, and user preferences are straightforward to target |
+| Type safety                                |     4% | Invalid token and style references can be detected before runtime                     |
+| Developer experience                       |     6% | Authoring, debugging, and feedback loops remain productive                            |
+| Component-markup readability               |     6% | Semantic structure remains easy to read without presentation-heavy attributes         |
+| Maintainability                            |     7% | Ownership and conventions remain understandable as the site grows                     |
+| Refactoring support                        |     4% | Styles and their consumers can be located and changed safely                          |
+| Framework coupling                         |     5% | CSS remains portable across rendering technologies                                    |
+| Build requirements                         |     4% | Additional plugins, generation, configuration, and failure modes are limited          |
+| Learning and employment relevance          |     5% | The approach develops useful skills and communicates relevant experience              |
+| Fit with Astro's static-first architecture |     6% | The approach complements scoped Astro components and selective React hydration        |
 
 Scores use a five-point scale, where 1 is a poor fit and 5 is an excellent fit. Weighted totals are normalised to 100 and rounded. The detailed criteria above are applied to every complete strategy; the grouped columns below keep the comparison readable:
 
@@ -72,23 +72,23 @@ Scores use a five-point scale, where 1 is a poor fit and 5 is an excellent fit. 
 - **Adoption:** developer experience and learning or employment relevance (11%).
 - **Architecture:** framework coupling, build requirements, and Astro fit (15%).
 
-| Complete strategy | Design | Delivery | System | Ownership | Adoption | Architecture | Total |
-| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| **Modern CSS + Astro scoped styles + CSS Modules** | 5 | 5 | 4 | 5 | 4 | 5 | **95** |
-| Sass/SCSS + Astro scoped styles or SCSS Modules | 5 | 5 | 4 | 4 | 4 | 4 | **87** |
-| Tailwind CSS 4 + Astro integration | 5 | 5 | 4 | 3 | 5 | 4 | **85** |
-| Vanilla Extract | 4 | 5 | 5 | 4 | 3 | 3 | **80** |
-| Panda CSS | 5 | 5 | 5 | 3 | 3 | 3 | **80** |
-| UnoCSS | 5 | 5 | 4 | 3 | 3 | 3 | **77** |
-| StyleX | 4 | 4 | 4 | 4 | 3 | 2 | **72** |
-| Styled Components or Emotion | 4 | 2 | 4 | 4 | 4 | 1 | **66** |
+| Complete strategy                                  | Design | Delivery | System | Ownership | Adoption | Architecture |  Total |
+| -------------------------------------------------- | -----: | -------: | -----: | --------: | -------: | -----------: | -----: |
+| **Modern CSS + Astro scoped styles + CSS Modules** |      5 |        5 |      4 |         5 |        4 |            5 | **95** |
+| Sass/SCSS + Astro scoped styles or SCSS Modules    |      5 |        5 |      4 |         4 |        4 |            4 | **87** |
+| Tailwind CSS 4 + Astro integration                 |      5 |        5 |      4 |         3 |        5 |            4 | **85** |
+| Vanilla Extract                                    |      4 |        5 |      5 |         4 |        3 |            3 | **80** |
+| Panda CSS                                          |      5 |        5 |      5 |         3 |        3 |            3 | **80** |
+| UnoCSS                                             |      5 |        5 |      4 |         3 |        3 |            3 | **77** |
+| StyleX                                             |      4 |        4 |      4 |         4 |        3 |            2 | **72** |
+| Styled Components or Emotion                       |      4 |        2 |      4 |         4 |        4 |            1 | **66** |
 
 PostCSS and Open Props are assessed separately because neither is a complete strategy:
 
-| Supporting mechanism | Potential value | Decision |
-| --- | --- | --- |
-| Open Props | A mature source of reusable custom properties and useful reference for token naming and scales | Do not adopt as the portfolio's token foundation; use it as research material where helpful |
-| PostCSS | A plugin platform for parsing and transforming CSS | Do not add without a concrete transformation or browser-compatibility requirement |
+| Supporting mechanism | Potential value                                                                                | Decision                                                                                    |
+| -------------------- | ---------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
+| Open Props           | A mature source of reusable custom properties and useful reference for token naming and scales | Do not adopt as the portfolio's token foundation; use it as research material where helpful |
+| PostCSS              | A plugin platform for parsing and transforming CSS                                             | Do not add without a concrete transformation or browser-compatibility requirement           |
 
 Scores describe present product fit. In particular, they do not claim that modern native CSS has stronger explicit employment demand than Tailwind CSS.
 
@@ -282,18 +282,18 @@ Inline styles are not a general styling mechanism. They may be used to pass dyna
 
 ## Risks and mitigations
 
-| Risk | Mitigation |
-| --- | --- |
-| Global CSS grows without control | Keep one entry point; restrict global files to the documented concerns; reject component implementation rules in review |
-| Custom properties are created for every local value | Require each token to represent reuse, governance, theming, or a real component contract |
-| Components bypass semantic tokens | Review direct primitive and literal use when a semantic token already represents the decision |
-| Utility classes grow into an atomic framework | Require demonstrated repetition and a stable composition or accessibility purpose |
-| Component styles leak or depend on import order | Use Astro scoping or CSS Modules; centralise global imports; inspect representative output |
-| Repeated declarations diverge | Extract a token, utility, or component abstraction only after a repeated stable pattern is demonstrated |
-| Specificity makes overrides fragile | Keep selectors shallow and low-specificity; avoid IDs and `!important`; use layers for global order |
-| `:global()` breaks ownership boundaries | Limit it to controlled external or rendered markup and document the boundary in the component |
-| Untyped tokens cause defects | Use clear naming and lint or validation where justified; reconsider generated types after measured failures |
-| Browser support changes or requirements expand | Track the supported-browser policy and add targeted transformations or fallbacks only when evidence requires them |
+| Risk                                                | Mitigation                                                                                                              |
+| --------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| Global CSS grows without control                    | Keep one entry point; restrict global files to the documented concerns; reject component implementation rules in review |
+| Custom properties are created for every local value | Require each token to represent reuse, governance, theming, or a real component contract                                |
+| Components bypass semantic tokens                   | Review direct primitive and literal use when a semantic token already represents the decision                           |
+| Utility classes grow into an atomic framework       | Require demonstrated repetition and a stable composition or accessibility purpose                                       |
+| Component styles leak or depend on import order     | Use Astro scoping or CSS Modules; centralise global imports; inspect representative output                              |
+| Repeated declarations diverge                       | Extract a token, utility, or component abstraction only after a repeated stable pattern is demonstrated                 |
+| Specificity makes overrides fragile                 | Keep selectors shallow and low-specificity; avoid IDs and `!important`; use layers for global order                     |
+| `:global()` breaks ownership boundaries             | Limit it to controlled external or rendered markup and document the boundary in the component                           |
+| Untyped tokens cause defects                        | Use clear naming and lint or validation where justified; reconsider generated types after measured failures             |
+| Browser support changes or requirements expand      | Track the supported-browser policy and add targeted transformations or fallbacks only when evidence requires them       |
 
 ## Validation
 

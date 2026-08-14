@@ -25,11 +25,11 @@ Penpot is the canonical editable wireframe source. This document records the str
 
 The reviewed Penpot source preserves the three-page organisation established during PT-17 because it keeps shared navigation, route wireframes and decisions easy to review together. The organisation is intentional rather than a tooling limitation.
 
-| Penpot page | Purpose | Principal frames |
-| --- | --- | --- |
-| `00 — Overview & decisions` | Introduces the wireframe conventions, established structural decisions and deferred work. | `PT-17 overview canvas` |
+| Penpot page                     | Purpose                                                                                                  | Principal frames                                                                                                           |
+| ------------------------------- | -------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
+| `00 — Overview & decisions`     | Introduces the wireframe conventions, established structural decisions and deferred work.                | `PT-17 overview canvas`                                                                                                    |
 | `01 — Shared navigation & Home` | Defines shared navigation states and the Home hierarchy at the representative mobile and desktop widths. | `Mobile navigation — closed`, `Mobile navigation — open`, `Desktop navigation`, `Home — mobile 390`, `Home — desktop 1440` |
-| `02 — Routes & journeys` | Covers the remaining MVP routes and the five primary visitor journeys. | Mobile and desktop frames for Projects, Project detail and Experience; `Visitor journeys` |
+| `02 — Routes & journeys`        | Covers the remaining MVP routes and the five primary visitor journeys.                                   | Mobile and desktop frames for Projects, Project detail and Experience; `Visitor journeys`                                  |
 
 ## 5. Shared navigation
 
@@ -104,13 +104,13 @@ These annotations guide later design and implementation. They do not establish W
 
 ## 12. Visitor journeys
 
-| Journey | Starting context and required comprehension | Principal destinations | Expected continuation or professional action |
-| --- | --- | --- | --- |
-| Recruiter | Starts on Home and needs to understand role, specialisation and relevance quickly. | Home, selected Projects or Experience, CV and LinkedIn. | Review credible evidence and continue to Contact. |
-| Engineering manager | Starts with positioning and needs evidence of judgement, ownership and quality. | Engineering strengths, Project detail and Experience. | Assess decisions and contributions, then make professional contact. |
-| Software engineer | Starts from Home or shared evidence and seeks technical depth. | Project detail, code or diagrams, repository material and ADRs. | Follow related evidence or another project. |
-| Direct project visitor | Lands on Project detail and needs immediate project and role orientation. | Project narrative, public evidence, related project and Experience. | Continue to related evidence or Contact without returning to Home first. |
-| Mobile visitor | Starts on a narrow viewport and needs the same destinations without losing context. | Open navigation, Projects, Experience, CV and Contact. | Complete the chosen path and return through familiar navigation. |
+| Journey                | Starting context and required comprehension                                         | Principal destinations                                              | Expected continuation or professional action                             |
+| ---------------------- | ----------------------------------------------------------------------------------- | ------------------------------------------------------------------- | ------------------------------------------------------------------------ |
+| Recruiter              | Starts on Home and needs to understand role, specialisation and relevance quickly.  | Home, selected Projects or Experience, CV and LinkedIn.             | Review credible evidence and continue to Contact.                        |
+| Engineering manager    | Starts with positioning and needs evidence of judgement, ownership and quality.     | Engineering strengths, Project detail and Experience.               | Assess decisions and contributions, then make professional contact.      |
+| Software engineer      | Starts from Home or shared evidence and seeks technical depth.                      | Project detail, code or diagrams, repository material and ADRs.     | Follow related evidence or another project.                              |
+| Direct project visitor | Lands on Project detail and needs immediate project and role orientation.           | Project narrative, public evidence, related project and Experience. | Continue to related evidence or Contact without returning to Home first. |
+| Mobile visitor         | Starts on a narrow viewport and needs the same destinations without losing context. | Open navigation, Projects, Experience, CV and Contact.              | Complete the chosen path and return through familiar navigation.         |
 
 ## 13. Key decisions
 
