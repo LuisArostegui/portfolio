@@ -24,10 +24,15 @@ pnpm dev
 The other project commands are:
 
 ```sh
-pnpm check    # Run Astro and TypeScript static checks
-pnpm build    # Generate the static production output in dist/
-pnpm preview  # Preview the production build locally
+pnpm lint          # Lint Astro, TypeScript, and React source files
+pnpm format:check  # Check source and Markdown formatting
+pnpm format:write  # Format source and Markdown files
+pnpm check         # Run Astro and TypeScript static checks
+pnpm build         # Generate the static production output in dist/
+pnpm preview       # Preview the production build locally
 ```
+
+VS Code users are prompted to install the Astro, ESLint, and Prettier extensions. Prettier is the repository's only formatter and runs on save through the shared workspace settings; ESLint remains responsible for code-quality diagnostics.
 
 Commit only `pnpm-lock.yaml`; do not create or commit lockfiles from other package managers.
 
@@ -54,11 +59,17 @@ Commit only `pnpm-lock.yaml`; do not create or commit lockfiles from other packa
 │       └── index.astro
 ├── .gitignore
 ├── .nvmrc
+├── .prettierignore
+├── .vscode/
+│   ├── extensions.json
+│   └── settings.json
 ├── astro.config.mjs
+├── eslint.config.js
 ├── LICENSE
 ├── package.json
 ├── pnpm-lock.yaml
 ├── pnpm-workspace.yaml
+├── prettier.config.mjs
 └── README.md
 ```
 

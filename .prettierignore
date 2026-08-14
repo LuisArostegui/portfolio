@@ -1,0 +1,9 @@
+.agents/
+.astro/
+.github/
+dist/
+docs/
+node_modules/
+AGENTS.md
+pnpm-lock.yaml
+pnpm-workspace.yaml
