@@ -28,6 +28,17 @@ React is configured in the application, but there is currently no interactive Re
 
 ## Browser and manual boundaries
 
-Keep complete routes, generated pages, navigation between routes, browser-only APIs, JavaScript failure behaviour, responsive layout, production-output integration, and critical journeys for a separately approved Playwright/E2E foundation. Do not simulate those outcomes in Vitest merely to increase coverage.
+Playwright runs with `pnpm test:e2e` against a freshly generated Astro production build. The command builds Astro first; Playwright then supervises Vite's static preview of `dist/` directly because the installed Astro CLI starts its own preview process in the background. The suite never uses the development server. The initial projects are Chromium and an emulated Pixel 7, which gives the focused suite one desktop and one representative mobile execution without an exhaustive browser matrix. The Playwright HTML report and test result directories are generated locally and ignored by Git.
 
-Manual validation remains responsible for visual quality, content accuracy and confidentiality, real keyboard and screen-reader usability, focus visibility and order, zoom and reflow, touch behaviour, animation comfort, and WCAG 2.2 AA assessment. Automated tests provide repeatable evidence for defined behaviours; they do not replace accountable human review.
+The current smoke test proves that the available Home route loads, exposes its keyboard-reachable skip link and has no axe-detectable violations in either configured project. Its axe result is an automated signal only; it does not establish WCAG 2.2 AA conformance.
+
+As implementation adds the approved routes and shared navigation, extend this suite with real user journeys rather than fixtures or artificial controls:
+
+- Home reaches Projects and Experience, and project listings reach a published detail route;
+- the compact navigation can be opened and closed with keyboard input, exposes its accessible name and expanded state, preserves useful focus order, and works at the representative mobile viewport;
+- the same navigation keeps its semantic final state and usable focus when `prefers-reduced-motion: reduce` is active; and
+- representative completed routes and activated interactive states receive targeted axe scans where the browser journey makes that coverage meaningful.
+
+Do not simulate those outcomes in Vitest merely to increase coverage. Add tests only with the route or interaction that supplies the observable behaviour; until then, the listed journeys remain intentionally pending rather than passing against placeholders.
+
+Manual validation remains responsible for visual quality, content accuracy and confidentiality, real keyboard and screen-reader usability, focus visibility and order, zoom and reflow, touch behaviour, animation comfort, and WCAG 2.2 AA assessment. In particular, when responsive navigation is implemented, review its visible focus, logical keyboard order, assistive-technology announcement, touch operation, no-JavaScript fallback where provided, and reduced-motion behaviour. Automated tests provide repeatable evidence for defined behaviours; they do not replace accountable human review.
