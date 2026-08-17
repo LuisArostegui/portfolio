@@ -98,7 +98,9 @@ test('primary navigation remains visible without JavaScript', async ({
   baseURL,
 }) => {
   if (!baseURL) {
-    throw new Error('Playwright baseURL is required for the no-JavaScript check.');
+    throw new Error(
+      'Playwright baseURL is required for the no-JavaScript check.',
+    );
   }
 
   const context = await browser.newContext({
