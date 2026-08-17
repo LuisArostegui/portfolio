@@ -1,5 +1,7 @@
 ---
 import '../styles/global.css';
+import SiteFooter from '../components/SiteFooter.astro';
+import SiteHeader from '../components/SiteHeader.astro';
 
 interface Props {
   title: string;
@@ -17,8 +19,30 @@ const { title } = Astro.props;
   </head>
   <body>
     <a class="skip-link" href="#main-content">Skip to main content</a>
-    <main id="main-content">
+    <SiteHeader />
+    <main id="main-content" tabindex="-1">
       <slot />
     </main>
+    <SiteFooter />
   </body>
 </html>
+
+<style>
+  main {
+    inline-size: min(
+      100% - (2 * var(--layout-gutter-mobile)),
+      var(--layout-content-standard)
+    );
+    padding-block: var(--space-7);
+    margin-inline: auto;
+  }
+
+  @media (min-width: 48rem) {
+    main {
+      inline-size: min(
+        100% - (2 * var(--layout-gutter-tablet)),
+        var(--layout-content-standard)
+      );
+    }
+  }
+</style>

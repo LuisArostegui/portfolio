@@ -9,6 +9,8 @@
 }
 
 body {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
   min-block-size: 100vh;
   background-color: var(--colour-surface-page);
   color: var(--colour-text-primary);
