@@ -93,6 +93,104 @@ test('top-level routes expose their matching current page in primary navigation'
   ).not.toHaveAttribute('aria-current');
 });
 
+test('top-level routes expose SEO metadata in generated HTML', async ({
+  page,
+}) => {
+  const routes = [
+    {
+      path: '/',
+      title: 'Luis Arostegui Ruiz | Software Engineer',
+      description:
+        'Portfolio for Luis Arostegui Ruiz, a software engineer focused on reliable, accessible, and maintainable web products.',
+      canonical:
+        'https://luis-arostegui-portfolio.luisarosteguiruizit.workers.dev',
+    },
+    {
+      path: '/projects/',
+      title: 'Projects | Luis Arostegui Ruiz',
+      description:
+        'Selected portfolio projects and engineering case studies from Luis Arostegui Ruiz.',
+      canonical:
+        'https://luis-arostegui-portfolio.luisarosteguiruizit.workers.dev/projects/',
+    },
+    {
+      path: '/experience/',
+      title: 'Experience | Luis Arostegui Ruiz',
+      description:
+        'Professional experience, engineering judgement, and delivery capabilities from Luis Arostegui Ruiz.',
+      canonical:
+        'https://luis-arostegui-portfolio.luisarosteguiruizit.workers.dev/experience/',
+    },
+  ];
+
+  for (const route of routes) {
+    await page.goto(route.path);
+
+    await expect(page).toHaveTitle(route.title);
+    await expect(page.locator('meta[name="description"]')).toHaveAttribute(
+      'content',
+      route.description,
+    );
+    await expect(page.locator('link[rel="canonical"]')).toHaveAttribute(
+      'href',
+      route.canonical,
+    );
+    await expect(page.locator('meta[property="og:title"]')).toHaveAttribute(
+      'content',
+      route.title,
+    );
+    await expect(page.locator('meta[property="og:url"]')).toHaveAttribute(
+      'content',
+      route.canonical,
+    );
+    await expect(page.locator('meta[property="og:image"]')).toHaveAttribute(
+      'content',
+      'https://luis-arostegui-portfolio.luisarosteguiruizit.workers.dev/social-preview.png',
+    );
+    await expect(
+      page.locator('meta[property="og:image:type"]'),
+    ).toHaveAttribute('content', 'image/png');
+    await expect(
+      page.locator('meta[property="og:image:width"]'),
+    ).toHaveAttribute('content', '1200');
+    await expect(
+      page.locator('meta[property="og:image:height"]'),
+    ).toHaveAttribute('content', '630');
+    await expect(page.locator('meta[property="og:image:alt"]')).toHaveAttribute(
+      'content',
+      'Luis Arostegui Ruiz portfolio preview',
+    );
+    await expect(page.locator('meta[name="twitter:image"]')).toHaveAttribute(
+      'content',
+      'https://luis-arostegui-portfolio.luisarosteguiruizit.workers.dev/social-preview.png',
+    );
+    await expect(
+      page.locator('meta[name="twitter:image:alt"]'),
+    ).toHaveAttribute('content', 'Luis Arostegui Ruiz portfolio preview');
+    await expect(page.locator('meta[name="twitter:card"]')).toHaveAttribute(
+      'content',
+      'summary_large_image',
+    );
+  }
+});
+
+test('home exposes public-safe Person structured data', async ({ page }) => {
+  await page.goto('/');
+
+  const jsonLd = await page
+    .locator('script[type="application/ld+json"]')
+    .textContent();
+
+  expect(JSON.parse(jsonLd ?? '')).toMatchObject({
+    '@context': 'https://schema.org',
+    '@type': 'Person',
+    name: 'Luis Arostegui Ruiz',
+    jobTitle: 'Software Engineer',
+    url: 'https://luis-arostegui-portfolio.luisarosteguiruizit.workers.dev',
+  });
+  expect(JSON.parse(jsonLd ?? '')).not.toHaveProperty('sameAs');
+});
+
 test('primary navigation remains visible without JavaScript', async ({
   browser,
   baseURL,
