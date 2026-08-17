@@ -79,7 +79,7 @@ test('mobile navigation is keyboard operable and restores focus when closed', as
 test('top-level routes expose their matching current page in primary navigation', async ({
   page,
 }) => {
-  await page.goto('/projects');
+  await page.goto('/projects/');
   await openCompactNavigationIfVisible(page);
 
   const primaryNavigation = page.getByRole('navigation', {

@@ -26,8 +26,8 @@ function normalizePathname(value: string) {
 
 export const primaryNavigation = [
   { label: 'Home', href: '/', kind: 'internal' },
-  { label: 'Projects', href: '/projects', kind: 'internal' },
-  { label: 'Experience', href: '/experience', kind: 'internal' },
+  { label: 'Projects', href: '/projects/', kind: 'internal' },
+  { label: 'Experience', href: '/experience/', kind: 'internal' },
 ] satisfies readonly NavigationItem[];
 
 export function getLinkAttributes(item: NavigationItem): LinkAttributes {

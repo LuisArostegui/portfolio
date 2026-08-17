@@ -9,14 +9,14 @@ describe('site navigation', () => {
   it('marks only an exact internal route as the current page', () => {
     const projects: NavigationItem = {
       label: 'Projects',
-      href: '/projects',
+      href: '/projects/',
       kind: 'internal',
     };
 
     expect(isCurrentPage(projects, '/projects')).toBe(true);
     expect(isCurrentPage(projects, '/projects/')).toBe(true);
     expect(isCurrentPage(projects, '/projects///')).toBe(true);
-    expect(isCurrentPage(projects, '/projects/example')).toBe(false);
+    expect(isCurrentPage(projects, '/projects/example/')).toBe(false);
   });
 
   it('derives safe external-link attributes from the item kind', () => {
