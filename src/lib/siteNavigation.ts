@@ -14,6 +14,16 @@ type LinkAttributes = Partial<
   Pick<HTMLAttributes<'a'>, 'target' | 'rel' | 'download'>
 >;
 
+function normalizePathname(value: string) {
+  let normalized = value;
+
+  while (normalized.length > 1 && normalized.endsWith('/')) {
+    normalized = normalized.slice(0, -1);
+  }
+
+  return normalized;
+}
+
 export const primaryNavigation = [
   { label: 'Home', href: '/', kind: 'internal' },
   { label: 'Projects', href: '/projects', kind: 'internal' },
@@ -33,5 +43,9 @@ export function getLinkAttributes(item: NavigationItem): LinkAttributes {
 }
 
 export function isCurrentPage(item: NavigationItem, pathname: string) {
-  return item.kind === 'internal' && item.href === pathname;
+  if (item.kind !== 'internal') {
+    return false;
+  }
+
+  return normalizePathname(item.href) === normalizePathname(pathname);
 }

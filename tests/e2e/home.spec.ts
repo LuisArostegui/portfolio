@@ -1,5 +1,13 @@
 import AxeBuilder from '@axe-core/playwright';
-import { expect, test } from '@playwright/test';
+import { expect, test, type Page } from '@playwright/test';
+
+async function openCompactNavigationIfVisible(page: Page) {
+  const menuButton = page.locator('[data-menu-toggle]');
+
+  if (await menuButton.isVisible()) {
+    await menuButton.click();
+  }
+}
 
 test('home renders the shared semantic shell and has no automatically detectable accessibility violations', async ({
   page,
@@ -10,6 +18,13 @@ test('home renders the shared semantic shell and has no automatically detectable
   const primaryNavigation = page.getByRole('navigation', {
     name: 'Primary navigation',
   });
+
+  await page.keyboard.press('Tab');
+  const skipLink = page.getByRole('link', { name: 'Skip to main content' });
+  await expect(skipLink).toBeFocused();
+  await expect(skipLink).toHaveAttribute('href', '#main-content');
+
+  await openCompactNavigationIfVisible(page);
   await expect(primaryNavigation).toBeVisible();
   await expect(
     primaryNavigation.getByRole('link', { name: 'Home', exact: true }),
@@ -18,11 +33,6 @@ test('home renders the shared semantic shell and has no automatically detectable
   await expect(
     page.getByRole('heading', { name: 'Portfolio project foundation' }),
   ).toBeVisible();
-
-  await page.keyboard.press('Tab');
-  const skipLink = page.getByRole('link', { name: 'Skip to main content' });
-  await expect(skipLink).toBeFocused();
-  await expect(skipLink).toHaveAttribute('href', '#main-content');
 
   const accessibilityScanResults = await new AxeBuilder({ page }).analyze();
 
@@ -39,9 +49,7 @@ test('mobile navigation is keyboard operable and restores focus when closed', as
 
   await page.goto('/');
 
-  const menuButton = page.getByRole('button', {
-    name: 'Open navigation menu',
-  });
+  const menuButton = page.locator('[data-menu-toggle]');
   const menuIcon = page.locator('[data-menu-icon]');
   const closeIcon = page.locator('[data-close-icon]');
   await expect(menuButton).toHaveAttribute('aria-expanded', 'false');
@@ -72,6 +80,7 @@ test('top-level routes expose their matching current page in primary navigation'
   page,
 }) => {
   await page.goto('/projects');
+  await openCompactNavigationIfVisible(page);
 
   const primaryNavigation = page.getByRole('navigation', {
     name: 'Primary navigation',

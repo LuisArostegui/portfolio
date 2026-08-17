@@ -14,6 +14,8 @@ describe('site navigation', () => {
     };
 
     expect(isCurrentPage(projects, '/projects')).toBe(true);
+    expect(isCurrentPage(projects, '/projects/')).toBe(true);
+    expect(isCurrentPage(projects, '/projects///')).toBe(true);
     expect(isCurrentPage(projects, '/projects/example')).toBe(false);
   });
 
