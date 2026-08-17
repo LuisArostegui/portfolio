@@ -1,9 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title description">
-  <title id="title">Luis Arostegui Ruiz portfolio preview</title>
-  <desc id="description">A static social preview image for Luis Arostegui Ruiz's software engineering portfolio.</desc>
-  <rect width="1200" height="630" fill="#f7f4ee" />
-  <rect x="72" y="72" width="1056" height="486" rx="24" fill="#ffffff" stroke="#222222" stroke-width="2" />
-  <text x="120" y="244" fill="#222222" font-family="Manrope, Arial, sans-serif" font-size="76" font-weight="700">Luis Arostegui Ruiz</text>
-  <text x="120" y="334" fill="#4f5d5f" font-family="Manrope, Arial, sans-serif" font-size="42" font-weight="500">Software Engineer</text>
-  <text x="120" y="430" fill="#222222" font-family="Arial, sans-serif" font-size="30">Reliable, accessible, maintainable web products</text>
-</svg>

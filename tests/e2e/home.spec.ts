@@ -145,19 +145,31 @@ test('top-level routes expose SEO metadata in generated HTML', async ({
     );
     await expect(page.locator('meta[property="og:image"]')).toHaveAttribute(
       'content',
-      'https://luis-arostegui-portfolio.luisarosteguiruizit.workers.dev/social-preview.svg',
+      'https://luis-arostegui-portfolio.luisarosteguiruizit.workers.dev/social-preview.png',
     );
+    await expect(
+      page.locator('meta[property="og:image:type"]'),
+    ).toHaveAttribute('content', 'image/png');
+    await expect(
+      page.locator('meta[property="og:image:width"]'),
+    ).toHaveAttribute('content', '1200');
+    await expect(
+      page.locator('meta[property="og:image:height"]'),
+    ).toHaveAttribute('content', '630');
     await expect(page.locator('meta[property="og:image:alt"]')).toHaveAttribute(
       'content',
       'Luis Arostegui Ruiz portfolio preview',
     );
+    await expect(page.locator('meta[name="twitter:image"]')).toHaveAttribute(
+      'content',
+      'https://luis-arostegui-portfolio.luisarosteguiruizit.workers.dev/social-preview.png',
+    );
+    await expect(
+      page.locator('meta[name="twitter:image:alt"]'),
+    ).toHaveAttribute('content', 'Luis Arostegui Ruiz portfolio preview');
     await expect(page.locator('meta[name="twitter:card"]')).toHaveAttribute(
       'content',
       'summary_large_image',
-    );
-    await expect(page.locator('meta[name="twitter:image"]')).toHaveAttribute(
-      'content',
-      'https://luis-arostegui-portfolio.luisarosteguiruizit.workers.dev/social-preview.svg',
     );
   }
 });

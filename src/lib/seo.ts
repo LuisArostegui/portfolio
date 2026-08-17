@@ -21,6 +21,7 @@ export type ResolvedSeoMetadata = {
   canonicalUrl: AbsoluteUrl;
   imageUrl: AbsoluteUrl;
   imageAlt: string;
+  imageType: string;
   imageWidth: number;
   imageHeight: number;
   locale: string;
@@ -69,6 +70,7 @@ export function getSeoMetadata(
     canonicalUrl: resolveAbsoluteUrl(pageMetadata.pathname ?? '/'),
     imageUrl: resolveAbsoluteUrl(imagePath),
     imageAlt: siteMetadata.socialPreviewImage.alt,
+    imageType: siteMetadata.socialPreviewImage.mimeType,
     imageWidth: siteMetadata.socialPreviewImage.width,
     imageHeight: siteMetadata.socialPreviewImage.height,
     locale: siteMetadata.locale,

@@ -20,9 +20,10 @@ describe('SEO metadata helpers', () => {
       canonicalUrl:
         'https://luis-arostegui-portfolio.luisarosteguiruizit.workers.dev/projects/',
       imageUrl:
-        'https://luis-arostegui-portfolio.luisarosteguiruizit.workers.dev/social-preview.svg',
+        'https://luis-arostegui-portfolio.luisarosteguiruizit.workers.dev/social-preview.png',
       imageAlt: 'Luis Arostegui Ruiz portfolio preview',
       imageHeight: 630,
+      imageType: 'image/png',
       imageWidth: 1200,
       locale: 'en_US',
       openGraphType: 'website',

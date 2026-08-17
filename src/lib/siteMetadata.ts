@@ -3,6 +3,7 @@ export type RootRelativePath = `/${string}`;
 
 export type SocialPreviewImage = {
   path: RootRelativePath;
+  mimeType: 'image/png' | 'image/jpeg';
   width: number;
   height: number;
   alt: string;
@@ -34,7 +35,8 @@ export const siteMetadata = {
     'Portfolio for Luis Arostegui Ruiz, a software engineer focused on reliable, accessible, and maintainable web products.',
   locale: 'en_US',
   socialPreviewImage: {
-    path: '/social-preview.svg',
+    path: '/social-preview.png',
+    mimeType: 'image/png',
     width: 1200,
     height: 630,
     alt: 'Luis Arostegui Ruiz portfolio preview',
