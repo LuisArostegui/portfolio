@@ -26,7 +26,7 @@ export default defineConfig({
       timeout: 500,
     },
     url: 'http://127.0.0.1:4321',
-    reuseExistingServer: !env.CI,
+    reuseExistingServer: false,
   },
   projects: [
     {

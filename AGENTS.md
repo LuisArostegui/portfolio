@@ -27,6 +27,7 @@ Read the issue and directly relevant governing documents before changing files. 
 - Treat unavailable content or evidence by omitting it cleanly rather than creating placeholder UI.
 - Do not add dependencies, deployment changes, generated output, secrets, or unrelated formatting without explicit scope.
 - For documentation-only tasks, do not add production code, styles, runtime, or test scaffolding.
+- Keep component styles inside `.astro` files by default. Extract CSS only when it is genuinely shared or large enough that separation materially improves readability. Do not create one CSS file per component as a default pattern.
 - Before handoff, inspect the changed files, validate relevant links or checks, and report what was verified and what was not.
 
 ## Skills
@@ -34,3 +35,14 @@ Read the issue and directly relevant governing documents before changing files. 
 - Use `portfolio-implementation` for Astro, React islands, TypeScript, CSS, or Content Collection work.
 - Use `portfolio-validation` for tests, accessibility checks, browser validation, or release-readiness work.
 - Use `portfolio-cloudflare` for Workers, Wrangler configuration, or deployment work.
+
+## Recommended model routing
+
+Use these recommendations as guidance, not as mandatory routing rules.
+
+- GPT-5.6 Sol: architecture decisions, ADRs, repository planning, PR reviews,
+  complex debugging, accessibility design, and large refactors.
+- GPT-5.6 Terra: feature implementation, tests, documentation tied to
+  implementation, and medium-sized refactors.
+- GPT-5.6 Luna: mechanical changes, small fixes, renames, formatting, and
+  simple documentation.

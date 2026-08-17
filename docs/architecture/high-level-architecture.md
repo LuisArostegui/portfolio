@@ -107,6 +107,18 @@ Content and ordinary presentation state are resolved primarily at build time. In
 
 The examples are decision guidance, not approval or roadmap commitments for any interactive feature. A proposed island still requires a specific need, an appropriate fallback, serialisable inputs, accessible behaviour, and review of its browser cost.
 
+### Component styling conventions
+
+Component styles live in the owning `.astro` file by default. This keeps the
+markup, states, responsive rules, and visual responsibility together while a
+component is small and locally owned. Global styles remain limited to resets,
+semantic tokens, base element styling, and shared accessibility utilities.
+
+Extract CSS only when it is genuinely shared by multiple components or when a
+component stylesheet is large enough that separation materially improves
+readability. A one-CSS-file-per-component structure is not a default pattern.
+React islands continue to use CSS Modules when they are justified.
+
 ## 8. High-level application diagram
 
 ```mermaid
