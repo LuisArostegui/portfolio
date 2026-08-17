@@ -1,11 +1,731 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { getExperience } from '../lib/content/experience';
+import { getFeaturedProjects } from '../lib/content/projects';
+
+const featuredProjects = await getFeaturedProjects(3);
+const selectedExperience = (await getExperience()).slice(0, 2);
+
+const strengths = [
+  {
+    label: 'Architecture',
+    title: 'React and TypeScript engineering',
+    description:
+      'I design typed UI boundaries, reusable component structures, and application surfaces that remain understandable as product flows grow.',
+    href: '#selected-projects',
+    linkLabel: 'See project evidence',
+  },
+  {
+    label: 'Accessibility',
+    title: 'Inclusive interaction by design',
+    description:
+      'I treat semantics, keyboard access, focus visibility, and resilient content as normal engineering requirements rather than late-stage polish.',
+    href: '#about',
+    linkLabel: 'Read the summary',
+  },
+  {
+    label: 'Quality',
+    title: 'Testing for delivery confidence',
+    description:
+      'I use typed contracts, automated checks, and browser-level validation where they protect real user journeys and maintenance risk.',
+    href: '#process',
+    linkLabel: 'Review the process',
+  },
+  {
+    label: 'Product reasoning',
+    title: 'Decisions with context and trade-offs',
+    description:
+      'I connect implementation choices to product goals, constraints, accessibility, and future maintenance instead of treating code as isolated output.',
+    href: 'https://github.com/LuisArostegui/portfolio',
+    linkLabel: 'Open repository evidence',
+    external: true,
+  },
+];
+
+const processSteps = [
+  {
+    title: 'Define',
+    description:
+      'Start from the product outcome, audience, content ownership, and public-safety constraints.',
+  },
+  {
+    title: 'Decide',
+    description:
+      'Record meaningful technical trade-offs through architecture decisions before implementation pressure blurs the reasoning.',
+  },
+  {
+    title: 'Design',
+    description:
+      'Translate the product hierarchy into responsive, semantic, accessible experiences that can be implemented statically first.',
+  },
+  {
+    title: 'Build and validate',
+    description:
+      'Compose pages in Astro, keep content typed, and use proportionate checks where they guard public behaviour.',
+  },
+  {
+    title: 'Review and evolve',
+    description:
+      'Use issues, pull requests, documentation, and validation results to make change reviewable and iterative.',
+  },
+];
 ---
 
 <BaseLayout
   title="Luis Arostegui Ruiz | Software Engineer"
-  description="Portfolio for Luis Arostegui Ruiz, a software engineer focused on reliable, accessible, and maintainable web products."
+  description="Software engineer with strong frontend expertise in React, TypeScript, accessibility, testing, and maintainable web products."
   pathname="/"
 >
-  <h1>Portfolio project foundation</h1>
+  <section class="hero" aria-labelledby="home-heading">
+    <div class="hero__content">
+      <p class="eyebrow">Luis Arostegui Ruiz</p>
+      <h1 id="home-heading">
+        Software Engineer with strong frontend expertise
+      </h1>
+      <p class="hero__summary">
+        I build reliable, accessible, and maintainable web products with deep
+        React and TypeScript experience, product reasoning, and a wider
+        software-engineering view of the systems around the interface.
+      </p>
+      <div class="action-group" aria-label="Primary Home actions">
+        <a class="action action--primary" href="#selected-projects">
+          View selected projects
+        </a>
+        <a class="action action--secondary" href="/experience/">
+          View experience
+        </a>
+      </div>
+    </div>
+
+    <aside class="hero__support" aria-labelledby="hero-support-heading">
+      <h2 id="hero-support-heading">Engineering focus</h2>
+      <dl class="fact-list">
+        <div>
+          <dt>Primary specialisation</dt>
+          <dd>React, TypeScript, and frontend architecture</dd>
+        </div>
+        <div>
+          <dt>Quality focus</dt>
+          <dd>Accessibility, testing, maintainability, and clear boundaries</dd>
+        </div>
+        <div>
+          <dt>Engineering approach</dt>
+          <dd>Product context, trade-offs, and evidence-led delivery</dd>
+        </div>
+      </dl>
+    </aside>
+  </section>
+
+  <section
+    class="section section--summary"
+    id="about"
+    aria-labelledby="about-heading"
+  >
+    <div class="section__header">
+      <p class="eyebrow">About</p>
+      <h2 id="about-heading">Professional summary</h2>
+    </div>
+    <div class="summary-layout">
+      <div class="prose">
+        <p>
+          My strongest professional depth is in frontend engineering: React,
+          TypeScript, semantic interfaces, component architecture, complex user
+          flows, and maintainable product surfaces. I care about the behaviour
+          behind the UI as much as the visual result.
+        </p>
+        <p>
+          I also bring broader software ownership from working across API,
+          persistence, delivery, and documentation boundaries when a product
+          needs that context. That breadth supports better collaboration without
+          turning the portfolio into a backend-first profile.
+        </p>
+      </div>
+      <dl class="summary-facts">
+        <div>
+          <dt>Specialisation</dt>
+          <dd>Frontend engineering with React and TypeScript</dd>
+        </div>
+        <div>
+          <dt>Practice</dt>
+          <dd>Accessible, well-tested, and maintainable web products</dd>
+        </div>
+        <div>
+          <dt>Perspective</dt>
+          <dd>Product reasoning with wider software-system awareness</dd>
+        </div>
+      </dl>
+    </div>
+  </section>
+
+  <section
+    class="section"
+    id="selected-projects"
+    aria-labelledby="selected-projects-heading"
+  >
+    <div class="section__header section__header--split">
+      <div>
+        <p class="eyebrow">Evidence</p>
+        <h2 id="selected-projects-heading">Selected projects</h2>
+      </div>
+      <a class="text-link" href="/projects/">View all projects</a>
+    </div>
+
+    {
+      featuredProjects.length > 0 && (
+        <ol class="project-list" aria-label="Featured project previews">
+          {featuredProjects.map((project, index) => (
+            <li class:list={['project-preview', index === 0 && 'is-featured']}>
+              <article>
+                <p class="metadata">{project.status} project</p>
+                <h3>{project.title}</h3>
+                <p>{project.summary}</p>
+                <p class="project-preview__role">{project.role}</p>
+                <ul
+                  class="tag-list"
+                  aria-label={`${project.title} capabilities`}
+                >
+                  {project.capabilities.map((capability) => (
+                    <li>{capability}</li>
+                  ))}
+                </ul>
+              </article>
+            </li>
+          ))}
+        </ol>
+      )
+    }
+  </section>
+
+  <section class="section" aria-labelledby="strengths-heading">
+    <div class="section__header">
+      <p class="eyebrow">Capabilities</p>
+      <h2 id="strengths-heading">Engineering strengths</h2>
+    </div>
+    <ol class="strength-list">
+      {
+        strengths.map((strength, index) => (
+          <li class="strength-item">
+            <p class="strength-item__number">
+              {String(index + 1).padStart(2, '0')}
+            </p>
+            <div>
+              <p class="metadata">{strength.label}</p>
+              <h3>{strength.title}</h3>
+              <p>{strength.description}</p>
+              <a
+                class="text-link"
+                href={strength.href}
+                rel={strength.external ? 'noreferrer' : undefined}
+                target={strength.external ? '_blank' : undefined}
+              >
+                {strength.linkLabel}
+              </a>
+            </div>
+          </li>
+        ))
+      }
+    </ol>
+  </section>
+
+  <section
+    class="section"
+    id="selected-experience"
+    aria-labelledby="selected-experience-heading"
+  >
+    <div class="section__header section__header--split">
+      <div>
+        <p class="eyebrow">Trajectory</p>
+        <h2 id="selected-experience-heading">Selected experience</h2>
+      </div>
+      <a class="text-link" href="/experience/">View full experience</a>
+    </div>
+
+    {
+      selectedExperience.length > 0 && (
+        <ol class="experience-list" aria-label="Selected experience previews">
+          {selectedExperience.map((experience) => (
+            <li class="experience-preview">
+              <article>
+                <p class="metadata">
+                  {experience.isCurrent ? 'Current role' : 'Previous role'}
+                </p>
+                <h3>{experience.role}</h3>
+                <p class="experience-preview__organisation">
+                  {experience.organisation}
+                </p>
+                <p>{experience.summary}</p>
+                <ul
+                  class="tag-list"
+                  aria-label={`${experience.role} capabilities`}
+                >
+                  {experience.capabilities.map((capability) => (
+                    <li>{capability}</li>
+                  ))}
+                </ul>
+              </article>
+            </li>
+          ))}
+        </ol>
+      )
+    }
+  </section>
+
+  <section class="section" id="process" aria-labelledby="process-heading">
+    <div class="section__header">
+      <p class="eyebrow">Practice</p>
+      <h2 id="process-heading">Engineering process</h2>
+    </div>
+    <ol class="process-list">
+      {
+        processSteps.map((step) => (
+          <li>
+            <h3>{step.title}</h3>
+            <p>{step.description}</p>
+          </li>
+        ))
+      }
+    </ol>
+    <p class="process-evidence">
+      This public repository exposes the product documentation, architecture
+      decisions, typed content boundary, tests, and review workflow that shape
+      the portfolio itself.
+    </p>
+    <a
+      class="text-link"
+      href="https://github.com/LuisArostegui/portfolio"
+      rel="noreferrer"
+      target="_blank"
+    >
+      GitHub repository
+    </a>
+  </section>
+
+  <section
+    class="contact-section"
+    id="contact"
+    aria-labelledby="contact-heading"
+  >
+    <div>
+      <p class="eyebrow">Contact</p>
+      <h2 id="contact-heading">Contact</h2>
+      <p>
+        For professional conversations, start from the selected work,
+        experience, and public repository evidence. The available public profile
+        and repository links keep the first MVP contact path direct and
+        verifiable.
+      </p>
+    </div>
+    <div class="contact-section__actions" aria-label="Professional resources">
+      <a
+        class="action action--primary"
+        href="https://github.com/LuisArostegui"
+        rel="noreferrer"
+        target="_blank"
+      >
+        GitHub profile
+      </a>
+      <a class="action action--secondary" href="/experience/">
+        Explore experience
+      </a>
+    </div>
+  </section>
 </BaseLayout>
+
+<style>
+  :global(#main-content) {
+    inline-size: min(
+      100% - (2 * var(--layout-gutter-mobile)),
+      var(--layout-content-wide)
+    );
+  }
+
+  .hero,
+  .section,
+  .contact-section {
+    overflow-wrap: anywhere;
+  }
+
+  .hero {
+    display: grid;
+    gap: var(--space-6);
+    padding-block-end: var(--space-8);
+    border-block-end: 1px solid var(--colour-border-subtle);
+  }
+
+  .hero__content {
+    max-inline-size: var(--layout-content-readable);
+  }
+
+  .hero h1 {
+    max-inline-size: 12ch;
+    margin-block: var(--space-3) var(--space-4);
+    font-size: var(--type-heading-2-font-size);
+    line-height: var(--type-heading-2-line-height);
+  }
+
+  .hero__summary {
+    max-inline-size: var(--layout-content-readable);
+    margin-block: 0;
+    color: var(--colour-text-secondary);
+    font-size: var(--type-body-large-font-size);
+    line-height: var(--type-body-large-line-height);
+  }
+
+  .hero__support,
+  .contact-section,
+  .project-preview,
+  .experience-preview {
+    border: 1px solid var(--colour-border-subtle);
+    border-radius: var(--radius-1);
+    background-color: var(--colour-surface-default);
+  }
+
+  .hero__support {
+    padding: var(--space-5);
+  }
+
+  .hero__support h2 {
+    margin-block: 0 var(--space-4);
+    font-size: var(--type-heading-3-font-size);
+    line-height: var(--type-heading-3-line-height);
+  }
+
+  .eyebrow,
+  .metadata,
+  .strength-item__number {
+    margin-block: 0;
+    color: var(--colour-text-muted);
+    font-family: var(--type-metadata-font-family);
+    font-size: var(--type-metadata-font-size);
+    font-weight: var(--type-metadata-font-weight);
+    line-height: var(--type-metadata-line-height);
+    text-transform: uppercase;
+  }
+
+  .action-group,
+  .contact-section__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin-block-start: var(--space-5);
+  }
+
+  .action {
+    display: inline-flex;
+    min-block-size: 44px;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-3) var(--space-4);
+    border: 1px solid var(--colour-border-strong);
+    border-radius: var(--radius-1);
+    font-family: var(--type-label-font-family);
+    font-size: var(--type-label-font-size);
+    font-weight: var(--type-label-font-weight);
+    text-align: center;
+    text-decoration: none;
+  }
+
+  .action--primary {
+    border-color: var(--colour-accent-default);
+    background-color: var(--colour-accent-default);
+    color: var(--colour-text-on-accent);
+  }
+
+  .action--primary:hover,
+  .action--primary:active {
+    background-color: var(--colour-accent-hover);
+    color: var(--colour-text-on-accent);
+  }
+
+  .action--secondary {
+    color: var(--colour-text-primary);
+  }
+
+  .action--secondary:hover {
+    border-color: var(--colour-border-accent);
+    color: var(--colour-text-primary);
+  }
+
+  .section {
+    padding-block: var(--space-8);
+    border-block-end: 1px solid var(--colour-border-subtle);
+  }
+
+  .section__header {
+    max-inline-size: var(--layout-content-readable);
+    margin-block-end: var(--space-5);
+  }
+
+  .section__header h2,
+  .contact-section h2 {
+    margin-block: var(--space-2) 0;
+  }
+
+  .section__header--split {
+    display: grid;
+    max-inline-size: none;
+    gap: var(--space-4);
+  }
+
+  .section__header--split .text-link {
+    align-self: end;
+  }
+
+  .summary-layout {
+    display: grid;
+    gap: var(--space-5);
+  }
+
+  .prose {
+    max-inline-size: var(--layout-content-readable);
+    color: var(--colour-text-secondary);
+    font-size: var(--type-body-large-font-size);
+    line-height: var(--type-body-large-line-height);
+  }
+
+  .prose p {
+    margin-block: 0;
+  }
+
+  .prose p + p {
+    margin-block-start: var(--space-4);
+  }
+
+  .fact-list,
+  .summary-facts {
+    display: grid;
+    gap: var(--space-4);
+    margin: 0;
+  }
+
+  .fact-list div,
+  .summary-facts div {
+    padding-block-start: var(--space-4);
+    border-block-start: 1px solid var(--colour-border-subtle);
+  }
+
+  dt {
+    color: var(--colour-text-primary);
+    font-family: var(--type-label-font-family);
+    font-size: var(--type-label-font-size);
+    font-weight: var(--type-label-font-weight);
+    line-height: var(--type-label-line-height);
+  }
+
+  dd {
+    margin: var(--space-1) 0 0;
+    color: var(--colour-text-secondary);
+  }
+
+  .project-list,
+  .experience-list,
+  .strength-list,
+  .process-list,
+  .tag-list {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+  }
+
+  .project-list {
+    display: grid;
+    gap: var(--space-4);
+  }
+
+  .project-preview,
+  .experience-preview {
+    padding: var(--space-5);
+  }
+
+  .project-preview h3,
+  .experience-preview h3,
+  .strength-item h3,
+  .process-list h3 {
+    margin-block: var(--space-2) var(--space-3);
+    font-size: var(--type-heading-3-font-size);
+    line-height: var(--type-heading-3-line-height);
+  }
+
+  .project-preview p,
+  .experience-preview p,
+  .strength-item p,
+  .process-list p,
+  .process-evidence,
+  .contact-section p {
+    color: var(--colour-text-secondary);
+  }
+
+  .project-preview p,
+  .experience-preview p,
+  .strength-item p,
+  .process-list p,
+  .process-evidence,
+  .contact-section p {
+    margin-block: 0;
+  }
+
+  .project-preview__role,
+  .experience-preview__organisation {
+    margin-block-start: var(--space-3);
+    color: var(--colour-text-primary);
+    font-family: var(--type-label-font-family);
+    font-size: var(--type-label-font-size);
+    font-weight: var(--type-label-font-weight);
+  }
+
+  .tag-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin-block-start: var(--space-4);
+  }
+
+  .tag-list li {
+    padding: var(--space-1) var(--space-2);
+    border: 1px solid var(--colour-border-subtle);
+    border-radius: var(--radius-1);
+    color: var(--colour-text-secondary);
+    font-family: var(--type-metadata-font-family);
+    font-size: var(--type-metadata-font-size);
+    line-height: var(--type-metadata-line-height);
+  }
+
+  .strength-list {
+    display: grid;
+    gap: var(--space-5);
+  }
+
+  .strength-item {
+    display: grid;
+    gap: var(--space-4);
+    padding-block-end: var(--space-5);
+    border-block-end: 1px solid var(--colour-border-subtle);
+  }
+
+  .strength-item__number {
+    color: var(--colour-text-accent);
+  }
+
+  .text-link {
+    font-family: var(--type-label-font-family);
+    font-size: var(--type-label-font-size);
+    font-weight: var(--type-label-font-weight);
+  }
+
+  .process-list {
+    display: grid;
+    gap: var(--space-4);
+    counter-reset: process;
+  }
+
+  .process-list li {
+    position: relative;
+    padding-block-start: var(--space-5);
+    border-block-start: 1px solid var(--colour-border-subtle);
+    counter-increment: process;
+  }
+
+  .process-list li::before {
+    content: counter(process, decimal-leading-zero);
+    color: var(--colour-text-accent);
+    font-family: var(--type-metadata-font-family);
+    font-size: var(--type-metadata-font-size);
+    font-weight: var(--type-metadata-font-weight);
+    line-height: var(--type-metadata-line-height);
+  }
+
+  .process-evidence {
+    max-inline-size: var(--layout-content-readable);
+    margin-block: var(--space-5) var(--space-3);
+  }
+
+  .contact-section {
+    display: grid;
+    gap: var(--space-5);
+    padding: var(--space-6);
+    margin-block-start: var(--space-8);
+  }
+
+  .contact-section p {
+    max-inline-size: var(--layout-content-readable);
+    margin-block-start: var(--space-3);
+  }
+
+  @media (min-width: 48rem) {
+    :global(#main-content) {
+      inline-size: min(
+        100% - (2 * var(--layout-gutter-tablet)),
+        var(--layout-content-wide)
+      );
+    }
+
+    .hero {
+      grid-template-columns: minmax(0, 1.4fr) minmax(18rem, 0.8fr);
+      align-items: end;
+    }
+
+    .hero h1 {
+      font-size: var(--type-heading-1-font-size);
+      line-height: var(--type-heading-1-line-height);
+    }
+
+    .summary-layout,
+    .contact-section {
+      grid-template-columns: minmax(0, 1.2fr) minmax(16rem, 0.8fr);
+      align-items: start;
+    }
+
+    .section__header--split {
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: end;
+    }
+
+    .project-list {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .project-preview.is-featured {
+      grid-column: 1 / -1;
+    }
+
+    .strength-item {
+      grid-template-columns: 4rem minmax(0, 1fr);
+    }
+
+    .process-list {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 70rem) {
+    :global(#main-content) {
+      inline-size: min(
+        100% - (2 * var(--layout-gutter-desktop)),
+        var(--layout-content-wide)
+      );
+    }
+
+    .hero {
+      gap: var(--space-8);
+    }
+
+    .project-list {
+      grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+    }
+
+    .project-preview.is-featured {
+      grid-row: span 2;
+      grid-column: auto;
+    }
+
+    .experience-list {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--space-4);
+    }
+
+    .process-list {
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+    }
+  }
+</style>

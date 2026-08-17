@@ -40,7 +40,7 @@ describe('SEO metadata helpers', () => {
     expect(metadata.canonicalUrl).toBe(siteMetadata.siteUrl);
   });
 
-  it('omits unconfirmed public profile URLs from Person structured data', () => {
+  it('includes confirmed public profile URLs in Person structured data', () => {
     const structuredData = getPersonStructuredData();
 
     expect(structuredData).toMatchObject({
@@ -50,7 +50,9 @@ describe('SEO metadata helpers', () => {
       jobTitle: 'Software Engineer',
       url: siteMetadata.siteUrl,
     });
-    expect(structuredData).not.toHaveProperty('sameAs');
+    expect(structuredData).toMatchObject({
+      sameAs: ['https://github.com/LuisArostegui'],
+    });
   });
 
   it('serializes structured data without literal script-closing text', () => {

@@ -28,6 +28,8 @@ export const primaryNavigation = [
   { label: 'Home', href: '/', kind: 'internal' },
   { label: 'Projects', href: '/projects/', kind: 'internal' },
   { label: 'Experience', href: '/experience/', kind: 'internal' },
+  { label: 'About', href: '/#about', kind: 'internal' },
+  { label: 'Contact', href: '/#contact', kind: 'internal' },
 ] satisfies readonly NavigationItem[];
 
 export function getLinkAttributes(item: NavigationItem): LinkAttributes {
