@@ -81,17 +81,21 @@ const pathname = Astro.url.pathname;
     const toggle =
       header.querySelector<HTMLButtonElement>('[data-menu-toggle]');
     const navigation = header.querySelector<HTMLElement>('[data-navigation]');
-    const menuIcon = header.querySelector<HTMLElement>('[data-menu-icon]');
-    const closeIcon = header.querySelector<HTMLElement>('[data-close-icon]');
+    const menuIcon = header.querySelector<SVGElement>('[data-menu-icon]');
+    const closeIcon = header.querySelector<SVGElement>('[data-close-icon]');
     const label = header.querySelector<HTMLElement>('[data-menu-label]');
     const compactNavigation = window.matchMedia('(max-width: 47.99rem)');
 
     if (toggle && navigation && menuIcon && closeIcon && label) {
+      const setIconVisibility = (icon: SVGElement, visible: boolean) => {
+        icon.toggleAttribute('hidden', !visible);
+      };
+
       const setExpanded = (expanded: boolean) => {
         toggle.setAttribute('aria-expanded', String(expanded));
         navigation.hidden = !expanded;
-        menuIcon.hidden = expanded;
-        closeIcon.hidden = !expanded;
+        setIconVisibility(menuIcon, !expanded);
+        setIconVisibility(closeIcon, expanded);
         label.textContent = expanded
           ? 'Close navigation menu'
           : 'Open navigation menu';
@@ -176,12 +180,11 @@ const pathname = Astro.url.pathname;
     block-size: 20px;
   }
 
-  .site-header__menu-icon[data-close-icon] {
+  .site-header__menu-toggle[aria-expanded='true']
+    .site-header__menu-icon[data-menu-icon],
+  .site-header__menu-toggle[aria-expanded='false']
+    .site-header__menu-icon[data-close-icon] {
     display: none;
-  }
-
-  .site-header__menu-icon[data-close-icon]:not([hidden]) {
-    display: block;
   }
 
   .site-header__navigation-list {

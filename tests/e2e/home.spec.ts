@@ -42,12 +42,18 @@ test('mobile navigation is keyboard operable and restores focus when closed', as
   const menuButton = page.getByRole('button', {
     name: 'Open navigation menu',
   });
+  const menuIcon = page.locator('[data-menu-icon]');
+  const closeIcon = page.locator('[data-close-icon]');
   await expect(menuButton).toHaveAttribute('aria-expanded', 'false');
+  await expect(menuIcon).toBeVisible();
+  await expect(closeIcon).toBeHidden();
 
   await menuButton.focus();
   await page.keyboard.press('Enter');
   await expect(menuButton).toHaveAccessibleName('Close navigation menu');
   await expect(menuButton).toHaveAttribute('aria-expanded', 'true');
+  await expect(menuIcon).toBeHidden();
+  await expect(closeIcon).toBeVisible();
   await expect(
     page
       .getByRole('navigation', { name: 'Primary navigation' })
@@ -57,6 +63,8 @@ test('mobile navigation is keyboard operable and restores focus when closed', as
   await page.keyboard.press('Escape');
   await expect(menuButton).toHaveAccessibleName('Open navigation menu');
   await expect(menuButton).toHaveAttribute('aria-expanded', 'false');
+  await expect(menuIcon).toBeVisible();
+  await expect(closeIcon).toBeHidden();
   await expect(menuButton).toBeFocused();
 });
 
