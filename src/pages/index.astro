@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import TagList from '../components/TagList.astro';
 import { getExperience } from '../lib/content/experience';
 import { getFeaturedProjects } from '../lib/content/projects';
 
@@ -180,14 +181,10 @@ const processSteps = [
                 <h3>{project.title}</h3>
                 <p>{project.summary}</p>
                 <p class="project-preview__role">{project.role}</p>
-                <ul
-                  class="tag-list"
-                  aria-label={`${project.title} capabilities`}
-                >
-                  {project.capabilities.map((capability) => (
-                    <li>{capability}</li>
-                  ))}
-                </ul>
+                <TagList
+                  items={project.capabilities}
+                  ariaLabel={`${project.title} capabilities`}
+                />
               </article>
             </li>
           ))}
@@ -254,14 +251,10 @@ const processSteps = [
                   {experience.organisation}
                 </p>
                 <p>{experience.summary}</p>
-                <ul
-                  class="tag-list"
-                  aria-label={`${experience.role} capabilities`}
-                >
-                  {experience.capabilities.map((capability) => (
-                    <li>{capability}</li>
-                  ))}
-                </ul>
+                <TagList
+                  items={experience.capabilities}
+                  ariaLabel={`${experience.role} capabilities`}
+                />
               </article>
             </li>
           ))}
@@ -520,8 +513,7 @@ const processSteps = [
   .project-list,
   .experience-list,
   .strength-list,
-  .process-list,
-  .tag-list {
+  .process-list {
     padding: 0;
     margin: 0;
     list-style: none;
@@ -573,21 +565,9 @@ const processSteps = [
     font-weight: var(--type-label-font-weight);
   }
 
-  .tag-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-2);
+  :global(.project-preview .tag-list),
+  :global(.experience-preview .tag-list) {
     margin-block-start: var(--space-4);
-  }
-
-  .tag-list li {
-    padding: var(--space-1) var(--space-2);
-    border: 1px solid var(--colour-border-subtle);
-    border-radius: var(--radius-1);
-    color: var(--colour-text-secondary);
-    font-family: var(--type-metadata-font-family);
-    font-size: var(--type-metadata-font-size);
-    line-height: var(--type-metadata-line-height);
   }
 
   .strength-list {

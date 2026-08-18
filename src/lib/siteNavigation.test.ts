@@ -6,7 +6,7 @@ import {
 } from './siteNavigation';
 
 describe('site navigation', () => {
-  it('marks only an exact internal route as the current page', () => {
+  it('marks an internal route and its generated child routes as current', () => {
     const projects: NavigationItem = {
       label: 'Projects',
       href: '/projects/',
@@ -16,7 +16,21 @@ describe('site navigation', () => {
     expect(isCurrentPage(projects, '/projects')).toBe(true);
     expect(isCurrentPage(projects, '/projects/')).toBe(true);
     expect(isCurrentPage(projects, '/projects///')).toBe(true);
-    expect(isCurrentPage(projects, '/projects/example/')).toBe(false);
+    expect(isCurrentPage(projects, '/projects/portfolio-foundation/')).toBe(
+      true,
+    );
+    expect(isCurrentPage(projects, '/projects-example/')).toBe(false);
+  });
+
+  it('keeps Home current only for the root route', () => {
+    const home: NavigationItem = {
+      label: 'Home',
+      href: '/',
+      kind: 'internal',
+    };
+
+    expect(isCurrentPage(home, '/')).toBe(true);
+    expect(isCurrentPage(home, '/projects/portfolio-foundation/')).toBe(false);
   });
 
   it('does not mark a home section anchor as the current page route', () => {

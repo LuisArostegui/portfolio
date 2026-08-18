@@ -100,5 +100,5 @@ export function getPersonStructuredData(): PersonStructuredData {
 }
 
 export function serializeStructuredData(data: unknown) {
-  return JSON.stringify(data).replaceAll('<', '\\u003c');
+  return JSON.stringify(data).replaceAll('<', String.raw`\u003c`);
 }

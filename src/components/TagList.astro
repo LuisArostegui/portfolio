@@ -1,0 +1,41 @@
+---
+interface Props {
+  items: readonly string[];
+  ariaLabel: string;
+  quiet?: boolean;
+}
+
+const { items, ariaLabel, quiet = false } = Astro.props;
+---
+
+<ul
+  class:list={['tag-list', quiet && 'tag-list--quiet']}
+  aria-label={ariaLabel}
+>
+  {items.map((item) => <li>{item}</li>)}
+</ul>
+
+<style>
+  .tag-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    padding: 0;
+    margin: 0;
+    list-style: none;
+  }
+
+  .tag-list li {
+    padding: var(--space-1) var(--space-2);
+    border: 1px solid var(--colour-border-subtle);
+    border-radius: var(--radius-1);
+    color: var(--colour-text-secondary);
+    font-family: var(--type-metadata-font-family);
+    font-size: var(--type-metadata-font-size);
+    line-height: var(--type-metadata-line-height);
+  }
+
+  .tag-list--quiet li {
+    background-color: var(--colour-surface-subtle);
+  }
+</style>

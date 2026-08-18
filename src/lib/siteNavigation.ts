@@ -49,5 +49,15 @@ export function isCurrentPage(item: NavigationItem, pathname: string) {
     return false;
   }
 
-  return normalizePathname(item.href) === normalizePathname(pathname);
+  const currentPathname = normalizePathname(pathname);
+  const itemPathname = normalizePathname(item.href);
+
+  if (itemPathname === '/') {
+    return currentPathname === itemPathname;
+  }
+
+  return (
+    currentPathname === itemPathname ||
+    currentPathname.startsWith(`${itemPathname}/`)
+  );
 }
