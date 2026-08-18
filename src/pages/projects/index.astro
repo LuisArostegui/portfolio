@@ -1,5 +1,9 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+
+import { getProjects } from '../../lib/content/projects';
+
+const projects = await getProjects();
 ---
 
 <BaseLayout
@@ -7,5 +11,289 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
   description="Selected portfolio projects and engineering case studies from Luis Arostegui Ruiz."
   pathname="/projects/"
 >
-  <h1>Projects</h1>
+  <section class="projects-hero" aria-labelledby="projects-heading">
+    <p class="eyebrow">Project evidence</p>
+    <h1 id="projects-heading">Projects</h1>
+    <p>
+      Selected public-safe work showing software engineering practice, frontend
+      depth, technical decisions, and maintainable delivery through canonical
+      project entries.
+    </p>
+  </section>
+
+  <section class="project-collection" aria-labelledby="project-list-heading">
+    <div class="section-header">
+      <p class="eyebrow">Collection</p>
+      <h2 id="project-list-heading">Selected project previews</h2>
+    </div>
+
+    {
+      projects.length > 0 ? (
+        <ol class="project-list" aria-label="Project previews">
+          {projects.map((project) => (
+            <li class="project-card">
+              <article>
+                <div class="project-card__main">
+                  <p class="metadata">{project.status} project</p>
+                  <h3>{project.title}</h3>
+                  <p class="project-card__summary">{project.summary}</p>
+                </div>
+
+                <div class="project-card__support">
+                  <dl class="project-facts">
+                    <div>
+                      <dt>Role</dt>
+                      <dd>{project.role}</dd>
+                    </div>
+                    <div>
+                      <dt>Status</dt>
+                      <dd>{project.status}</dd>
+                    </div>
+                  </dl>
+
+                  <div class="metadata-group">
+                    <h4>Capabilities</h4>
+                    <ul
+                      class="tag-list"
+                      aria-label={`${project.title} capabilities`}
+                    >
+                      {project.capabilities.map((capability) => (
+                        <li>{capability}</li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  {project.technologies !== undefined && (
+                    <div class="metadata-group">
+                      <h4>Technologies</h4>
+                      <ul
+                        class="tag-list tag-list--quiet"
+                        aria-label={`${project.title} technologies`}
+                      >
+                        {project.technologies.map((technology) => (
+                          <li>{technology}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+
+                  <a
+                    class="project-card__link"
+                    href={`/projects/${project.id}/`}
+                    aria-label={`View project: ${project.title}`}
+                  >
+                    View project
+                  </a>
+                </div>
+              </article>
+            </li>
+          ))}
+        </ol>
+      ) : (
+        <p class="empty-state">
+          Project entries are unavailable in the public collection.
+        </p>
+      )
+    }
+  </section>
 </BaseLayout>
+
+<style>
+  :global(#main-content) {
+    inline-size: min(
+      100% - (2 * var(--layout-gutter-mobile)),
+      var(--layout-content-wide)
+    );
+  }
+
+  .projects-hero,
+  .project-collection,
+  .project-card {
+    overflow-wrap: anywhere;
+  }
+
+  .projects-hero {
+    max-inline-size: var(--layout-content-readable);
+    padding-block-end: var(--space-7);
+    border-block-end: 1px solid var(--colour-border-subtle);
+  }
+
+  .projects-hero h1 {
+    margin-block: var(--space-3) var(--space-4);
+    font-size: var(--type-heading-1-font-size);
+    line-height: var(--type-heading-1-line-height);
+  }
+
+  .projects-hero p:not(.eyebrow) {
+    margin-block: 0;
+    color: var(--colour-text-secondary);
+    font-size: var(--type-body-large-font-size);
+    line-height: var(--type-body-large-line-height);
+  }
+
+  .project-collection {
+    padding-block-start: var(--space-7);
+  }
+
+  .section-header {
+    max-inline-size: var(--layout-content-readable);
+    margin-block-end: var(--space-5);
+  }
+
+  .section-header h2 {
+    margin-block: var(--space-2) 0;
+  }
+
+  .eyebrow,
+  .metadata {
+    margin-block: 0;
+    color: var(--colour-text-muted);
+    font-family: var(--type-metadata-font-family);
+    font-size: var(--type-metadata-font-size);
+    font-weight: var(--type-metadata-font-weight);
+    line-height: var(--type-metadata-line-height);
+    text-transform: uppercase;
+  }
+
+  .project-list,
+  .tag-list {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+  }
+
+  .project-list {
+    display: grid;
+    gap: var(--space-4);
+  }
+
+  .project-card {
+    border: 1px solid var(--colour-border-subtle);
+    border-radius: var(--radius-1);
+    background-color: var(--colour-surface-default);
+  }
+
+  .project-card article {
+    display: grid;
+    gap: var(--space-5);
+    padding: var(--space-5);
+  }
+
+  .project-card h3 {
+    margin-block: var(--space-2) var(--space-3);
+    font-size: var(--type-heading-3-font-size);
+    line-height: var(--type-heading-3-line-height);
+  }
+
+  .project-card__summary,
+  .empty-state {
+    margin-block: 0;
+    color: var(--colour-text-secondary);
+  }
+
+  .project-card__support {
+    display: grid;
+    gap: var(--space-4);
+    align-content: start;
+  }
+
+  .project-facts {
+    display: grid;
+    gap: var(--space-3);
+    margin: 0;
+  }
+
+  .project-facts div {
+    padding-block-start: var(--space-3);
+    border-block-start: 1px solid var(--colour-border-subtle);
+  }
+
+  dt,
+  .metadata-group h4 {
+    color: var(--colour-text-primary);
+    font-family: var(--type-label-font-family);
+    font-size: var(--type-label-font-size);
+    font-weight: var(--type-label-font-weight);
+    line-height: var(--type-label-line-height);
+  }
+
+  dd {
+    margin: var(--space-1) 0 0;
+    color: var(--colour-text-secondary);
+  }
+
+  .metadata-group h4 {
+    margin-block: 0 var(--space-2);
+  }
+
+  .tag-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+  }
+
+  .tag-list li {
+    padding: var(--space-1) var(--space-2);
+    border: 1px solid var(--colour-border-subtle);
+    border-radius: var(--radius-1);
+    color: var(--colour-text-secondary);
+    font-family: var(--type-metadata-font-family);
+    font-size: var(--type-metadata-font-size);
+    line-height: var(--type-metadata-line-height);
+  }
+
+  .tag-list--quiet li {
+    background-color: var(--colour-surface-subtle);
+  }
+
+  .project-card__link {
+    display: inline-flex;
+    min-block-size: 44px;
+    align-items: center;
+    justify-self: start;
+    padding-block: var(--space-2);
+    color: var(--colour-text-accent);
+    font-family: var(--type-label-font-family);
+    font-size: var(--type-label-font-size);
+    font-weight: var(--type-label-font-weight);
+  }
+
+  .empty-state {
+    max-inline-size: var(--layout-content-readable);
+    padding: var(--space-5);
+    border: 1px solid var(--colour-border-subtle);
+    border-radius: var(--radius-1);
+    background-color: var(--colour-surface-default);
+  }
+
+  @media (min-width: 48rem) {
+    :global(#main-content) {
+      inline-size: min(
+        100% - (2 * var(--layout-gutter-tablet)),
+        var(--layout-content-wide)
+      );
+    }
+
+    .project-card article {
+      grid-template-columns: minmax(0, 1.25fr) minmax(18rem, 0.75fr);
+      align-items: start;
+    }
+  }
+
+  @media (min-width: 70rem) {
+    :global(#main-content) {
+      inline-size: min(
+        100% - (2 * var(--layout-gutter-desktop)),
+        var(--layout-content-wide)
+      );
+    }
+
+    .projects-hero {
+      padding-block-end: var(--space-8);
+    }
+
+    .project-collection {
+      padding-block-start: var(--space-8);
+    }
+  }
+</style>

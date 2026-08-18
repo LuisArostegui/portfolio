@@ -1,0 +1,197 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getProjectById, getProjects } from '../../lib/content/projects';
+import type { RootRelativePath } from '../../lib/siteMetadata';
+
+export async function getStaticPaths() {
+  const projects = await getProjects();
+
+  return projects.map((project) => ({
+    params: { id: project.id },
+  }));
+}
+
+const { id } = Astro.params;
+
+if (id === undefined) {
+  throw new Error('Project detail route requires a project id.');
+}
+
+const projectDocument = await getProjectById(id);
+
+if (projectDocument === undefined) {
+  throw new Error(`Project detail route could not find project "${id}".`);
+}
+
+const project = projectDocument.data;
+const pathname = `/projects/${project.id}/` as RootRelativePath;
+---
+
+<BaseLayout
+  title={project.title}
+  description={project.summary}
+  pathname={pathname}
+>
+  <a class="back-link" href="/projects/">Back to Projects</a>
+
+  <article class="project-detail" aria-labelledby="project-heading">
+    <header class="project-header">
+      <p class="eyebrow">{project.status} project</p>
+      <h1 id="project-heading">{project.title}</h1>
+      <p>{project.summary}</p>
+    </header>
+
+    <section class="project-overview" aria-labelledby="overview-heading">
+      <h2 id="overview-heading">Project overview</h2>
+      <dl class="project-facts">
+        <div>
+          <dt>Role</dt>
+          <dd>{project.role}</dd>
+        </div>
+        <div>
+          <dt>Status</dt>
+          <dd>{project.status}</dd>
+        </div>
+      </dl>
+    </section>
+
+    <section class="project-metadata" aria-labelledby="capabilities-heading">
+      <h2 id="capabilities-heading">Capabilities</h2>
+      <ul class="tag-list" aria-label={`${project.title} capabilities`}>
+        {project.capabilities.map((capability) => <li>{capability}</li>)}
+      </ul>
+    </section>
+
+    {
+      project.technologies !== undefined && (
+        <section
+          class="project-metadata"
+          aria-labelledby="technologies-heading"
+        >
+          <h2 id="technologies-heading">Technologies</h2>
+          <ul
+            class="tag-list tag-list--quiet"
+            aria-label={`${project.title} technologies`}
+          >
+            {project.technologies.map((technology) => (
+              <li>{technology}</li>
+            ))}
+          </ul>
+        </section>
+      )
+    }
+  </article>
+</BaseLayout>
+
+<style>
+  .back-link {
+    display: inline-flex;
+    min-block-size: 44px;
+    align-items: center;
+    margin-block-end: var(--space-6);
+    color: var(--colour-text-accent);
+    font-family: var(--type-label-font-family);
+    font-size: var(--type-label-font-size);
+    font-weight: var(--type-label-font-weight);
+  }
+
+  .project-detail,
+  .project-header,
+  .project-overview,
+  .project-metadata {
+    overflow-wrap: anywhere;
+  }
+
+  .project-detail {
+    display: grid;
+    gap: var(--space-6);
+  }
+
+  .project-header {
+    max-inline-size: var(--layout-content-readable);
+    padding-block-end: var(--space-6);
+    border-block-end: 1px solid var(--colour-border-subtle);
+  }
+
+  .project-header h1 {
+    margin-block: var(--space-3) var(--space-4);
+    font-size: var(--type-heading-1-font-size);
+    line-height: var(--type-heading-1-line-height);
+  }
+
+  .project-header p:not(.eyebrow) {
+    margin-block: 0;
+    color: var(--colour-text-secondary);
+    font-size: var(--type-body-large-font-size);
+    line-height: var(--type-body-large-line-height);
+  }
+
+  .eyebrow {
+    margin-block: 0;
+    color: var(--colour-text-muted);
+    font-family: var(--type-metadata-font-family);
+    font-size: var(--type-metadata-font-size);
+    font-weight: var(--type-metadata-font-weight);
+    line-height: var(--type-metadata-line-height);
+    text-transform: uppercase;
+  }
+
+  .project-overview,
+  .project-metadata {
+    max-inline-size: var(--layout-content-readable);
+  }
+
+  .project-overview h2,
+  .project-metadata h2 {
+    margin-block: 0 var(--space-4);
+    font-size: var(--type-heading-3-font-size);
+    line-height: var(--type-heading-3-line-height);
+  }
+
+  .project-facts {
+    display: grid;
+    gap: var(--space-3);
+    margin: 0;
+  }
+
+  .project-facts div {
+    padding-block-start: var(--space-3);
+    border-block-start: 1px solid var(--colour-border-subtle);
+  }
+
+  dt {
+    color: var(--colour-text-primary);
+    font-family: var(--type-label-font-family);
+    font-size: var(--type-label-font-size);
+    font-weight: var(--type-label-font-weight);
+    line-height: var(--type-label-line-height);
+  }
+
+  dd {
+    margin: var(--space-1) 0 0;
+    color: var(--colour-text-secondary);
+  }
+
+  .tag-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    padding: 0;
+    margin: 0;
+    list-style: none;
+  }
+
+  .tag-list li {
+    padding: var(--space-1) var(--space-2);
+    border: 1px solid var(--colour-border-subtle);
+    border-radius: var(--radius-1);
+    color: var(--colour-text-secondary);
+    font-family: var(--type-metadata-font-family);
+    font-size: var(--type-metadata-font-size);
+    line-height: var(--type-metadata-line-height);
+  }
+
+  .tag-list--quiet li {
+    background-color: var(--colour-surface-subtle);
+  }
+</style>
