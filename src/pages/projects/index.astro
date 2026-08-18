@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import TagList from '../../components/TagList.astro';
 
 import { getProjects } from '../../lib/content/projects';
 
@@ -53,27 +54,20 @@ const projects = await getProjects();
 
                   <div class="metadata-group">
                     <h4>Capabilities</h4>
-                    <ul
-                      class="tag-list"
-                      aria-label={`${project.title} capabilities`}
-                    >
-                      {project.capabilities.map((capability) => (
-                        <li>{capability}</li>
-                      ))}
-                    </ul>
+                    <TagList
+                      items={project.capabilities}
+                      ariaLabel={`${project.title} capabilities`}
+                    />
                   </div>
 
                   {project.technologies !== undefined && (
                     <div class="metadata-group">
                       <h4>Technologies</h4>
-                      <ul
-                        class="tag-list tag-list--quiet"
-                        aria-label={`${project.title} technologies`}
-                      >
-                        {project.technologies.map((technology) => (
-                          <li>{technology}</li>
-                        ))}
-                      </ul>
+                      <TagList
+                        items={project.technologies}
+                        quiet
+                        ariaLabel={`${project.title} technologies`}
+                      />
                     </div>
                   )}
 
@@ -155,8 +149,7 @@ const projects = await getProjects();
     text-transform: uppercase;
   }
 
-  .project-list,
-  .tag-list {
+  .project-list {
     padding: 0;
     margin: 0;
     list-style: none;
@@ -224,26 +217,6 @@ const projects = await getProjects();
 
   .metadata-group h4 {
     margin-block: 0 var(--space-2);
-  }
-
-  .tag-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-2);
-  }
-
-  .tag-list li {
-    padding: var(--space-1) var(--space-2);
-    border: 1px solid var(--colour-border-subtle);
-    border-radius: var(--radius-1);
-    color: var(--colour-text-secondary);
-    font-family: var(--type-metadata-font-family);
-    font-size: var(--type-metadata-font-size);
-    line-height: var(--type-metadata-line-height);
-  }
-
-  .tag-list--quiet li {
-    background-color: var(--colour-surface-subtle);
   }
 
   .project-card__link {

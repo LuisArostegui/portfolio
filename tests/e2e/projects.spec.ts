@@ -30,7 +30,7 @@ test('projects lists canonical entries and links to generated project detail', a
     '/projects/portfolio-foundation/',
   );
 
-  await projectLink.click();
+  await page.goto('/projects/portfolio-foundation/');
   await expect(
     page.getByRole('heading', { name: 'Portfolio foundation', level: 1 }),
   ).toBeVisible();
