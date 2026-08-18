@@ -11,6 +11,8 @@ capabilities:
 technologies:
   - Astro
   - TypeScript
+publicLinks:
+  - https://github.com/LuisArostegui/portfolio
 ---
 
 > Representative validation content for the public content system. This is not final portfolio copy.
