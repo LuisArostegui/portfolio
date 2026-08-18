@@ -56,6 +56,6 @@ export const siteMetadata = {
       'Astro',
       'React',
     ],
-    profileUrls: [],
+    profileUrls: ['https://github.com/LuisArostegui'],
   },
 } as const satisfies SiteMetadata;

@@ -24,6 +24,7 @@ Apply the approved Portfolio architecture without duplicating its ADRs in prompt
 - If an interaction is possible with semantic HTML and CSS, keep it static.
 - If a requirement is absent from the issue or governing record, do not invent it; report the gap.
 - If a proposed dependency, data source, or runtime feature is outside the accepted stack, stop and request a decision.
+- For route-specific page sections, keep the first implementation in the owning route when there is no real reuse and the file remains reviewable. Extract later to focused `.astro` components under `src/components/<route-or-feature>/` only when a section gains a clear responsibility, repeated use, independent review value, or the route becomes difficult to navigate. Keep route files responsible for data loading and page composition; pass typed props to extracted presentation sections.
 
 ## References
 

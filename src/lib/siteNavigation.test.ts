@@ -19,6 +19,16 @@ describe('site navigation', () => {
     expect(isCurrentPage(projects, '/projects/example/')).toBe(false);
   });
 
+  it('does not mark a home section anchor as the current page route', () => {
+    const contact: NavigationItem = {
+      label: 'Contact',
+      href: '/#contact',
+      kind: 'internal',
+    };
+
+    expect(isCurrentPage(contact, '/')).toBe(false);
+  });
+
   it('derives safe external-link attributes from the item kind', () => {
     const item = {
       label: 'GitHub',

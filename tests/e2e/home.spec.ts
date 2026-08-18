@@ -31,7 +31,48 @@ test('home renders the shared semantic shell and has no automatically detectable
   ).toHaveAttribute('aria-current', 'page');
   await expect(page.getByRole('contentinfo')).toBeVisible();
   await expect(
-    page.getByRole('heading', { name: 'Portfolio project foundation' }),
+    page.getByRole('heading', {
+      name: 'Software Engineer with strong frontend expertise',
+      level: 1,
+    }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole('heading', { name: 'Professional summary', level: 2 }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole('heading', { name: 'Selected projects', level: 2 }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole('heading', { name: 'Engineering strengths', level: 2 }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole('heading', { name: 'Selected experience', level: 2 }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole('heading', { name: 'Engineering process', level: 2 }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole('heading', { name: 'Contact', level: 2 }),
+  ).toBeVisible();
+
+  await expect(
+    page.getByRole('link', { name: 'View selected projects' }),
+  ).toHaveAttribute('href', '#selected-projects');
+  await expect(
+    page.getByRole('link', { name: 'View experience' }),
+  ).toHaveAttribute('href', '/experience/');
+  await expect(
+    page.getByRole('link', { name: 'GitHub profile' }),
+  ).toHaveAttribute('href', 'https://github.com/LuisArostegui');
+  await expect(
+    page.getByRole('link', { name: 'GitHub repository' }),
+  ).toHaveAttribute('href', 'https://github.com/LuisArostegui/portfolio');
+  await expect(
+    page.getByRole('heading', { name: 'Portfolio foundation', level: 3 }),
+  ).toBeVisible();
+  await expect(page.getByText('Repository maintainer')).toBeVisible();
+  await expect(
+    page.getByRole('heading', { name: 'Example frontend role', level: 3 }),
   ).toBeVisible();
 
   const accessibilityScanResults = await new AxeBuilder({ page }).analyze();
@@ -101,7 +142,7 @@ test('top-level routes expose SEO metadata in generated HTML', async ({
       path: '/',
       title: 'Luis Arostegui Ruiz | Software Engineer',
       description:
-        'Portfolio for Luis Arostegui Ruiz, a software engineer focused on reliable, accessible, and maintainable web products.',
+        'Software engineer with strong frontend expertise in React, TypeScript, accessibility, testing, and maintainable web products.',
       canonical:
         'https://luis-arostegui-portfolio.luisarosteguiruizit.workers.dev',
     },
@@ -188,7 +229,9 @@ test('home exposes public-safe Person structured data', async ({ page }) => {
     jobTitle: 'Software Engineer',
     url: 'https://luis-arostegui-portfolio.luisarosteguiruizit.workers.dev',
   });
-  expect(JSON.parse(jsonLd ?? '')).not.toHaveProperty('sameAs');
+  expect(JSON.parse(jsonLd ?? '')).toMatchObject({
+    sameAs: ['https://github.com/LuisArostegui'],
+  });
 });
 
 test('primary navigation remains visible without JavaScript', async ({
@@ -212,7 +255,7 @@ test('primary navigation remains visible without JavaScript', async ({
   await expect(
     page
       .getByRole('navigation', { name: 'Primary navigation' })
-      .getByRole('link', { name: 'Experience', exact: true }),
+      .getByRole('link', { name: 'Contact', exact: true }),
   ).toBeVisible();
 
   await context.close();
