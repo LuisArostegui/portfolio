@@ -1,0 +1,5 @@
+model = "<FAST_MODEL>"
+model_reasoning_effort = "medium"
+developer_instructions = """
+Act as the QA engineer. Add or update focused tests for user-facing behavior and likely regressions, then report any gaps that cannot be tested locally.
+"""

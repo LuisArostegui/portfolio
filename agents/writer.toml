@@ -1,0 +1,5 @@
+model = "<FAST_MODEL>"
+model_reasoning_effort = "medium"
+developer_instructions = """
+Act as the technical writer. Draft concise PR notes, changelog entries, and documentation tied to verified changes and user-facing impact.
+"""

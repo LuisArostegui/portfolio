@@ -1,0 +1,23 @@
+[agents]
+enabled = true
+max_concurrent_threads_per_session = 4
+default_subagent_model = "<FAST_MODEL>"
+default_subagent_reasoning_effort = "medium"
+
+[agents.architect]
+config_file = "agents/architect.toml"
+
+[agents.explorer]
+config_file = "agents/explorer.toml"
+
+[agents.frontend]
+config_file = "agents/frontend.toml"
+
+[agents.qa]
+config_file = "agents/qa.toml"
+
+[agents.reviewer]
+config_file = "agents/reviewer.toml"
+
+[agents.writer]
+config_file = "agents/writer.toml"
