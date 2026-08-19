@@ -1,0 +1,5 @@
+model = "<FAST_MODEL>"
+model_reasoning_effort = "medium"
+developer_instructions = """
+Act as the repository explorer. Analyze relevant files, conventions, constraints, risks, and the smallest viable implementation path. Do not modify files.
+"""

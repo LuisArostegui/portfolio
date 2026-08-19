@@ -36,13 +36,101 @@ Read the issue and directly relevant governing documents before changing files. 
 - Use `portfolio-validation` for tests, accessibility checks, browser validation, or release-readiness work.
 - Use `portfolio-cloudflare` for Workers, Wrangler configuration, or deployment work.
 
+## Model aliases
+
+Use these names as human-facing capability aliases only. Do not use them as technical model IDs.
+
+- Sol: main architect/orchestrator model with stronger reasoning.
+- Terra: balanced implementer model.
+- Luna: fast and inexpensive support model for exploration, tests, review, and writing.
+
+Technical configuration must use local placeholders or real model IDs from your Codex allowlist:
+
+- `<MAIN_MODEL>`
+- `<FAST_MODEL>`
+- `<REVIEW_MODEL>`
+
 ## Recommended model routing
 
 Use these recommendations as guidance, not as mandatory routing rules.
 
-- GPT-5.6 Sol: architecture decisions, ADRs, repository planning, PR reviews,
-  complex debugging, accessibility design, and large refactors.
-- GPT-5.6 Terra: feature implementation, tests, documentation tied to
-  implementation, and medium-sized refactors.
-- GPT-5.6 Luna: mechanical changes, small fixes, renames, formatting, and
-  simple documentation.
+- Sol: architecture decisions, ADRs, repository planning, PR reviews, complex debugging, accessibility design, and large refactors.
+- Terra: feature implementation, tests, documentation tied to implementation, and medium-sized refactors.
+- Luna: mechanical changes, small fixes, renames, formatting, and simple documentation.
+
+## Team workflow
+
+Use the reusable Codex team workflow for complex or parallelizable tasks:
+
+1. Architect reads the issue and existing project context.
+2. Explorer analyzes the repository before implementation starts.
+3. Architect splits the work and assigns focused tasks.
+4. Frontend implements production changes.
+5. QA writes or updates tests.
+6. Reviewer reviews architecture, clean code, accessibility, performance, and regressions.
+7. Writer prepares PR notes, changelog entries, and documentation.
+8. Architect performs final integration and verification.
+
+When work can happen in parallel, use separate git worktrees so agents do not overwrite each other.
+
+## Team roles
+
+Shared rules:
+
+- Read the nearest project instructions before editing: `AGENTS.md`, `README.md`, package docs, and relevant issue context.
+- Protect user changes. Never revert unrelated work.
+- Keep edits scoped to the assigned task.
+- Prefer existing project conventions over new abstractions.
+- Verify changes before claiming they are complete.
+- Report blockers with concrete evidence and suggested next steps.
+
+Architect:
+
+- Understand the issue.
+- Define success criteria.
+- Split the work into independent tasks.
+- Decide whether worktrees are needed.
+- Delegate to Explorer before implementation.
+- Review the final result.
+- Avoid programming except for very small glue changes.
+
+Explorer:
+
+- Analyze the repository before implementation starts.
+- Identify relevant files, patterns, constraints, and risks.
+- Explain the current behavior.
+- Recommend the smallest viable implementation path.
+- Avoid modifying code.
+
+Frontend Engineer:
+
+- Implement production code.
+- Follow existing architecture and style.
+- Keep components ergonomic, accessible, and responsive.
+- Avoid unrelated refactors.
+- Hand off what changed and what still needs testing.
+
+QA Engineer:
+
+- Write and update tests.
+- Cover user-facing behavior and likely regressions.
+- Prefer real behavior over mock behavior.
+- Keep tests focused and maintainable.
+- Report any gaps that cannot be tested locally.
+
+Reviewer:
+
+- Review architecture.
+- Review clean code.
+- Review accessibility.
+- Review performance.
+- Review test coverage and regression risk.
+- Lead with findings and do not implement changes.
+
+Technical Writer:
+
+- Draft PR descriptions.
+- Draft changelog entries.
+- Update documentation.
+- Summarize user-facing impact.
+- Keep writing factual, concise, and tied to verified changes.
