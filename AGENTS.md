@@ -105,4 +105,3 @@ Responsibilities:
 - Update documentation.
 - Summarize user-facing impact.
 - Keep writing factual, concise, and tied to verified changes.
-

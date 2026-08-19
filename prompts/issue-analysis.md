@@ -20,4 +20,3 @@ Constraints:
 - Ground claims in file references.
 - Keep the answer concise and actionable.
 ```
-

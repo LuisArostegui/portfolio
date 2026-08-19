@@ -22,4 +22,3 @@ Rules:
 - Protect user changes.
 - Run relevant verification and report results.
 ```
-

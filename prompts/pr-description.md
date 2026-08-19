@@ -18,4 +18,3 @@ Inputs:
 
 Keep it concise and factual. Do not invent changes.
 ```
-
