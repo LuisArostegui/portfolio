@@ -71,6 +71,18 @@ test('project detail renders canonical narrative, evidence, and continuation', a
   await expect(
     page.getByRole('link', { name: 'GitHub repository' }),
   ).toHaveAttribute('href', 'https://github.com/LuisArostegui/portfolio');
+  await expect(
+    page.getByRole('link', { name: 'GitHub issue' }),
+  ).toHaveAttribute(
+    'href',
+    'https://github.com/LuisArostegui/portfolio/issues/65',
+  );
+  await expect(
+    page.getByRole('link', { name: 'GitHub documentation' }),
+  ).toHaveAttribute(
+    'href',
+    'https://github.com/LuisArostegui/portfolio/blob/main/docs/design/projects-design.md',
+  );
 
   await expect(
     page.getByRole('navigation', { name: 'Project continuation' }),
@@ -117,6 +129,13 @@ test('project detail does not introduce page-level horizontal scrolling on mobil
 
   await page.goto('/projects/portfolio-foundation/');
 
+  await expect(
+    page.getByRole('heading', { name: 'Technical evidence' }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole('img', { name: 'Portfolio social preview image' }),
+  ).toBeVisible();
+
   const hasPageLevelHorizontalScroll = await page.evaluate(
     () =>
       document.documentElement.scrollWidth >
@@ -124,6 +143,39 @@ test('project detail does not introduce page-level horizontal scrolling on mobil
   );
 
   expect(hasPageLevelHorizontalScroll).toBe(false);
+
+  const technicalContentLayout = await page.evaluate(() => {
+    const codeBlock = document.querySelector('.project-prose pre');
+    const table = document.querySelector('.project-prose table');
+    const image = document.querySelector('.project-prose img');
+
+    if (
+      codeBlock === null ||
+      table === null ||
+      image === null ||
+      codeBlock.parentElement === null ||
+      table.parentElement === null ||
+      image.parentElement === null
+    ) {
+      throw new Error('Expected project technical content was not rendered.');
+    }
+
+    return {
+      codeBlockLocallyScrolls:
+        codeBlock.scrollWidth > codeBlock.clientWidth &&
+        codeBlock.clientWidth <= document.documentElement.clientWidth,
+      tableFitsPage: table.scrollWidth <= document.documentElement.clientWidth,
+      imageFitsContainer:
+        image.getBoundingClientRect().width <=
+        image.parentElement.getBoundingClientRect().width,
+    };
+  });
+
+  expect(technicalContentLayout).toEqual({
+    codeBlockLocallyScrolls: true,
+    tableFitsPage: true,
+    imageFitsContainer: true,
+  });
 });
 
 test('projects and project detail have no automatically detectable accessibility violations', async ({

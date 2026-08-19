@@ -31,9 +31,31 @@ const pathname = `/projects/${project.id}/` as RootRelativePath;
 function formatPublicLinkLabel(link: string): string {
   const url = new URL(link);
   const hostname = url.hostname.replace(/^www\./, '');
+  const [owner, repo, section, ...pathParts] = url.pathname
+    .split('/')
+    .filter(Boolean);
 
   if (hostname === 'github.com') {
-    return 'GitHub repository';
+    if (owner !== undefined && repo !== undefined && section === undefined) {
+      return 'GitHub repository';
+    }
+
+    if (section === 'issues') {
+      return 'GitHub issue';
+    }
+
+    if (section === 'pull') {
+      return 'GitHub pull request';
+    }
+
+    if (
+      (section === 'blob' || section === 'tree') &&
+      pathParts.includes('docs')
+    ) {
+      return 'GitHub documentation';
+    }
+
+    return 'GitHub evidence';
   }
 
   return `Public evidence on ${hostname}`;
@@ -297,9 +319,6 @@ function formatPublicLinkLabel(link: string): string {
   }
 
   .project-prose :global(table) {
-    display: block;
-    max-inline-size: 100%;
-    overflow-x: auto;
     border-collapse: collapse;
   }
 
@@ -307,6 +326,7 @@ function formatPublicLinkLabel(link: string): string {
   .project-prose :global(td) {
     padding: var(--space-2) var(--space-3);
     border: 1px solid var(--colour-border-subtle);
+    overflow-wrap: anywhere;
     text-align: start;
   }
 
