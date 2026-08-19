@@ -1,5 +1,21 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import TagList from '../../components/TagList.astro';
+import { getExperienceDocuments } from '../../lib/content/experience';
+
+const experience = await getExperienceDocuments();
+const currentRoles = experience.filter(({ data }) => data.isCurrent);
+const previousRoles = experience.filter(({ data }) => !data.isCurrent);
+
+const monthFormatter = new Intl.DateTimeFormat('en', {
+  month: 'long',
+  year: 'numeric',
+  timeZone: 'UTC',
+});
+
+function formatPeriod(period: string): string {
+  return monthFormatter.format(new Date(`${period}-01T00:00:00Z`));
+}
 ---
 
 <BaseLayout
@@ -7,5 +23,418 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
   description="Professional experience, engineering judgement, and delivery capabilities from Luis Arostegui Ruiz."
   pathname="/experience/"
 >
-  <h1>Experience</h1>
+  <section class="experience-hero" aria-labelledby="experience-heading">
+    <p class="eyebrow">Professional trajectory</p>
+    <h1 id="experience-heading">Experience</h1>
+    <p>
+      Frontend-focused engineering experience, presented through public-safe
+      context, responsibilities, and evidence-oriented contributions rather than
+      a decorative chronology.
+    </p>
+  </section>
+
+  <section class="professional-context" aria-labelledby="context-heading">
+    <div class="section-header">
+      <p class="eyebrow">Positioning</p>
+      <h2 id="context-heading">Professional context</h2>
+    </div>
+    <p>
+      My primary focus is frontend engineering with React and TypeScript,
+      supported by accessibility, testing, maintainable architecture, and
+      collaboration across the wider software-delivery context.
+    </p>
+  </section>
+
+  {
+    currentRoles.length > 0 && (
+      <section
+        class="experience-section"
+        aria-labelledby="current-roles-heading"
+      >
+        <div class="section-header">
+          <p class="eyebrow">Active work</p>
+          <h2 id="current-roles-heading">Current role</h2>
+        </div>
+        <ol class="role-list" aria-label="Current professional roles">
+          {currentRoles.map((role) => (
+            <li>
+              <article
+                class="role-entry"
+                aria-labelledby={`${role.data.id}-heading`}
+              >
+                <div class="role-entry__heading">
+                  <p class="metadata">Current role</p>
+                  <h3 id={`${role.data.id}-heading`}>{role.data.role}</h3>
+                  <p class="role-entry__organisation">
+                    {role.data.organisation}
+                  </p>
+                  <p class="role-entry__period">
+                    <time datetime={`${role.data.startPeriod}-01`}>
+                      {formatPeriod(role.data.startPeriod)}
+                    </time>{' '}
+                    - Present
+                  </p>
+                </div>
+                <div class="role-entry__content">
+                  <p class="role-entry__summary">{role.data.summary}</p>
+                  <div class="prose">
+                    <role.Content />
+                  </div>
+                  <div class="capabilities">
+                    <h4>Capabilities demonstrated</h4>
+                    <TagList
+                      items={role.data.capabilities}
+                      ariaLabel={`${role.data.role} capabilities`}
+                    />
+                  </div>
+                </div>
+              </article>
+            </li>
+          ))}
+        </ol>
+      </section>
+    )
+  }
+
+  {
+    previousRoles.length > 0 && (
+      <section
+        class="experience-section"
+        aria-labelledby="previous-roles-heading"
+      >
+        <div class="section-header">
+          <p class="eyebrow">Professional history</p>
+          <h2 id="previous-roles-heading">Previous roles</h2>
+        </div>
+        <ol class="role-list" aria-label="Previous professional roles">
+          {previousRoles.map((role) => (
+            <li>
+              <article
+                class="role-entry"
+                aria-labelledby={`${role.data.id}-heading`}
+              >
+                <div class="role-entry__heading">
+                  <p class="metadata">Previous role</p>
+                  <h3 id={`${role.data.id}-heading`}>{role.data.role}</h3>
+                  <p class="role-entry__organisation">
+                    {role.data.organisation}
+                  </p>
+                  <p class="role-entry__period">
+                    <time datetime={`${role.data.startPeriod}-01`}>
+                      {formatPeriod(role.data.startPeriod)}
+                    </time>{' '}
+                    -{' '}
+                    {role.data.endPeriod !== null && (
+                      <time datetime={`${role.data.endPeriod}-01`}>
+                        {formatPeriod(role.data.endPeriod)}
+                      </time>
+                    )}
+                  </p>
+                </div>
+                <div class="role-entry__content">
+                  <p class="role-entry__summary">{role.data.summary}</p>
+                  <div class="prose">
+                    <role.Content />
+                  </div>
+                  <div class="capabilities">
+                    <h4>Capabilities demonstrated</h4>
+                    <TagList
+                      items={role.data.capabilities}
+                      ariaLabel={`${role.data.role} capabilities`}
+                    />
+                  </div>
+                </div>
+              </article>
+            </li>
+          ))}
+        </ol>
+      </section>
+    )
+  }
+
+  <section class="contribution-focus" aria-labelledby="contribution-heading">
+    <div class="section-header">
+      <p class="eyebrow">How to read this page</p>
+      <h2 id="contribution-heading">Contribution focus</h2>
+    </div>
+    <p>
+      Each entry separates ongoing responsibilities from selected contributions.
+      That keeps the useful engineering context visible while allowing the
+      amount of canonical Markdown to match the public evidence available.
+    </p>
+  </section>
+
+  <section class="continuation" aria-labelledby="continuation-heading">
+    <div>
+      <p class="eyebrow">Next steps</p>
+      <h2 id="continuation-heading">Continue exploring</h2>
+      <p>
+        Review project evidence, inspect the public engineering record, or get
+        in touch for a professional conversation.
+      </p>
+    </div>
+    <div class="action-group" aria-label="Experience continuation paths">
+      <a class="action action--primary" href="/projects/">View projects</a>
+      <a class="action action--secondary" href="/#contact">Contact</a>
+      <a
+        class="action action--secondary"
+        href="https://github.com/LuisArostegui"
+        rel="noreferrer"
+        target="_blank"
+      >
+        GitHub profile
+      </a>
+    </div>
+  </section>
 </BaseLayout>
+
+<style>
+  :global(#main-content) {
+    inline-size: min(
+      100% - (2 * var(--layout-gutter-mobile)),
+      var(--layout-content-wide)
+    );
+  }
+
+  .experience-hero,
+  .professional-context,
+  .experience-section,
+  .contribution-focus,
+  .continuation,
+  .role-entry {
+    overflow-wrap: anywhere;
+  }
+
+  .experience-hero {
+    max-inline-size: var(--layout-content-readable);
+    padding-block-end: var(--space-7);
+    border-block-end: 1px solid var(--colour-border-subtle);
+  }
+
+  .experience-hero h1 {
+    margin-block: var(--space-3) var(--space-4);
+    font-size: var(--type-heading-1-font-size);
+    line-height: var(--type-heading-1-line-height);
+  }
+
+  .experience-hero p:not(.eyebrow),
+  .professional-context > p,
+  .contribution-focus > p,
+  .continuation p:not(.eyebrow),
+  .role-entry__summary {
+    margin-block: 0;
+    color: var(--colour-text-secondary);
+  }
+
+  .experience-hero p:not(.eyebrow),
+  .professional-context > p {
+    font-size: var(--type-body-large-font-size);
+    line-height: var(--type-body-large-line-height);
+  }
+
+  .professional-context,
+  .experience-section,
+  .contribution-focus,
+  .continuation {
+    padding-block: var(--space-7);
+    border-block-end: 1px solid var(--colour-border-subtle);
+  }
+
+  .professional-context > p,
+  .contribution-focus > p {
+    max-inline-size: var(--layout-content-readable);
+  }
+
+  .section-header {
+    max-inline-size: var(--layout-content-readable);
+    margin-block-end: var(--space-5);
+  }
+
+  .section-header h2,
+  .continuation h2 {
+    margin-block: var(--space-2) 0;
+  }
+
+  .eyebrow,
+  .metadata,
+  .role-entry__period {
+    margin-block: 0;
+    color: var(--colour-text-muted);
+    font-family: var(--type-metadata-font-family);
+    font-size: var(--type-metadata-font-size);
+    font-weight: var(--type-metadata-font-weight);
+    line-height: var(--type-metadata-line-height);
+    text-transform: uppercase;
+  }
+
+  .role-list {
+    display: grid;
+    gap: var(--space-4);
+    padding: 0;
+    margin: 0;
+    list-style: none;
+  }
+
+  .role-entry {
+    display: grid;
+    gap: var(--space-5);
+    padding: var(--space-5);
+    border: 1px solid var(--colour-border-subtle);
+    border-radius: var(--radius-1);
+    background-color: var(--colour-surface-default);
+  }
+
+  .role-entry h3 {
+    margin-block: var(--space-2) var(--space-1);
+    font-size: var(--type-heading-3-font-size);
+    line-height: var(--type-heading-3-line-height);
+  }
+
+  .role-entry__organisation {
+    margin-block: 0 var(--space-2);
+    color: var(--colour-text-secondary);
+    font-family: var(--type-label-font-family);
+    font-size: var(--type-label-font-size);
+    font-weight: var(--type-label-font-weight);
+    line-height: var(--type-label-line-height);
+  }
+
+  .role-entry__content {
+    display: grid;
+    gap: var(--space-4);
+    min-inline-size: 0;
+  }
+
+  .prose {
+    max-inline-size: var(--layout-content-readable);
+    color: var(--colour-text-secondary);
+  }
+
+  .prose :global(p),
+  .prose :global(ul),
+  .prose :global(blockquote) {
+    margin-block: 0;
+  }
+
+  .prose :global(* + *) {
+    margin-block-start: var(--space-3);
+  }
+
+  .prose :global(h3) {
+    color: var(--colour-text-primary);
+    font-family: var(--type-label-font-family);
+    font-size: var(--type-label-font-size);
+    font-weight: var(--type-label-font-weight);
+    line-height: var(--type-label-line-height);
+  }
+
+  .prose :global(ul) {
+    padding-inline-start: var(--space-5);
+  }
+
+  .prose :global(li + li) {
+    margin-block-start: var(--space-2);
+  }
+
+  .prose :global(blockquote) {
+    padding-inline-start: var(--space-3);
+    border-inline-start: 2px solid var(--colour-border-accent);
+    color: var(--colour-text-muted);
+  }
+
+  .capabilities h4 {
+    margin-block: 0 var(--space-2);
+    font-family: var(--type-label-font-family);
+    font-size: var(--type-label-font-size);
+    font-weight: var(--type-label-font-weight);
+    line-height: var(--type-label-line-height);
+  }
+
+  .continuation {
+    display: grid;
+    gap: var(--space-5);
+    border-block-end: 0;
+  }
+
+  .continuation > div:first-child {
+    max-inline-size: var(--layout-content-readable);
+  }
+
+  .action-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    align-content: start;
+  }
+
+  .action {
+    display: inline-flex;
+    min-block-size: 44px;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-3) var(--space-4);
+    border: 1px solid var(--colour-border-strong);
+    border-radius: var(--radius-1);
+    font-family: var(--type-label-font-family);
+    font-size: var(--type-label-font-size);
+    font-weight: var(--type-label-font-weight);
+    text-align: center;
+    text-decoration: none;
+  }
+
+  .action--primary {
+    border-color: var(--colour-accent-default);
+    background-color: var(--colour-accent-default);
+    color: var(--colour-text-on-accent);
+  }
+
+  .action--primary:hover,
+  .action--primary:active {
+    background-color: var(--colour-accent-hover);
+    color: var(--colour-text-on-accent);
+  }
+
+  .action--secondary {
+    color: var(--colour-text-primary);
+  }
+
+  .action--secondary:hover {
+    border-color: var(--colour-border-accent);
+    color: var(--colour-text-primary);
+  }
+
+  @media (min-width: 48rem) {
+    :global(#main-content) {
+      inline-size: min(
+        100% - (2 * var(--layout-gutter-tablet)),
+        var(--layout-content-wide)
+      );
+    }
+
+    .role-entry {
+      grid-template-columns: minmax(12rem, 0.55fr) minmax(0, 1fr);
+    }
+
+    .continuation {
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: end;
+    }
+  }
+
+  @media (min-width: 70rem) {
+    :global(#main-content) {
+      inline-size: min(
+        100% - (2 * var(--layout-gutter-desktop)),
+        var(--layout-content-wide)
+      );
+    }
+
+    .experience-hero,
+    .professional-context,
+    .experience-section,
+    .contribution-focus,
+    .continuation {
+      padding-block: var(--space-8);
+    }
+  }
+</style>

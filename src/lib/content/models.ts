@@ -40,3 +40,8 @@ export interface ExperiencePreview {
   isCurrent: boolean;
   capabilities: string[];
 }
+
+export interface ExperienceDocument {
+  data: ExperiencePreview;
+  Content: RenderResult['Content'];
+}
