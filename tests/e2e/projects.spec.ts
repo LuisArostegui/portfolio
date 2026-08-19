@@ -39,12 +39,157 @@ test('projects lists canonical entries and links to generated project detail', a
   ).toHaveAttribute('href', '/projects/');
 });
 
-test('projects has no automatically detectable accessibility violations', async ({
+test('project detail renders canonical narrative, evidence, and continuation', async ({
+  page,
+}) => {
+  await page.goto('/projects/portfolio-foundation/');
+
+  await expect(page.getByRole('heading', { level: 1 })).toHaveCount(1);
+  await expect(
+    page.getByRole('heading', { name: 'Portfolio foundation', level: 1 }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole('heading', { name: 'Context', level: 2 }),
+  ).toBeVisible();
+  await expect(
+    page.getByText(
+      'The portfolio needs one canonical, reviewable source for project summaries and future case-study prose.',
+    ),
+  ).toBeVisible();
+  await expect(
+    page.getByRole('heading', { name: 'Decisions', level: 2 }),
+  ).toBeVisible();
+  await expect(
+    page.getByText(
+      'Use Markdown for narrative content, concise frontmatter for structured metadata, and project-owned models for presentation-facing queries.',
+    ),
+  ).toBeVisible();
+
+  await expect(
+    page.getByRole('heading', { name: 'Public evidence', level: 2 }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole('link', { name: 'GitHub repository' }),
+  ).toHaveAttribute('href', 'https://github.com/LuisArostegui/portfolio');
+  await expect(
+    page.getByRole('link', { name: 'GitHub issue' }),
+  ).toHaveAttribute(
+    'href',
+    'https://github.com/LuisArostegui/portfolio/issues/65',
+  );
+  await expect(
+    page.getByRole('link', { name: 'GitHub documentation' }),
+  ).toHaveAttribute(
+    'href',
+    'https://github.com/LuisArostegui/portfolio/blob/main/docs/design/projects-design.md',
+  );
+
+  await expect(
+    page.getByRole('navigation', { name: 'Project continuation' }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole('link', { name: 'All projects' }),
+  ).toHaveAttribute('href', '/projects/');
+});
+
+test('concise project detail omits unavailable optional sections cleanly', async ({
+  page,
+}) => {
+  await page.goto('/projects/content-model-example/');
+
+  await expect(
+    page.getByRole('heading', { name: 'Content model example', level: 1 }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole('heading', { name: 'Context', level: 2 }),
+  ).toBeVisible();
+  await expect(
+    page.getByText(
+      'Future pages need stable project models without depending directly on Astro collection entries.',
+    ),
+  ).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Technologies' })).toHaveCount(
+    0,
+  );
+  await expect(
+    page.getByRole('heading', { name: 'Public evidence' }),
+  ).toHaveCount(0);
+  await expect(
+    page.getByRole('link', { name: 'GitHub repository' }),
+  ).toHaveCount(0);
+});
+
+test('project detail does not introduce page-level horizontal scrolling on mobile', async ({
+  page,
+}, testInfo) => {
+  test.skip(
+    testInfo.project.name !== 'mobile-chromium',
+    'Mobile-only responsive check',
+  );
+
+  await page.goto('/projects/portfolio-foundation/');
+
+  await expect(
+    page.getByRole('heading', { name: 'Technical evidence' }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole('img', { name: 'Portfolio social preview image' }),
+  ).toBeVisible();
+
+  const hasPageLevelHorizontalScroll = await page.evaluate(
+    () =>
+      document.documentElement.scrollWidth >
+      document.documentElement.clientWidth,
+  );
+
+  expect(hasPageLevelHorizontalScroll).toBe(false);
+
+  const technicalContentLayout = await page.evaluate(() => {
+    const codeBlock = document.querySelector('.project-prose pre');
+    const table = document.querySelector('.project-prose table');
+    const image = document.querySelector('.project-prose img');
+
+    if (
+      codeBlock === null ||
+      table === null ||
+      image === null ||
+      codeBlock.parentElement === null ||
+      table.parentElement === null ||
+      image.parentElement === null
+    ) {
+      throw new Error('Expected project technical content was not rendered.');
+    }
+
+    return {
+      codeBlockLocallyScrolls:
+        codeBlock.scrollWidth > codeBlock.clientWidth &&
+        codeBlock.clientWidth <= document.documentElement.clientWidth,
+      tableFitsPage: table.scrollWidth <= document.documentElement.clientWidth,
+      imageFitsContainer:
+        image.getBoundingClientRect().width <=
+        image.parentElement.getBoundingClientRect().width,
+    };
+  });
+
+  expect(technicalContentLayout).toEqual({
+    codeBlockLocallyScrolls: true,
+    tableFitsPage: true,
+    imageFitsContainer: true,
+  });
+});
+
+test('projects and project detail have no automatically detectable accessibility violations', async ({
   page,
 }) => {
   await page.goto('/projects/');
 
-  const accessibilityScanResults = await new AxeBuilder({ page }).analyze();
+  const projectsScanResults = await new AxeBuilder({ page }).analyze();
 
-  expect(accessibilityScanResults.violations).toEqual([]);
+  expect(projectsScanResults.violations).toEqual([]);
+
+  await page.goto('/projects/portfolio-foundation/');
+
+  const detailScanResults = await new AxeBuilder({ page }).analyze();
+
+  expect(detailScanResults.violations).toEqual([]);
 });

@@ -25,7 +25,41 @@ if (projectDocument === undefined) {
 }
 
 const project = projectDocument.data;
+const Content = projectDocument.Content;
 const pathname = `/projects/${project.id}/` as RootRelativePath;
+
+function formatPublicLinkLabel(link: string): string {
+  const url = new URL(link);
+  const hostname = url.hostname.replace(/^www\./, '');
+  const [owner, repo, section, ...pathParts] = url.pathname
+    .split('/')
+    .filter(Boolean);
+
+  if (hostname === 'github.com') {
+    if (owner !== undefined && repo !== undefined && section === undefined) {
+      return 'GitHub repository';
+    }
+
+    if (section === 'issues') {
+      return 'GitHub issue';
+    }
+
+    if (section === 'pull') {
+      return 'GitHub pull request';
+    }
+
+    if (
+      (section === 'blob' || section === 'tree') &&
+      pathParts.includes('docs')
+    ) {
+      return 'GitHub documentation';
+    }
+
+    return 'GitHub evidence';
+  }
+
+  return `Public evidence on ${hostname}`;
+}
 ---
 
 <BaseLayout
@@ -64,6 +98,10 @@ const pathname = `/projects/${project.id}/` as RootRelativePath;
       />
     </section>
 
+    <div class="project-prose">
+      <Content />
+    </div>
+
     {
       project.technologies !== undefined && (
         <section
@@ -79,10 +117,37 @@ const pathname = `/projects/${project.id}/` as RootRelativePath;
         </section>
       )
     }
+
+    {
+      project.publicLinks !== undefined && (
+        <section class="project-evidence" aria-labelledby="evidence-heading">
+          <h2 id="evidence-heading">Public evidence</h2>
+          <ul aria-label={`${project.title} public evidence`}>
+            {project.publicLinks.map((link) => (
+              <li>
+                <a href={link}>{formatPublicLinkLabel(link)}</a>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )
+    }
+
+    <nav class="project-continuation" aria-label="Project continuation">
+      <h2>Continue exploring</h2>
+      <a href="/projects/">All projects</a>
+    </nav>
   </article>
 </BaseLayout>
 
 <style>
+  :global(#main-content) {
+    inline-size: min(
+      100% - (2 * var(--layout-gutter-mobile)),
+      var(--layout-content-standard)
+    );
+  }
+
   .back-link {
     display: inline-flex;
     min-block-size: 44px;
@@ -97,7 +162,11 @@ const pathname = `/projects/${project.id}/` as RootRelativePath;
   .project-detail,
   .project-header,
   .project-overview,
-  .project-metadata {
+  .project-metadata,
+  .project-prose,
+  .project-evidence,
+  .project-continuation {
+    min-inline-size: 0;
     overflow-wrap: anywhere;
   }
 
@@ -136,12 +205,17 @@ const pathname = `/projects/${project.id}/` as RootRelativePath;
   }
 
   .project-overview,
-  .project-metadata {
+  .project-metadata,
+  .project-prose,
+  .project-evidence,
+  .project-continuation {
     max-inline-size: var(--layout-content-readable);
   }
 
   .project-overview h2,
-  .project-metadata h2 {
+  .project-metadata h2,
+  .project-evidence h2,
+  .project-continuation h2 {
     margin-block: 0 var(--space-4);
     font-size: var(--type-heading-3-font-size);
     line-height: var(--type-heading-3-line-height);
@@ -169,5 +243,145 @@ const pathname = `/projects/${project.id}/` as RootRelativePath;
   dd {
     margin: var(--space-1) 0 0;
     color: var(--colour-text-secondary);
+  }
+
+  .project-prose {
+    color: var(--colour-text-secondary);
+  }
+
+  .project-prose :global(*) {
+    max-inline-size: 100%;
+  }
+
+  .project-prose :global(* + *) {
+    margin-block-start: var(--space-4);
+  }
+
+  .project-prose :global(h2),
+  .project-prose :global(h3),
+  .project-prose :global(h4) {
+    color: var(--colour-text-primary);
+    overflow-wrap: anywhere;
+  }
+
+  .project-prose :global(h2) {
+    margin-block: var(--space-6) var(--space-3);
+    font-size: var(--type-heading-3-font-size);
+    line-height: var(--type-heading-3-line-height);
+  }
+
+  .project-prose :global(h3) {
+    margin-block: var(--space-5) var(--space-3);
+    font-size: var(--type-body-large-font-size);
+    line-height: var(--type-body-large-line-height);
+  }
+
+  .project-prose :global(p),
+  .project-prose :global(li),
+  .project-prose :global(blockquote),
+  .project-prose :global(td),
+  .project-prose :global(th) {
+    overflow-wrap: anywhere;
+  }
+
+  .project-prose :global(p),
+  .project-prose :global(ul),
+  .project-prose :global(ol),
+  .project-prose :global(blockquote) {
+    margin-block-end: 0;
+  }
+
+  .project-prose :global(blockquote) {
+    padding-inline-start: var(--space-4);
+    border-inline-start: 3px solid var(--colour-border-accent);
+    color: var(--colour-text-muted);
+  }
+
+  .project-prose :global(pre) {
+    max-inline-size: 100%;
+    padding: var(--space-4);
+    overflow-x: auto;
+    border: 1px solid var(--colour-border-subtle);
+    border-radius: var(--radius-1);
+    background-color: var(--colour-surface-default);
+  }
+
+  .project-prose :global(pre code) {
+    overflow-wrap: normal;
+    white-space: pre;
+  }
+
+  .project-prose :global(:not(pre) > code) {
+    padding: 0 var(--space-1);
+    border-radius: var(--radius-0);
+    background-color: var(--colour-surface-subtle);
+    overflow-wrap: anywhere;
+  }
+
+  .project-prose :global(table) {
+    border-collapse: collapse;
+  }
+
+  .project-prose :global(th),
+  .project-prose :global(td) {
+    padding: var(--space-2) var(--space-3);
+    border: 1px solid var(--colour-border-subtle);
+    overflow-wrap: anywhere;
+    text-align: start;
+  }
+
+  .project-prose :global(img),
+  .project-prose :global(video),
+  .project-prose :global(canvas),
+  .project-prose :global(svg),
+  .project-prose :global(iframe) {
+    block-size: auto;
+    max-inline-size: 100%;
+  }
+
+  .project-evidence,
+  .project-continuation {
+    padding-block-start: var(--space-5);
+    border-block-start: 1px solid var(--colour-border-subtle);
+  }
+
+  .project-evidence ul {
+    display: grid;
+    gap: var(--space-3);
+    padding: 0;
+    margin: 0;
+    list-style: none;
+  }
+
+  .project-evidence a,
+  .project-continuation a {
+    display: inline-flex;
+    min-block-size: 44px;
+    align-items: center;
+    font-family: var(--type-label-font-family);
+    font-size: var(--type-label-font-size);
+    font-weight: var(--type-label-font-weight);
+  }
+
+  .project-continuation h2 {
+    margin-block-end: var(--space-2);
+  }
+
+  @media (min-width: 48rem) {
+    :global(#main-content) {
+      inline-size: min(
+        100% - (2 * var(--layout-gutter-tablet)),
+        var(--layout-content-standard)
+      );
+    }
+  }
+
+  @media (min-width: 70rem) {
+    :global(#main-content) {
+      inline-size: min(
+        100% - (2 * var(--layout-gutter-desktop)),
+        var(--layout-content-standard)
+      );
+    }
   }
 </style>
