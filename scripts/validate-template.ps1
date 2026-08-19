@@ -98,6 +98,11 @@ foreach ($name in @("architect", "explorer", "frontend", "qa", "reviewer", "writ
     exit 1
   }
 
+  if ($config -notmatch "(?s)\[agents\.$name\].*?description\s*=\s*""[^""]+""") {
+    Write-Error "config.example.toml is missing description for $name"
+    exit 1
+  }
+
   if ($config -notmatch "config_file\s*=\s*""agents/$name\.toml""") {
     Write-Error "config.example.toml is missing config_file for $name"
     exit 1

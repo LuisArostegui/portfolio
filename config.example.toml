@@ -5,19 +5,25 @@ default_subagent_model = "<FAST_MODEL>"
 default_subagent_reasoning_effort = "medium"
 
 [agents.architect]
+description = "Plan complex work, split tasks, manage sequencing, and perform final integration review."
 config_file = "agents/architect.toml"
 
 [agents.explorer]
+description = "Analyze repository context, conventions, risks, and the smallest viable implementation path without editing files."
 config_file = "agents/explorer.toml"
 
 [agents.frontend]
+description = "Implement focused Astro, React island, TypeScript, CSS, and content changes using project conventions."
 config_file = "agents/frontend.toml"
 
 [agents.qa]
+description = "Write or update focused tests and report local verification gaps."
 config_file = "agents/qa.toml"
 
 [agents.reviewer]
+description = "Review architecture, code quality, accessibility, performance, tests, and regression risk without editing files."
 config_file = "agents/reviewer.toml"
 
 [agents.writer]
+description = "Draft concise PR notes, changelog entries, and documentation tied to verified changes."
 config_file = "agents/writer.toml"

@@ -48,6 +48,11 @@ for name in architect explorer frontend qa reviewer writer; do
     missing=1
   fi
 
+  if ! awk "/\\[agents\\.$name\\]/{flag=1; next} /^\\[agents\\./{flag=0} flag && /^description = \".+\"/{found=1} END{exit !found}" config.example.toml; then
+    printf 'missing description for agent: %s\n' "$name" >&2
+    missing=1
+  fi
+
   if ! grep -q "config_file = \"agents/$name.toml\"" config.example.toml; then
     printf 'missing config_file for agent: %s\n' "$name" >&2
     missing=1
