@@ -11,11 +11,16 @@ capabilities:
 
 > Representative validation content only. This is not a claim about a real employer, role, date, or professional outcome.
 
-## Context
+### Context
 
 This entry demonstrates where public-safe context for a professional role can be authored.
 
-## Responsibilities
+### Responsibilities
 
 - Describe representative responsibilities without naming a real organisation or customer.
 - Keep structured periods in frontmatter and presentation wording out of the stored contract.
+
+### Selected contributions
+
+- Keep the public role narrative in canonical Markdown so reviewed context can
+  grow without changing the page template.

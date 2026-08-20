@@ -1,6 +1,6 @@
-import { getCollection, type CollectionEntry } from 'astro:content';
+import { getCollection, render, type CollectionEntry } from 'astro:content';
 
-import type { ExperiencePreview } from './models';
+import type { ExperienceDocument, ExperiencePreview } from './models';
 
 type ExperienceEntry = CollectionEntry<'experience'>;
 
@@ -47,4 +47,22 @@ export async function getExperienceById(
   const entry = entries.find((candidate) => candidate.id === id);
 
   return entry === undefined ? undefined : toExperiencePreview(entry);
+}
+
+export async function getExperienceDocuments(): Promise<ExperienceDocument[]> {
+  const entries = await getCollection('experience');
+  const documents = await Promise.all(
+    entries.map(async (entry) => {
+      const { Content } = await render(entry);
+
+      return {
+        data: toExperiencePreview(entry),
+        Content,
+      };
+    }),
+  );
+
+  return documents.sort((left, right) =>
+    compareExperience(left.data, right.data),
+  );
 }
