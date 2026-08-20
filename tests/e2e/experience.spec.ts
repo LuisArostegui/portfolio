@@ -14,29 +14,49 @@ test('experience renders canonical current and previous role content', async ({
   ).toBeVisible();
 
   const currentRole = page.getByRole('article').filter({
-    has: page.getByRole('heading', { name: 'Example frontend role' }),
+    has: page.getByRole('heading', { name: 'Software Engineer' }),
+    hasText: 'Openbank',
   });
   await expect(currentRole).toContainText('Current role');
-  await expect(currentRole).toContainText('Representative product team');
-  await expect(currentRole).toContainText('January 2026 - Present');
+  await expect(currentRole).toContainText('Openbank');
+  await expect(currentRole).toContainText('June 2024 - Present');
   await expect(currentRole).toContainText(
-    'This entry demonstrates where public-safe context for a professional role can be authored.',
+    'Santander group digital bank focused on customer-facing banking experiences.',
   );
   await expect(
     currentRole.getByRole('heading', { name: 'Responsibilities', level: 3 }),
   ).toBeVisible();
   await expect(currentRole).toContainText('Frontend engineering');
+  await expect(currentRole).toContainText('Dynamic form architecture');
 
   const previousRole = page.getByRole('article').filter({
-    has: page.getByRole('heading', { name: 'Example previous role' }),
+    has: page.getByRole('heading', { name: 'Software Engineer' }),
+    hasText: 'Nucleoo',
   });
   await expect(previousRole).toContainText('Previous role');
-  await expect(previousRole).toContainText('Representative delivery team');
-  await expect(previousRole).toContainText('May 2024 - December 2025');
+  await expect(previousRole).toContainText('Nucleoo');
+  await expect(previousRole).toContainText('February 2022 - June 2024');
   await expect(previousRole).toContainText(
-    'A concise non-definitive entry used to validate completed-role presentation.',
+    'Technology consultancy work across healthcare and supply-chain platforms.',
   );
-  await expect(previousRole).toContainText('Delivery support');
+  await expect(previousRole).toContainText('Full-stack product development');
+  await expect(previousRole).toContainText('Ksyos');
+  await expect(previousRole).toContainText(
+    'Contributed to a Dutch healthcare platform using TypeScript, React, Node.js, and PostgreSQL.',
+  );
+  await expect(previousRole).toContainText(
+    'Implemented secure patient authentication with SAML and supported integrations with Medmij and Exact.',
+  );
+  await expect(previousRole).toContainText(
+    'Worked with AWS and Terraform for scalable infrastructure.',
+  );
+  await expect(previousRole).toContainText(
+    'Supported automated testing with Cypress, Mocha, and Chai, CI with GitHub Actions, monitoring with Datadog, and documentation with Confluence.',
+  );
+  await expect(previousRole).toContainText('Retailisation');
+  await expect(previousRole).toContainText(
+    'Contributed to a supply-chain optimisation project using Angular, ETL workflows, Azure Database, SQL, MongoDB, Python, and Spark/PySpark.',
+  );
 });
 
 test('experience prioritises contribution-led content and continuation paths', async ({
@@ -68,6 +88,12 @@ test('experience prioritises contribution-led content and continuation paths', a
   await expect(
     continuation.getByRole('link', { name: 'GitHub profile' }),
   ).toHaveAttribute('href', 'https://github.com/LuisArostegui');
+  await expect(
+    continuation.getByRole('link', { name: 'LinkedIn profile' }),
+  ).toHaveAttribute('href', 'https://www.linkedin.com/in/luisarosteguiruiz/');
+  await expect(
+    continuation.getByRole('link', { name: 'Download CV' }),
+  ).toHaveAttribute('href', '/CV-Luis-Arostegui-Ruiz.pdf');
 });
 
 test('experience does not introduce page-level horizontal scrolling on mobile', async ({

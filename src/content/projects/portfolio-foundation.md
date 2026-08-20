@@ -1,6 +1,6 @@
 ---
 title: Portfolio foundation
-summary: A representative entry showing how this public repository records and validates project content.
+summary: A public Astro portfolio built to present professional experience, project evidence, and engineering practice through typed content and static-first routes.
 role: Repository maintainer
 status: active
 featured: true
@@ -8,48 +8,48 @@ order: 0
 capabilities:
   - Content modelling
   - Type-safe application boundaries
+  - Static-first delivery
+  - Accessibility validation
 technologies:
   - Astro
   - TypeScript
 publicLinks:
   - https://github.com/LuisArostegui/portfolio
-  - https://github.com/LuisArostegui/portfolio/issues/65
-  - https://github.com/LuisArostegui/portfolio/blob/main/docs/design/projects-design.md
+  - https://github.com/LuisArostegui/portfolio/issues/67
+  - https://github.com/LuisArostegui/portfolio/blob/main/docs/product/content-strategy.md
 ---
-
-> Representative validation content for the public content system. This is not final portfolio copy.
 
 ## Context
 
-The portfolio needs one canonical, reviewable source for project summaries and future case-study prose.
+The portfolio needs to communicate professional positioning, experience, selected project evidence, and contact paths without relying on a CMS or runtime content service.
 
 ## Constraints
 
-Content must remain local, build-time validated, portable, and safe to publish in a public repository.
+The repository is public, so content and assets must be safe to disclose before they are committed. The MVP also needs to stay static-first, use Git-tracked content, avoid unnecessary dependencies, and keep Home previews derived from canonical project and experience entries.
 
-## Decisions
+## Decisions and trade-offs
 
-Use Markdown for narrative content, concise frontmatter for structured metadata, and project-owned models for presentation-facing queries.
+The implementation uses Astro Content Collections for projects and experience so previews and detail pages derive from one canonical Markdown entry per content item. This keeps content reviewable in Git and avoids introducing a CMS before there is a measured editorial need.
+
+Astro pages own route composition and semantic HTML. Shared query modules keep collection access, sorting, and mapping out of page templates, while CSS remains local to route files unless reuse justifies extraction.
 
 ## Technical evidence
 
-This representative content exercises long-form project detail rendering without adding a new runtime or private implementation detail.
+The current MVP includes static routes for Home, Projects, project detail, and Experience. The content boundary validates project and experience frontmatter at build time, and browser tests cover navigation, generated routes, responsive layout risks, and automated accessibility scans.
 
 ```ts
-const projectDetailRouteKeepsContentStatic =
-  'Astro renders project Markdown without introducing a client-side island or backend dependency.';
-const deliberatelyLongPublicSafeEvidenceIdentifier =
-  'portfolio_project_detail_markdown_code_block_local_overflow_validation_without_runtime_hydration_or_backend_dependency';
+const portfolioContentBoundary =
+  'Astro Content Collections validate canonical project and experience entries before production output is generated.';
+const longPublicRouteEvidenceIdentifier =
+  'portfolio_project_detail_markdown_code_block_overflow_validation_for_static_public_evidence_without_runtime_content_dependencies';
 ```
 
-| Evidence type  | Public-safe purpose                            | Layout risk covered                                                                           |
-| -------------- | ---------------------------------------------- | --------------------------------------------------------------------------------------------- |
-| Markdown prose | Shows narrative project context                | Long technical text should wrap without widening the page                                     |
-| Code excerpt   | Exercises a realistic technical evidence block | long_code_should_scroll_inside_the_code_block_without_creating_page_level_horizontal_overflow |
-| Evidence table | Keeps comparison content structured            | table_cells_should_wrap_without_creating_page_level_horizontal_overflow                       |
-
-![Portfolio social preview image](/social-preview.png)
+| Evidence type        | Public-safe purpose                          | Validation route                       |
+| -------------------- | -------------------------------------------- | -------------------------------------- |
+| Product documents    | Explain audience, scope, and content rules   | Repository documentation and page copy |
+| Architecture records | Capture accepted technical boundaries        | ADRs and implementation review         |
+| Automated tests      | Protect route, link, and accessibility risks | Vitest and Playwright quality gates    |
 
 ## Outcome
 
-This entry exercises the project collection without claiming finished pages, production results, or private professional evidence.
+This project demonstrates the same engineering practices it describes: typed content, public-safe writing, static delivery, accessible navigation, and proportionate validation. It remains intentionally scoped to the MVP instead of adding analytics, a CMS, forms, or deployment changes without separate approval.

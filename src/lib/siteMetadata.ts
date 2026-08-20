@@ -56,6 +56,9 @@ export const siteMetadata = {
       'Astro',
       'React',
     ],
-    profileUrls: ['https://github.com/LuisArostegui'],
+    profileUrls: [
+      'https://github.com/LuisArostegui',
+      'https://www.linkedin.com/in/luisarosteguiruiz/',
+    ],
   },
 } as const satisfies SiteMetadata;

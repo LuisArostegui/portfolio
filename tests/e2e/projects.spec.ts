@@ -1,7 +1,7 @@
 import AxeBuilder from '@axe-core/playwright';
 import { expect, test } from '@playwright/test';
 
-test('projects lists canonical entries and links to generated project detail', async ({
+test('projects lists canonical production entries and links to generated project detail', async ({
   page,
 }) => {
   await page.goto('/projects/');
@@ -15,12 +15,13 @@ test('projects lists canonical entries and links to generated project detail', a
   });
 
   await expect(portfolioProject).toContainText(
-    'A representative entry showing how this public repository records and validates project content.',
+    'A public Astro portfolio built to present professional experience, project evidence, and engineering practice through typed content and static-first routes.',
   );
   await expect(portfolioProject).toContainText('Repository maintainer');
   await expect(portfolioProject).toContainText('active');
   await expect(portfolioProject).toContainText('Content modelling');
   await expect(portfolioProject).toContainText('Astro');
+  await expect(page.getByText('Content model example')).toHaveCount(0);
 
   const projectLink = portfolioProject.getByRole('link', {
     name: 'View project: Portfolio foundation',
@@ -53,15 +54,15 @@ test('project detail renders canonical narrative, evidence, and continuation', a
   ).toBeVisible();
   await expect(
     page.getByText(
-      'The portfolio needs one canonical, reviewable source for project summaries and future case-study prose.',
+      'The portfolio needs to communicate professional positioning, experience, selected project evidence, and contact paths without relying on a CMS or runtime content service.',
     ),
   ).toBeVisible();
   await expect(
-    page.getByRole('heading', { name: 'Decisions', level: 2 }),
+    page.getByRole('heading', { name: 'Decisions and trade-offs', level: 2 }),
   ).toBeVisible();
   await expect(
     page.getByText(
-      'Use Markdown for narrative content, concise frontmatter for structured metadata, and project-owned models for presentation-facing queries.',
+      'The implementation uses Astro Content Collections for projects and experience so previews and detail pages derive from one canonical Markdown entry per content item.',
     ),
   ).toBeVisible();
 
@@ -75,13 +76,13 @@ test('project detail renders canonical narrative, evidence, and continuation', a
     page.getByRole('link', { name: 'GitHub issue' }),
   ).toHaveAttribute(
     'href',
-    'https://github.com/LuisArostegui/portfolio/issues/65',
+    'https://github.com/LuisArostegui/portfolio/issues/67',
   );
   await expect(
     page.getByRole('link', { name: 'GitHub documentation' }),
   ).toHaveAttribute(
     'href',
-    'https://github.com/LuisArostegui/portfolio/blob/main/docs/design/projects-design.md',
+    'https://github.com/LuisArostegui/portfolio/blob/main/docs/product/content-strategy.md',
   );
 
   await expect(
@@ -90,33 +91,6 @@ test('project detail renders canonical narrative, evidence, and continuation', a
   await expect(
     page.getByRole('link', { name: 'All projects' }),
   ).toHaveAttribute('href', '/projects/');
-});
-
-test('concise project detail omits unavailable optional sections cleanly', async ({
-  page,
-}) => {
-  await page.goto('/projects/content-model-example/');
-
-  await expect(
-    page.getByRole('heading', { name: 'Content model example', level: 1 }),
-  ).toBeVisible();
-  await expect(
-    page.getByRole('heading', { name: 'Context', level: 2 }),
-  ).toBeVisible();
-  await expect(
-    page.getByText(
-      'Future pages need stable project models without depending directly on Astro collection entries.',
-    ),
-  ).toBeVisible();
-  await expect(page.getByRole('heading', { name: 'Technologies' })).toHaveCount(
-    0,
-  );
-  await expect(
-    page.getByRole('heading', { name: 'Public evidence' }),
-  ).toHaveCount(0);
-  await expect(
-    page.getByRole('link', { name: 'GitHub repository' }),
-  ).toHaveCount(0);
 });
 
 test('project detail does not introduce page-level horizontal scrolling on mobile', async ({
@@ -132,9 +106,6 @@ test('project detail does not introduce page-level horizontal scrolling on mobil
   await expect(
     page.getByRole('heading', { name: 'Technical evidence' }),
   ).toBeVisible();
-  await expect(
-    page.getByRole('img', { name: 'Portfolio social preview image' }),
-  ).toBeVisible();
 
   const hasPageLevelHorizontalScroll = await page.evaluate(
     () =>
@@ -147,15 +118,12 @@ test('project detail does not introduce page-level horizontal scrolling on mobil
   const technicalContentLayout = await page.evaluate(() => {
     const codeBlock = document.querySelector('.project-prose pre');
     const table = document.querySelector('.project-prose table');
-    const image = document.querySelector('.project-prose img');
 
     if (
       codeBlock === null ||
       table === null ||
-      image === null ||
       codeBlock.parentElement === null ||
-      table.parentElement === null ||
-      image.parentElement === null
+      table.parentElement === null
     ) {
       throw new Error('Expected project technical content was not rendered.');
     }
@@ -165,16 +133,12 @@ test('project detail does not introduce page-level horizontal scrolling on mobil
         codeBlock.scrollWidth > codeBlock.clientWidth &&
         codeBlock.clientWidth <= document.documentElement.clientWidth,
       tableFitsPage: table.scrollWidth <= document.documentElement.clientWidth,
-      imageFitsContainer:
-        image.getBoundingClientRect().width <=
-        image.parentElement.getBoundingClientRect().width,
     };
   });
 
   expect(technicalContentLayout).toEqual({
     codeBlockLocallyScrolls: true,
     tableFitsPage: true,
-    imageFitsContainer: true,
   });
 });
 
