@@ -6,6 +6,10 @@ import { getFeaturedProjects } from '../lib/content/projects';
 
 const featuredProjects = await getFeaturedProjects(3);
 const selectedExperience = (await getExperience()).slice(0, 2);
+const githubProfileUrl = 'https://github.com/LuisArostegui';
+const linkedinProfileUrl = 'https://www.linkedin.com/in/luisarosteguiruiz/';
+const cvPath = '/CV-Luis-Arostegui-Ruiz.pdf';
+const contactEmail = 'luisarosteguiruizit@gmail.com';
 
 const strengths = [
   {
@@ -94,6 +98,9 @@ const processSteps = [
         </a>
         <a class="action action--secondary" href="/experience/">
           View experience
+        </a>
+        <a class="action action--secondary" href={cvPath} download>
+          Download CV
         </a>
       </div>
     </div>
@@ -185,6 +192,13 @@ const processSteps = [
                   items={project.capabilities}
                   ariaLabel={`${project.title} capabilities`}
                 />
+                <a
+                  class="text-link project-preview__link"
+                  href={`/projects/${project.id}/`}
+                  aria-label={`View project: ${project.title}`}
+                >
+                  View project
+                </a>
               </article>
             </li>
           ))}
@@ -302,23 +316,33 @@ const processSteps = [
       <p class="eyebrow">Contact</p>
       <h2 id="contact-heading">Contact</h2>
       <p>
-        For professional conversations, start from the selected work,
-        experience, and public repository evidence. The available public profile
-        and repository links keep the first MVP contact path direct and
-        verifiable.
+        For professional conversations, use email or LinkedIn. The CV, public
+        profiles, and repository evidence are available directly from this MVP
+        without adding a contact form or collecting visitor data.
       </p>
     </div>
     <div class="contact-section__actions" aria-label="Professional resources">
+      <a class="action action--primary" href={`mailto:${contactEmail}`}>
+        Email Luis
+      </a>
       <a
-        class="action action--primary"
-        href="https://github.com/LuisArostegui"
+        class="action action--secondary"
+        href={linkedinProfileUrl}
+        rel="noreferrer"
+        target="_blank"
+      >
+        LinkedIn profile
+      </a>
+      <a
+        class="action action--secondary"
+        href={githubProfileUrl}
         rel="noreferrer"
         target="_blank"
       >
         GitHub profile
       </a>
-      <a class="action action--secondary" href="/experience/">
-        Explore experience
+      <a class="action action--secondary" href={cvPath} download>
+        Download CV
       </a>
     </div>
   </section>
@@ -567,6 +591,13 @@ const processSteps = [
 
   :global(.project-preview .tag-list),
   :global(.experience-preview .tag-list) {
+    margin-block-start: var(--space-4);
+  }
+
+  .project-preview__link {
+    display: inline-flex;
+    min-block-size: 44px;
+    align-items: center;
     margin-block-start: var(--space-4);
   }
 

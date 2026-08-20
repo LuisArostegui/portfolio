@@ -51,7 +51,10 @@ describe('SEO metadata helpers', () => {
       url: siteMetadata.siteUrl,
     });
     expect(structuredData).toMatchObject({
-      sameAs: ['https://github.com/LuisArostegui'],
+      sameAs: [
+        'https://github.com/LuisArostegui',
+        'https://www.linkedin.com/in/luisarosteguiruiz/',
+      ],
     });
   });
 

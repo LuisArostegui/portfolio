@@ -65,6 +65,23 @@ test('home renders the shared semantic shell and has no automatically detectable
     page.getByRole('link', { name: 'GitHub profile' }),
   ).toHaveAttribute('href', 'https://github.com/LuisArostegui');
   await expect(
+    page.getByRole('link', { name: 'LinkedIn profile' }),
+  ).toHaveAttribute('href', 'https://www.linkedin.com/in/luisarosteguiruiz/');
+  const cvLinks = page.getByRole('link', { name: 'Download CV' });
+  await expect(cvLinks).toHaveCount(2);
+  await expect(cvLinks.first()).toHaveAttribute(
+    'href',
+    '/CV-Luis-Arostegui-Ruiz.pdf',
+  );
+  await expect(cvLinks.nth(1)).toHaveAttribute(
+    'href',
+    '/CV-Luis-Arostegui-Ruiz.pdf',
+  );
+  await expect(page.getByRole('link', { name: 'Email Luis' })).toHaveAttribute(
+    'href',
+    'mailto:luisarosteguiruizit@gmail.com',
+  );
+  await expect(
     page.getByRole('link', { name: 'GitHub repository' }),
   ).toHaveAttribute('href', 'https://github.com/LuisArostegui/portfolio');
   await expect(
@@ -72,8 +89,12 @@ test('home renders the shared semantic shell and has no automatically detectable
   ).toBeVisible();
   await expect(page.getByText('Repository maintainer')).toBeVisible();
   await expect(
-    page.getByRole('heading', { name: 'Example frontend role', level: 3 }),
+    page.getByRole('link', { name: 'View project: Portfolio foundation' }),
+  ).toHaveAttribute('href', '/projects/portfolio-foundation/');
+  await expect(
+    page.getByRole('heading', { name: 'Software Engineer', level: 3 }).first(),
   ).toBeVisible();
+  await expect(page.getByText('Openbank')).toBeVisible();
 
   const accessibilityScanResults = await new AxeBuilder({ page }).analyze();
 
@@ -230,7 +251,10 @@ test('home exposes public-safe Person structured data', async ({ page }) => {
     url: 'https://luis-arostegui-portfolio.luisarosteguiruizit.workers.dev',
   });
   expect(JSON.parse(jsonLd ?? '')).toMatchObject({
-    sameAs: ['https://github.com/LuisArostegui'],
+    sameAs: [
+      'https://github.com/LuisArostegui',
+      'https://www.linkedin.com/in/luisarosteguiruiz/',
+    ],
   });
 });
 

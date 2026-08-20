@@ -6,6 +6,9 @@ import { getExperienceDocuments } from '../../lib/content/experience';
 const experience = await getExperienceDocuments();
 const currentRoles = experience.filter(({ data }) => data.isCurrent);
 const previousRoles = experience.filter(({ data }) => !data.isCurrent);
+const githubProfileUrl = 'https://github.com/LuisArostegui';
+const linkedinProfileUrl = 'https://www.linkedin.com/in/luisarosteguiruiz/';
+const cvPath = '/CV-Luis-Arostegui-Ruiz.pdf';
 
 const monthFormatter = new Intl.DateTimeFormat('en', {
   month: 'long',
@@ -178,11 +181,22 @@ function formatPeriod(period: string): string {
       <a class="action action--secondary" href="/#contact">Contact</a>
       <a
         class="action action--secondary"
-        href="https://github.com/LuisArostegui"
+        href={githubProfileUrl}
         rel="noreferrer"
         target="_blank"
       >
         GitHub profile
+      </a>
+      <a
+        class="action action--secondary"
+        href={linkedinProfileUrl}
+        rel="noreferrer"
+        target="_blank"
+      >
+        LinkedIn profile
+      </a>
+      <a class="action action--secondary" href={cvPath} download>
+        Download CV
       </a>
     </div>
   </section>
