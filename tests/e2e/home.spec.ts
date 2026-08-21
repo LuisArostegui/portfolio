@@ -284,3 +284,52 @@ test('primary navigation remains visible without JavaScript', async ({
 
   await context.close();
 });
+
+test('mobile navigation remains immediate and understandable with reduced motion', async ({
+  browser,
+  baseURL,
+}) => {
+  if (!baseURL) {
+    throw new Error(
+      'Playwright baseURL is required for the reduced-motion navigation check.',
+    );
+  }
+
+  const context = await browser.newContext({
+    baseURL,
+    reducedMotion: 'reduce',
+    viewport: { width: 390, height: 844 },
+  });
+  const page = await context.newPage();
+
+  try {
+    await page.goto('/');
+
+    const menuButton = page.locator('[data-menu-toggle]');
+    const primaryNavigation = page.getByRole('navigation', {
+      name: 'Primary navigation',
+    });
+
+    await menuButton.click();
+
+    await expect(menuButton).toHaveAttribute('aria-expanded', 'true');
+    await expect(menuButton).toHaveAccessibleName('Close navigation menu');
+    await expect(
+      primaryNavigation.getByRole('link', { name: 'Projects', exact: true }),
+    ).toBeVisible();
+
+    const navigationMotion = await primaryNavigation.evaluate((element) => {
+      const styles = getComputedStyle(element);
+
+      return {
+        animationName: styles.animationName,
+        transitionDuration: styles.transitionDuration,
+      };
+    });
+
+    expect(navigationMotion.animationName).toBe('none');
+    expect(navigationMotion.transitionDuration).toBe('0s');
+  } finally {
+    await context.close();
+  }
+});

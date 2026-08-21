@@ -113,4 +113,10 @@
   --type-code-font-size: 14px;
   --type-code-line-height: 22px;
   --type-code-font-weight: 400;
+
+  --motion-duration-immediate: 80ms;
+  --motion-duration-fast: 160ms;
+  --motion-duration-standard: 220ms;
+  --motion-ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  --motion-ease-enter: cubic-bezier(0.16, 1, 0.3, 1);
 }

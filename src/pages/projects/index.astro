@@ -164,6 +164,19 @@ const projects = await getProjects();
     border: 1px solid var(--colour-border-subtle);
     border-radius: var(--radius-1);
     background-color: var(--colour-surface-default);
+    transition-duration: var(--motion-duration-fast);
+    transition-property: background-color, border-color;
+    transition-timing-function: var(--motion-ease-standard);
+  }
+
+  .project-card:hover {
+    border-color: var(--colour-border-strong);
+    background-color: var(--colour-surface-subtle);
+  }
+
+  .project-card:focus-within {
+    border-color: var(--colour-border-accent);
+    background-color: var(--colour-surface-subtle);
   }
 
   .project-card article {
@@ -229,6 +242,9 @@ const projects = await getProjects();
     font-family: var(--type-label-font-family);
     font-size: var(--type-label-font-size);
     font-weight: var(--type-label-font-weight);
+    transition-duration: var(--motion-duration-fast);
+    transition-property: color;
+    transition-timing-function: var(--motion-ease-standard);
   }
 
   .empty-state {

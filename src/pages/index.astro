@@ -440,6 +440,9 @@ const processSteps = [
     font-weight: var(--type-label-font-weight);
     text-align: center;
     text-decoration: none;
+    transition-duration: var(--motion-duration-fast);
+    transition-property: background-color, border-color, color;
+    transition-timing-function: var(--motion-ease-standard);
   }
 
   .action--primary {
@@ -621,6 +624,9 @@ const processSteps = [
     font-family: var(--type-label-font-family);
     font-size: var(--type-label-font-size);
     font-weight: var(--type-label-font-weight);
+    transition-duration: var(--motion-duration-fast);
+    transition-property: color;
+    transition-timing-function: var(--motion-ease-standard);
   }
 
   .process-list {
