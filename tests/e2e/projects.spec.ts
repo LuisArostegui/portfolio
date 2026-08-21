@@ -157,3 +157,107 @@ test('projects and project detail have no automatically detectable accessibility
 
   expect(detailScanResults.violations).toEqual([]);
 });
+
+test('project-card feedback uses restrained motion and respects reduced motion', async ({
+  browser,
+  baseURL,
+  page,
+}) => {
+  if (!baseURL) {
+    throw new Error(
+      'Playwright baseURL is required for reduced-motion checks.',
+    );
+  }
+
+  await page.goto('/projects/');
+
+  const projectCard = page.locator('.project-card').first();
+  const defaultMotion = await projectCard.evaluate((element) => {
+    const styles = getComputedStyle(element);
+
+    return {
+      backgroundColor: styles.backgroundColor,
+      borderColor: styles.borderTopColor,
+      transitionDuration: styles.transitionDuration,
+      transitionProperty: styles.transitionProperty,
+      transform: styles.transform,
+    };
+  });
+
+  expect(defaultMotion.transitionProperty).toContain('background-color');
+  expect(defaultMotion.transitionProperty).toContain('border-color');
+  expect(defaultMotion.transitionDuration).not.toBe('0s');
+  expect(defaultMotion.transform).toBe('none');
+
+  await projectCard
+    .getByRole('link', { name: 'View project: Portfolio foundation' })
+    .focus();
+
+  await expect
+    .poll(async () => {
+      const styles = await projectCard.evaluate((element) => {
+        const styles = getComputedStyle(element);
+
+        return {
+          backgroundColor: styles.backgroundColor,
+          borderColor: styles.borderTopColor,
+          transform: styles.transform,
+        };
+      });
+
+      return (
+        styles.backgroundColor !== defaultMotion.backgroundColor &&
+        styles.borderColor !== defaultMotion.borderColor
+      );
+    })
+    .toBe(true);
+
+  const focusWithinStyle = await projectCard.evaluate((element) => {
+    const styles = getComputedStyle(element);
+
+    return {
+      backgroundColor: styles.backgroundColor,
+      borderColor: styles.borderTopColor,
+      transform: styles.transform,
+    };
+  });
+
+  expect(focusWithinStyle.backgroundColor).not.toBe(
+    defaultMotion.backgroundColor,
+  );
+  expect(focusWithinStyle.borderColor).not.toBe(defaultMotion.borderColor);
+  expect(focusWithinStyle.transform).toBe('none');
+
+  const reducedMotionContext = await browser.newContext({
+    baseURL,
+    reducedMotion: 'reduce',
+  });
+  const reducedMotionPage = await reducedMotionContext.newPage();
+
+  try {
+    await reducedMotionPage.goto('/projects/');
+
+    const reducedMotionCard = reducedMotionPage
+      .locator('.project-card')
+      .first();
+    await expect(
+      reducedMotionCard.getByRole('link', {
+        name: 'View project: Portfolio foundation',
+      }),
+    ).toBeVisible();
+
+    const reducedMotionStyle = await reducedMotionCard.evaluate((element) => {
+      const styles = getComputedStyle(element);
+
+      return {
+        transitionDuration: styles.transitionDuration,
+        transform: styles.transform,
+      };
+    });
+
+    expect(reducedMotionStyle.transitionDuration).toBe('0s');
+    expect(reducedMotionStyle.transform).toBe('none');
+  } finally {
+    await reducedMotionContext.close();
+  }
+});

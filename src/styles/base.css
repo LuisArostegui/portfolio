@@ -72,6 +72,9 @@ a {
   color: var(--colour-text-accent);
   text-decoration-line: underline;
   text-decoration-thickness: from-font;
+  transition-duration: var(--motion-duration-fast);
+  transition-property: color, text-decoration-color;
+  transition-timing-function: var(--motion-ease-standard);
 }
 
 a:hover {
@@ -96,9 +99,9 @@ a:active {
   *,
   *::before,
   *::after {
-    scroll-behavior: auto;
-    animation: none;
-    transition: none;
+    scroll-behavior: auto !important;
+    animation: none !important;
+    transition: none !important;
   }
 }
 

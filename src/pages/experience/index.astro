@@ -394,6 +394,9 @@ function formatPeriod(period: string): string {
     font-weight: var(--type-label-font-weight);
     text-align: center;
     text-decoration: none;
+    transition-duration: var(--motion-duration-fast);
+    transition-property: background-color, border-color, color;
+    transition-timing-function: var(--motion-ease-standard);
   }
 
   .action--primary {
