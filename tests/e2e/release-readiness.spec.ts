@@ -22,6 +22,10 @@ test('accessibility statement is public, linked from the footer, and has no auto
     page.getByRole('heading', { name: 'Conformance intent', level: 2 }),
   ).toBeVisible();
   await expect(
+    page.getByRole('heading', { name: 'Review scope in progress', level: 2 }),
+  ).toBeVisible();
+  await expect(page.getByText('the review remains in progress')).toBeVisible();
+  await expect(
     page.getByRole('heading', { name: 'Known limitations', level: 2 }),
   ).toBeVisible();
   await expect(
