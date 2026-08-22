@@ -16,6 +16,7 @@ const pathname = Astro.url.pathname;
       type="button"
       aria-controls="primary-navigation"
       aria-expanded="false"
+      aria-label="Open navigation menu"
       hidden
       data-menu-toggle
     >
@@ -45,7 +46,6 @@ const pathname = Astro.url.pathname;
           stroke-linecap="round"
           stroke-width="2"></path>
       </svg>
-      <span data-menu-label>Open navigation menu</span>
     </button>
     <nav
       aria-label="Primary navigation"
@@ -83,22 +83,22 @@ const pathname = Astro.url.pathname;
     const navigation = header.querySelector<HTMLElement>('[data-navigation]');
     const menuIcon = header.querySelector<SVGElement>('[data-menu-icon]');
     const closeIcon = header.querySelector<SVGElement>('[data-close-icon]');
-    const label = header.querySelector<HTMLElement>('[data-menu-label]');
     const compactNavigation = window.matchMedia('(max-width: 47.99rem)');
 
-    if (toggle && navigation && menuIcon && closeIcon && label) {
+    if (toggle && navigation && menuIcon && closeIcon) {
       const setIconVisibility = (icon: SVGElement, visible: boolean) => {
         icon.toggleAttribute('hidden', !visible);
       };
 
       const setExpanded = (expanded: boolean) => {
         toggle.setAttribute('aria-expanded', String(expanded));
+        toggle.setAttribute(
+          'aria-label',
+          expanded ? 'Close navigation menu' : 'Open navigation menu',
+        );
         navigation.hidden = !expanded;
         setIconVisibility(menuIcon, !expanded);
         setIconVisibility(closeIcon, expanded);
-        label.textContent = expanded
-          ? 'Close navigation menu'
-          : 'Open navigation menu';
       };
 
       const updateLayout = () => {

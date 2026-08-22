@@ -1,0 +1,176 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const contactEmail = 'luisarosteguiruizit@gmail.com';
+---
+
+<BaseLayout
+  title="Accessibility"
+  description="Accessibility statement for the Luis Arostegui Ruiz portfolio MVP."
+  pathname="/accessibility/"
+>
+  <section class="statement-hero" aria-labelledby="accessibility-heading">
+    <p class="eyebrow">Release readiness</p>
+    <h1 id="accessibility-heading">Accessibility</h1>
+    <p>
+      This portfolio is built as a static, keyboard-accessible Astro site with
+      semantic HTML, visible focus styles, responsive layouts, and restrained
+      motion. Accessibility validation is part of the PT-44 MVP release gate.
+    </p>
+  </section>
+
+  <section class="statement-section" aria-labelledby="intent-heading">
+    <h2 id="intent-heading">Conformance intent</h2>
+    <p>
+      The implemented MVP targets WCAG 2.2 Level AA for its public portfolio
+      scope. Automated checks support that work, but they do not establish full
+      conformance on their own.
+    </p>
+  </section>
+
+  <section class="statement-section" aria-labelledby="review-heading">
+    <h2 id="review-heading">Review scope in progress</h2>
+    <p>
+      The current planned review scope is the PT-44 Portfolio MVP validation
+      started on August 22, 2026. Until that validation matrix is complete, the
+      review remains in progress. It covers the Home, Projects, project detail,
+      Experience, Accessibility, and not-found routes, plus core navigation,
+      contact, CV, metadata, responsive behaviour, reduced motion, and
+      production-build output.
+    </p>
+  </section>
+
+  <section class="statement-section" aria-labelledby="limitations-heading">
+    <h2 id="limitations-heading">Known limitations</h2>
+    <ul>
+      <li>
+        Validation is still being completed for the MVP release and combines
+        automated checks with manual keyboard, screen-reader, zoom, reflow,
+        motion, contrast, and content review.
+      </li>
+      <li>
+        External tools, browsers, assistive technologies, and personal settings
+        can expose issues that are not detected by automated scans.
+      </li>
+      <li>
+        The site currently provides direct contact links instead of a contact
+        form, so there are no form validation states in the MVP scope.
+      </li>
+    </ul>
+  </section>
+
+  <section class="statement-section" aria-labelledby="feedback-heading">
+    <h2 id="feedback-heading">Feedback</h2>
+    <p>
+      If you find an accessibility barrier in this portfolio, send a note by
+      email and include the page, browser, device, assistive technology if
+      relevant, and what blocked the task.
+    </p>
+    <a class="action" href={`mailto:${contactEmail}`}>Send an email</a>
+  </section>
+</BaseLayout>
+
+<style>
+  :global(#main-content) {
+    inline-size: min(
+      100% - (2 * var(--layout-gutter-mobile)),
+      var(--layout-content-readable)
+    );
+  }
+
+  .statement-hero,
+  .statement-section {
+    overflow-wrap: anywhere;
+  }
+
+  .statement-hero {
+    padding-block-end: var(--space-7);
+    border-block-end: 1px solid var(--colour-border-subtle);
+  }
+
+  .statement-hero h1 {
+    margin-block: var(--space-3) var(--space-4);
+    font-size: var(--type-heading-1-font-size);
+    line-height: var(--type-heading-1-line-height);
+  }
+
+  .statement-hero p:not(.eyebrow),
+  .statement-section p,
+  .statement-section li {
+    color: var(--colour-text-secondary);
+  }
+
+  .statement-hero p:not(.eyebrow) {
+    margin-block: 0;
+    font-size: var(--type-body-large-font-size);
+    line-height: var(--type-body-large-line-height);
+  }
+
+  .eyebrow {
+    margin-block: 0;
+    color: var(--colour-text-muted);
+    font-family: var(--type-metadata-font-family);
+    font-size: var(--type-metadata-font-size);
+    font-weight: var(--type-metadata-font-weight);
+    line-height: var(--type-metadata-line-height);
+    text-transform: uppercase;
+  }
+
+  .statement-section {
+    padding-block: var(--space-6);
+    border-block-end: 1px solid var(--colour-border-subtle);
+  }
+
+  .statement-section:last-child {
+    border-block-end: 0;
+  }
+
+  .statement-section h2 {
+    margin-block: 0 var(--space-3);
+  }
+
+  .statement-section p,
+  .statement-section ul {
+    margin-block: 0;
+  }
+
+  .statement-section li + li {
+    margin-block-start: var(--space-2);
+  }
+
+  .action {
+    display: inline-flex;
+    min-block-size: 44px;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-3) var(--space-4);
+    margin-block-start: var(--space-5);
+    border: 1px solid var(--colour-accent-default);
+    border-radius: var(--radius-1);
+    background-color: var(--colour-accent-default);
+    color: var(--colour-text-on-accent);
+    font-family: var(--type-label-font-family);
+    font-size: var(--type-label-font-size);
+    font-weight: var(--type-label-font-weight);
+    text-align: center;
+    text-decoration: none;
+    transition-duration: var(--motion-duration-fast);
+    transition-property: background-color, color;
+    transition-timing-function: var(--motion-ease-standard);
+  }
+
+  .action:hover,
+  .action:active {
+    background-color: var(--colour-accent-hover);
+    color: var(--colour-text-on-accent);
+  }
+
+  @media (min-width: 48rem) {
+    :global(#main-content) {
+      inline-size: min(
+        100% - (2 * var(--layout-gutter-tablet)),
+        var(--layout-content-readable)
+      );
+    }
+  }
+</style>

@@ -1,0 +1,115 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Page not found"
+  description="The requested portfolio page could not be found."
+  pathname="/404/"
+>
+  <section class="not-found" aria-labelledby="not-found-heading">
+    <h1 id="not-found-heading">Page not found</h1>
+    <p>
+      The page may have moved, or the link may be incomplete. The main portfolio
+      routes are still available from here.
+    </p>
+    <div class="action-group" aria-label="Not-found continuation paths">
+      <a class="action action--primary" href="/">Go home</a>
+      <a class="action action--secondary" href="/projects/">View projects</a>
+      <a class="action action--secondary" href="/experience/">
+        View experience
+      </a>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  :global(#main-content) {
+    inline-size: min(
+      100% - (2 * var(--layout-gutter-mobile)),
+      var(--layout-content-readable)
+    );
+  }
+
+  .not-found {
+    overflow-wrap: anywhere;
+  }
+
+  .eyebrow {
+    margin-block: 0;
+    color: var(--colour-text-muted);
+    font-family: var(--type-metadata-font-family);
+    font-size: var(--type-metadata-font-size);
+    font-weight: var(--type-metadata-font-weight);
+    line-height: var(--type-metadata-line-height);
+    text-transform: uppercase;
+  }
+
+  .not-found h1 {
+    margin-block: var(--space-3) var(--space-4);
+    font-size: var(--type-heading-1-font-size);
+    line-height: var(--type-heading-1-line-height);
+  }
+
+  .not-found p:not(.eyebrow) {
+    margin-block: 0;
+    color: var(--colour-text-secondary);
+    font-size: var(--type-body-large-font-size);
+    line-height: var(--type-body-large-line-height);
+  }
+
+  .action-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin-block-start: var(--space-5);
+  }
+
+  .action {
+    display: inline-flex;
+    min-block-size: 44px;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-3) var(--space-4);
+    border: 1px solid var(--colour-border-strong);
+    border-radius: var(--radius-1);
+    font-family: var(--type-label-font-family);
+    font-size: var(--type-label-font-size);
+    font-weight: var(--type-label-font-weight);
+    text-align: center;
+    text-decoration: none;
+    transition-duration: var(--motion-duration-fast);
+    transition-property: background-color, border-color, color;
+    transition-timing-function: var(--motion-ease-standard);
+  }
+
+  .action--primary {
+    border-color: var(--colour-accent-default);
+    background-color: var(--colour-accent-default);
+    color: var(--colour-text-on-accent);
+  }
+
+  .action--primary:hover,
+  .action--primary:active {
+    background-color: var(--colour-accent-hover);
+    color: var(--colour-text-on-accent);
+  }
+
+  .action--secondary {
+    color: var(--colour-text-primary);
+  }
+
+  .action--secondary:hover {
+    border-color: var(--colour-border-accent);
+    color: var(--colour-text-primary);
+  }
+
+  @media (min-width: 48rem) {
+    :global(#main-content) {
+      inline-size: min(
+        100% - (2 * var(--layout-gutter-tablet)),
+        var(--layout-content-readable)
+      );
+    }
+  }
+</style>

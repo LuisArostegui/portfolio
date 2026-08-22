@@ -323,7 +323,7 @@ const processSteps = [
     </div>
     <div class="contact-section__actions" aria-label="Professional resources">
       <a class="action action--primary" href={`mailto:${contactEmail}`}>
-        Email Luis
+        Send an email
       </a>
       <a
         class="action action--secondary"
@@ -546,7 +546,8 @@ const processSteps = [
     list-style: none;
   }
 
-  .project-list {
+  .project-list,
+  .experience-list {
     display: grid;
     gap: var(--space-4);
   }
@@ -614,6 +615,11 @@ const processSteps = [
     gap: var(--space-4);
     padding-block-end: var(--space-5);
     border-block-end: 1px solid var(--colour-border-subtle);
+  }
+
+  .strength-item:last-child {
+    padding-block-end: 0;
+    border-block-end: 0;
   }
 
   .strength-item__number {
@@ -736,9 +742,7 @@ const processSteps = [
     }
 
     .experience-list {
-      display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: var(--space-4);
     }
 
     .process-list {

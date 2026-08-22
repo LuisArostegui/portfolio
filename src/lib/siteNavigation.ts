@@ -32,6 +32,11 @@ export const primaryNavigation = [
   { label: 'Contact', href: '/#contact', kind: 'internal' },
 ] satisfies readonly NavigationItem[];
 
+export const footerNavigation = [
+  ...primaryNavigation,
+  { label: 'Accessibility', href: '/accessibility/', kind: 'internal' },
+] satisfies readonly NavigationItem[];
+
 export function getLinkAttributes(item: NavigationItem): LinkAttributes {
   if (item.kind === 'external') {
     return { target: '_blank', rel: 'noreferrer' };

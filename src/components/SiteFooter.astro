@@ -1,8 +1,8 @@
 ---
 import {
+  footerNavigation,
   getLinkAttributes,
   isCurrentPage,
-  primaryNavigation,
 } from '../lib/siteNavigation';
 
 const pathname = Astro.url.pathname;
@@ -14,7 +14,7 @@ const pathname = Astro.url.pathname;
     <nav aria-label="Footer navigation">
       <ul class="site-footer__navigation-list">
         {
-          primaryNavigation.map((item) => (
+          footerNavigation.map((item) => (
             <li>
               <a
                 aria-current={
