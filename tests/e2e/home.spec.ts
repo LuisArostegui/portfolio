@@ -77,10 +77,9 @@ test('home renders the shared semantic shell and has no automatically detectable
     'href',
     '/CV-Luis-Arostegui-Ruiz.pdf',
   );
-  await expect(page.getByRole('link', { name: 'Email Luis' })).toHaveAttribute(
-    'href',
-    'mailto:luisarosteguiruizit@gmail.com',
-  );
+  await expect(
+    page.getByRole('link', { name: 'Send an email' }),
+  ).toHaveAttribute('href', 'mailto:luisarosteguiruizit@gmail.com');
   await expect(
     page.getByRole('link', { name: 'GitHub repository' }),
   ).toHaveAttribute('href', 'https://github.com/LuisArostegui/portfolio');
@@ -114,6 +113,8 @@ test('mobile navigation is keyboard operable and restores focus when closed', as
   const menuButton = page.locator('[data-menu-toggle]');
   const menuIcon = page.locator('[data-menu-icon]');
   const closeIcon = page.locator('[data-close-icon]');
+  await expect(menuButton).toHaveAccessibleName('Open navigation menu');
+  await expect(menuButton).toHaveText('');
   await expect(menuButton).toHaveAttribute('aria-expanded', 'false');
   await expect(menuIcon).toBeVisible();
   await expect(closeIcon).toBeHidden();
@@ -121,6 +122,7 @@ test('mobile navigation is keyboard operable and restores focus when closed', as
   await menuButton.focus();
   await page.keyboard.press('Enter');
   await expect(menuButton).toHaveAccessibleName('Close navigation menu');
+  await expect(menuButton).toHaveText('');
   await expect(menuButton).toHaveAttribute('aria-expanded', 'true');
   await expect(menuIcon).toBeHidden();
   await expect(closeIcon).toBeVisible();
@@ -132,10 +134,53 @@ test('mobile navigation is keyboard operable and restores focus when closed', as
 
   await page.keyboard.press('Escape');
   await expect(menuButton).toHaveAccessibleName('Open navigation menu');
+  await expect(menuButton).toHaveText('');
   await expect(menuButton).toHaveAttribute('aria-expanded', 'false');
   await expect(menuIcon).toBeVisible();
   await expect(closeIcon).toBeHidden();
   await expect(menuButton).toBeFocused();
+});
+
+test('selected experience previews keep a visible gap before the wide desktop grid', async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1024, height: 768 });
+  await page.goto('/');
+
+  const experiencePreviews = page.locator('.experience-preview');
+  await expect(experiencePreviews).toHaveCount(2);
+
+  const firstPreviewBox = await experiencePreviews.nth(0).boundingBox();
+  const secondPreviewBox = await experiencePreviews.nth(1).boundingBox();
+
+  expect(firstPreviewBox).not.toBeNull();
+  expect(secondPreviewBox).not.toBeNull();
+
+  const verticalGap =
+    secondPreviewBox!.y - (firstPreviewBox!.y + firstPreviewBox!.height);
+
+  expect(verticalGap).toBeGreaterThanOrEqual(16);
+});
+
+test('engineering strengths section has a single closing separator', async ({
+  page,
+}) => {
+  await page.goto('/');
+
+  const lastStrengthItem = page.locator('.strength-item').last();
+  const lastStrengthBorder = await lastStrengthItem.evaluate((element) => {
+    const styles = getComputedStyle(element);
+
+    return {
+      borderBlockEndStyle: styles.borderBlockEndStyle,
+      borderBlockEndWidth: styles.borderBlockEndWidth,
+    };
+  });
+
+  expect(lastStrengthBorder).toEqual({
+    borderBlockEndStyle: 'none',
+    borderBlockEndWidth: '0px',
+  });
 });
 
 test('top-level routes expose their matching current page in primary navigation', async ({
@@ -314,6 +359,7 @@ test('mobile navigation remains immediate and understandable with reduced motion
 
     await expect(menuButton).toHaveAttribute('aria-expanded', 'true');
     await expect(menuButton).toHaveAccessibleName('Close navigation menu');
+    await expect(menuButton).toHaveText('');
     await expect(
       primaryNavigation.getByRole('link', { name: 'Projects', exact: true }),
     ).toBeVisible();

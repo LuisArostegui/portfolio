@@ -96,6 +96,22 @@ test('experience prioritises contribution-led content and continuation paths', a
   ).toHaveAttribute('href', '/CV-Luis-Arostegui-Ruiz.pdf');
 });
 
+test('experience continuation remains readable at intermediate viewport widths', async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1024, height: 768 });
+  await page.goto('/experience/');
+
+  const continuationHeading = page.getByRole('heading', {
+    name: 'Continue exploring',
+    level: 2,
+  });
+  const headingBox = await continuationHeading.boundingBox();
+
+  expect(headingBox).not.toBeNull();
+  expect(headingBox!.width).toBeGreaterThanOrEqual(280);
+});
+
 test('experience does not introduce page-level horizontal scrolling on mobile', async ({
   page,
 }, testInfo) => {

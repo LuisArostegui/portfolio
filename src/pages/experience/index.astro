@@ -432,10 +432,6 @@ function formatPeriod(period: string): string {
       grid-template-columns: minmax(12rem, 0.55fr) minmax(0, 1fr);
     }
 
-    .continuation {
-      grid-template-columns: minmax(0, 1fr) auto;
-      align-items: end;
-    }
   }
 
   @media (min-width: 70rem) {
@@ -452,6 +448,11 @@ function formatPeriod(period: string): string {
     .contribution-focus,
     .continuation {
       padding-block: var(--space-8);
+    }
+
+    .continuation {
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: end;
     }
   }
 </style>
