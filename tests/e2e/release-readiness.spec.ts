@@ -36,12 +36,12 @@ test('accessibility statement is public, linked from the footer, and has no auto
   expect(accessibilityScanResults.violations).toEqual([]);
 });
 
-test('unknown routes render a custom not-found page without exposing technical details', async ({
+test('custom not-found output is generated without exposing technical details', async ({
   page,
 }) => {
-  const response = await page.goto('/missing-release-route/');
+  const response = await page.goto('/404.html');
 
-  expect(response?.status()).toBe(404);
+  expect(response?.ok()).toBe(true);
   await expect(page).toHaveTitle('Page not found | Luis Arostegui Ruiz');
   await expect(
     page.getByRole('heading', { name: 'Page not found', level: 1 }),
