@@ -158,7 +158,7 @@ Present key areas supported by evidence, including React and TypeScript, compone
 
 ### 5. Selected experience
 
-Provide a concise preview of professional experience and responsibilities. Detailed, canonical experience content belongs on `/experience`.
+Provide a concise preview of professional experience and responsibilities. Detailed, canonical experience content belongs on `/experience` (now the Experience section of Home; `/experience` redirects to `/#experience`).
 
 ### 6. Engineering process
 
@@ -283,7 +283,7 @@ The recruiter should be able to identify my role and professional relevance with
 
 ```text
 Home
-→ Review engineering strengths
+→ Review Work and Experience
 → Open selected project
 → Read decisions, trade-offs, testing, and architecture
 → Review experience
