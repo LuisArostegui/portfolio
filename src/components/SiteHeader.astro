@@ -139,6 +139,17 @@ const pathname = Astro.url.pathname;
         }
       });
 
+      header.addEventListener('focusout', (event) => {
+        if (
+          compactNavigation.matches &&
+          toggle.getAttribute('aria-expanded') === 'true' &&
+          event.relatedTarget instanceof Node &&
+          !header.contains(event.relatedTarget)
+        ) {
+          setExpanded(false);
+        }
+      });
+
       navigation.addEventListener('click', (event) => {
         if (
           compactNavigation.matches &&

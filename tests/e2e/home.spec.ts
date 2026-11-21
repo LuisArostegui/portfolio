@@ -340,6 +340,45 @@ test('skip link is the first focus stop and targets main content', async ({
   await expect.poll(() => isUnobstructed(skipLink)).toBe(true);
 });
 
+test('mobile menu closes when focus leaves the header and the focus target is not covered', async ({
+  page,
+}, testInfo) => {
+  test.skip(
+    testInfo.project.name !== 'mobile-chromium',
+    'Mobile-only interaction',
+  );
+
+  await page.goto('/');
+  await page.evaluate(() => window.scrollTo(0, 400));
+
+  const menuButton = page.locator('[data-menu-toggle]');
+  await menuButton.focus();
+  await page.keyboard.press('Enter');
+  await expect(menuButton).toHaveAttribute('aria-expanded', 'true');
+
+  const cvLink = page
+    .getByRole('navigation', { name: 'Primary navigation' })
+    .locator('.site-header__cv');
+  for (let index = 0; index < 10; index += 1) {
+    await page.keyboard.press('Tab');
+    if (
+      await cvLink.evaluate((element) => element === document.activeElement)
+    ) {
+      break;
+    }
+  }
+  await expect(cvLink).toBeFocused();
+
+  await page.keyboard.press('Tab');
+  await expect(menuButton).toHaveAttribute('aria-expanded', 'false');
+
+  const focused = page.locator(':focus');
+  await expect(focused).not.toHaveCount(0);
+  await expect(focused).not.toHaveAttribute('data-menu-toggle', /.*/);
+  await focused.scrollIntoViewIfNeeded();
+  await expect.poll(() => isUnobstructed(focused)).toBe(true);
+});
+
 test('experience role headings are unique and name the organisation', async ({
   page,
 }) => {
