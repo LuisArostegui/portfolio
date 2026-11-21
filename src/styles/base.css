@@ -68,34 +68,42 @@ pre {
   line-height: var(--type-code-line-height);
 }
 
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 88px;
+}
+
 a {
-  color: var(--colour-text-accent);
+  color: var(--colour-signal);
   text-decoration-line: underline;
   text-decoration-thickness: from-font;
-  transition-duration: var(--motion-duration-fast);
-  transition-property: color, text-decoration-color;
-  transition-timing-function: var(--motion-ease-standard);
+  text-underline-offset: 4px;
 }
 
-a:hover {
-  color: var(--colour-accent-hover);
-}
-
-a:active {
-  color: var(--colour-accent-active);
+a,
+button {
+  transition:
+    color 140ms var(--motion-ease-standard),
+    background-color 140ms var(--motion-ease-standard),
+    border-color 140ms var(--motion-ease-standard),
+    text-decoration-color 140ms var(--motion-ease-standard);
 }
 
 :focus-visible {
-  outline: var(--space-1) solid var(--colour-focus-ring);
-  outline-offset: var(--space-1);
+  outline: 2px solid var(--colour-focus-ring);
+  outline-offset: 3px;
 }
 
 ::selection {
-  background-color: var(--colour-accent-default);
-  color: var(--colour-text-on-accent);
+  background-color: var(--colour-signal);
+  color: var(--colour-text-on-signal);
 }
 
 @media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
   *,
   *::before,
   *::after {
@@ -108,5 +116,21 @@ a:active {
 @media (forced-colors: active) {
   :focus-visible {
     outline-color: Highlight;
+  }
+
+  a {
+    color: LinkText;
+  }
+
+  button,
+  input,
+  textarea,
+  select {
+    border: 1px solid CanvasText;
+  }
+
+  ::selection {
+    background-color: Highlight;
+    color: HighlightText;
   }
 }
