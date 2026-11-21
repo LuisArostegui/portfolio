@@ -206,6 +206,67 @@ test('mobile navigation is keyboard operable and restores focus when closed', as
   await expect(menuButton).toBeFocused();
 });
 
+test('mobile menu closes after choosing a link and the target clears the header', async ({
+  page,
+}, testInfo) => {
+  test.skip(
+    testInfo.project.name !== 'mobile-chromium',
+    'Mobile-only interaction',
+  );
+
+  await page.goto('/');
+
+  const menuButton = page.locator('[data-menu-toggle]');
+  await menuButton.click();
+  await expect(menuButton).toHaveAttribute('aria-expanded', 'true');
+
+  await page
+    .getByRole('navigation', { name: 'Primary navigation' })
+    .getByRole('link', { name: 'Work', exact: true })
+    .tap();
+
+  await expect(menuButton).toHaveAttribute('aria-expanded', 'false');
+
+  const heading = page.locator('#work h2').first();
+  await expect
+    .poll(async () => {
+      const headerBox = await page.locator('[data-site-header]').boundingBox();
+      const headingBox = await heading.boundingBox();
+
+      return headerBox && headingBox
+        ? headingBox.y - (headerBox.y + headerBox.height)
+        : Number.NEGATIVE_INFINITY;
+    })
+    .toBeGreaterThanOrEqual(-1);
+});
+
+test('header is not sticky on small screens without JavaScript', async ({
+  browser,
+  baseURL,
+}) => {
+  if (!baseURL) {
+    throw new Error('Playwright baseURL is required for the no-JS check.');
+  }
+
+  const context = await browser.newContext({
+    baseURL,
+    javaScriptEnabled: false,
+    viewport: { width: 375, height: 812 },
+  });
+  const page = await context.newPage();
+
+  try {
+    await page.goto('/');
+
+    await expect(page.locator('[data-site-header]')).not.toHaveCSS(
+      'position',
+      'sticky',
+    );
+  } finally {
+    await context.close();
+  }
+});
+
 test('home exposes SEO metadata and public-safe Person structured data', async ({
   page,
 }) => {
@@ -304,7 +365,7 @@ test('copy failure falls back to selecting the address', async ({ page }) => {
   await page.getByRole('button', { name: 'Copy address' }).click();
 
   await expect(page.locator('#contact [role="status"]')).toHaveText(
-    'Selected, press Ctrl+C to copy',
+    'Address selected, copy it manually',
   );
   expect(await page.evaluate(() => window.getSelection()?.toString())).toBe(
     'luisarosteguiruizit@gmail.com',
