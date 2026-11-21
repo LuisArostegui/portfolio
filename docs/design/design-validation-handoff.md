@@ -1,5 +1,7 @@
 # Design validation and implementation handoff
 
+> **Superseded by direction B.** The approved direction B redesign (issue [#120](https://github.com/LuisArostegui/portfolio/issues/120)) supersedes the page designs validated here. The design source is the direction B specification (`Proyectos/Portfolio/Output/Diseño · dirección B.md` in the companion Obsidian vault), the [static prototype](https://claude.ai/artifact/F5AhU9xzXQYYYMWxuVhgfn) (row B) and the [motion prototype](https://claude.ai/artifact/V1yBk4j8fck83vbi7f1veX). The revised routes and navigation are recorded in the [information architecture](../product/information-architecture.md).
+
 ## 1. Purpose
 
 This document is the final implementation-facing checkpoint for the current portfolio design milestone. It validates the product, architecture, foundations, page experiences and interaction contract as one coherent system; records the final design corrections and accepted limitations; identifies what is ready for implementation; and separates design evidence from validation that only the production application can provide.
