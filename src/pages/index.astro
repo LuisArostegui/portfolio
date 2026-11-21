@@ -212,7 +212,7 @@ function getYear(period: string) {
         }, 2000);
       } catch {
         window.getSelection()?.selectAllChildren(address);
-        copyStatus.textContent = 'Selected, press Ctrl+C to copy';
+        copyStatus.textContent = 'Address selected, copy it manually';
       }
     });
   }
