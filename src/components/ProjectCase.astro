@@ -31,7 +31,7 @@ const titleId = `case-${project.id}-title`;
     </h3>
     <p class="case__summary">{project.summary}</p>
     {
-      project.checks && (
+      project.visibility === 'public' && project.checks && (
         <ul
           class="case__checks"
           aria-label="Checks the CI workflow runs on every pull request"

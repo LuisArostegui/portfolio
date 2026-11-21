@@ -34,9 +34,10 @@ const pathname = `/projects/${project.id}/` as RootRelativePath;
 const state = getProjectState(project);
 const projects = await getProjects();
 const nextProject = projects.find((candidate) => candidate.id !== project.id);
-const sourceUrl = project.publicLinks?.find((link) =>
-  /^https:\/\/github\.com\//.test(link),
-);
+const sourceUrl =
+  project.visibility === 'public'
+    ? project.publicLinks?.find((link) => /^https:\/\/github\.com\//.test(link))
+    : undefined;
 const stack = project.technologies?.join(', ');
 const steps = [
   { id: 'problem', label: 'Problem' },
