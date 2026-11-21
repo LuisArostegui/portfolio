@@ -1,5 +1,17 @@
 import AxeBuilder from '@axe-core/playwright';
-import { expect, test } from '@playwright/test';
+import { expect, test, type Locator } from '@playwright/test';
+
+async function isUnobstructed(locator: Locator): Promise<boolean> {
+  return locator.evaluate((element) => {
+    const box = element.getBoundingClientRect();
+    const hit = document.elementFromPoint(
+      box.left + box.width / 2,
+      box.top + box.height / 2,
+    );
+
+    return hit !== null && element.contains(hit);
+  });
+}
 
 const checksWorkflowUrl =
   'https://github.com/LuisArostegui/portfolio/actions/workflows/quality.yml?query=branch%3Amain';
@@ -325,6 +337,7 @@ test('skip link is the first focus stop and targets main content', async ({
   const skipLink = page.getByRole('link', { name: 'Skip to main content' });
   await expect(skipLink).toBeFocused();
   await expect(skipLink).toHaveAttribute('href', '#main-content');
+  await expect.poll(() => isUnobstructed(skipLink)).toBe(true);
 });
 
 test('experience role headings are unique and name the organisation', async ({
