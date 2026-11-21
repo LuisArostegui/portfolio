@@ -1,6 +1,18 @@
 import AxeBuilder from '@axe-core/playwright';
 import { expect, test } from '@playwright/test';
 
+function pathToFileURL(rootDir: string, relative: string): string {
+  const segments = `${rootDir}/${relative}`.split('/');
+  const resolved: string[] = [];
+
+  for (const segment of segments) {
+    if (segment === '..') resolved.pop();
+    else if (segment !== '.' && segment !== '') resolved.push(segment);
+  }
+
+  return `file:///${resolved.map(encodeURIComponent).join('/')}`;
+}
+
 const casePath = '/projects/portfolio-foundation/';
 
 test('case shows facts and sections', async ({ page }) => {
@@ -51,9 +63,31 @@ test('case shows facts and sections', async ({ page }) => {
   );
 });
 
-test('case lists evidence links and names the repository explicitly', async ({
+test('every non-repository public link appears in the Evidence section', async ({
   page,
-}) => {
+}, testInfo) => {
+  // @types/node is not installed, so read the entry through the browser.
+  const sourcePage = await page.context().newPage();
+  await sourcePage.goto(
+    pathToFileURL(
+      testInfo.config.rootDir,
+      '../../src/content/projects/portfolio-foundation.md',
+    ),
+  );
+  const source = await sourcePage.evaluate(() => document.body.innerText);
+  await sourcePage.close();
+
+  const frontmatter = source.split('\n---')[0] ?? '';
+  const links = [...frontmatter.matchAll(/^ {2}- (https:\/\/\S+)$/gm)]
+    .map((match) => match[1]!)
+    .filter(
+      (link) =>
+        !/^https:\/\/github\.com\/[^/]+\/[^/]+\/?$/.test(link) &&
+        !link.includes('actions/workflows'),
+    );
+
+  expect(links.length).toBeGreaterThan(0);
+
   await page.goto(casePath);
 
   await expect(
@@ -62,20 +96,26 @@ test('case lists evidence links and names the repository explicitly', async ({
       .getByRole('link', { name: 'GitHub repository', exact: true }),
   ).toHaveAttribute('href', 'https://github.com/LuisArostegui/portfolio');
 
-  const evidence = page.locator('[data-case-evidence]');
-  await expect(
-    evidence.getByRole('link', { name: 'Issue #67', exact: true }),
-  ).toHaveAttribute(
-    'href',
-    'https://github.com/LuisArostegui/portfolio/issues/67',
-  );
-  await expect(
-    evidence.getByRole('link', { name: 'content-strategy.md', exact: true }),
-  ).toHaveAttribute(
-    'href',
-    'https://github.com/LuisArostegui/portfolio/blob/main/docs/product/content-strategy.md',
-  );
-  await expect(evidence.getByRole('link')).toHaveCount(2);
+  const hrefs = await page.evaluate(() => {
+    const heading = document.getElementById('evidence');
+    const found: string[] = [];
+
+    for (
+      let node = heading?.nextElementSibling;
+      node && node.tagName !== 'H2';
+      node = node.nextElementSibling
+    ) {
+      node
+        .querySelectorAll('a[href]')
+        .forEach((a) => found.push(a.getAttribute('href') ?? ''));
+    }
+
+    return found;
+  });
+
+  for (const link of links) {
+    expect(hrefs).toContain(link);
+  }
 });
 
 test('back link returns to work', async ({ page }) => {

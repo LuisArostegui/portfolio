@@ -47,41 +47,27 @@ export function getProjectState(
   };
 }
 
-const repositoryPattern = /^https:\/\/github\.com\/[^/\s]+\/[^/\s]+\/?$/;
+const repositoryPattern =
+  /^https:\/\/github\.com\/([A-Za-z0-9_.-]+)\/[A-Za-z0-9_.-]+\/?$/;
+const nonRepositoryOwners = new Set([
+  'orgs',
+  'users',
+  'topics',
+  'sponsors',
+  'marketplace',
+  'settings',
+  'features',
+  'apps',
+]);
 
 export function getRepositoryUrl(
   links: readonly string[] | undefined,
 ): string | undefined {
-  return links?.find((link) => repositoryPattern.test(link));
-}
+  return links?.find((link) => {
+    const owner = repositoryPattern.exec(link)?.[1];
 
-export function getEvidenceLinks(
-  links: readonly string[] | undefined,
-): string[] {
-  const repository = getRepositoryUrl(links);
-
-  return (links ?? []).filter((link) => link !== repository);
-}
-
-export function getEvidenceLabel(url: string): string {
-  const { hostname, pathname } = new URL(url);
-  const path = pathname.replace(/\/+$/, '');
-
-  if (hostname === 'github.com') {
-    const issue = /^\/[^/]+\/[^/]+\/issues\/(\d+)$/.exec(path);
-
-    if (issue?.[1] !== undefined) {
-      return `Issue #${issue[1]}`;
-    }
-
-    const blob = /^\/[^/]+\/[^/]+\/blob\/.+\/([^/]+)$/.exec(path);
-
-    if (blob?.[1] !== undefined) {
-      return blob[1];
-    }
-  }
-
-  return `${hostname}${path}`;
+    return owner !== undefined && !nonRepositoryOwners.has(owner);
+  });
 }
 
 function toProjectDetail(entry: ProjectEntry): ProjectDetail {

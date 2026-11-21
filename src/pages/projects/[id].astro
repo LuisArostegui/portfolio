@@ -1,8 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import {
-  getEvidenceLabel,
-  getEvidenceLinks,
   getProjectById,
   getProjectState,
   getProjects,
@@ -41,8 +39,6 @@ const sourceUrl =
   project.visibility === 'public'
     ? getRepositoryUrl(project.publicLinks)
     : undefined;
-const evidenceLinks =
-  project.visibility === 'public' ? getEvidenceLinks(project.publicLinks) : [];
 const stack = project.technologies?.join(', ');
 const steps = [
   { id: 'problem', label: 'Problem' },
@@ -107,26 +103,6 @@ const steps = [
       </ol>
       <div class="prose">
         <Content />
-        {
-          evidenceLinks.length > 0 && (
-            <section
-              class="evidence-links"
-              aria-labelledby="evidence-links-title"
-              data-case-evidence
-            >
-              <h3 id="evidence-links-title">Evidence links</h3>
-              <ul>
-                {evidenceLinks.map((link) => (
-                  <li>
-                    <a href={link} rel="noreferrer">
-                      {getEvidenceLabel(link)}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </section>
-          )
-        }
       </div>
     </div>
 
@@ -339,38 +315,6 @@ const steps = [
     padding: var(--space-2) var(--space-3);
     border: 1px solid var(--colour-border-subtle);
     text-align: start;
-  }
-
-  .evidence-links {
-    margin-block-start: var(--space-6);
-  }
-
-  .evidence-links h3 {
-    margin: 0 0 var(--space-3);
-    color: var(--colour-text-primary);
-    font-size: 1.3rem;
-    line-height: 1.25;
-  }
-
-  .evidence-links ul {
-    display: grid;
-    gap: var(--space-1);
-    padding: 0;
-    margin: 0;
-    font-family: var(--font-data);
-    font-size: 0.875rem;
-    list-style: none;
-  }
-
-  .evidence-links a {
-    display: inline-flex;
-    min-block-size: 44px;
-    align-items: center;
-    color: var(--colour-text-primary);
-  }
-
-  .evidence-links a:hover {
-    color: var(--colour-signal-hover);
   }
 
   .case-next {

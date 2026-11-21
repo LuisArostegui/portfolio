@@ -11,8 +11,6 @@ vi.mock('astro:content', () => ({
 
 import { getExperience } from './experience';
 import {
-  getEvidenceLabel,
-  getEvidenceLinks,
   getFeaturedProjects,
   getProjectState,
   getProjects,
@@ -241,39 +239,23 @@ describe('experience content queries', () => {
   });
 });
 
-describe('project evidence links', () => {
+describe('getRepositoryUrl', () => {
   const repository = 'https://github.com/LuisArostegui/portfolio';
-  const issue = `${repository}/issues/67`;
-  const blob = `${repository}/blob/main/docs/product/content-strategy.md`;
-  const external = 'https://example.com/writing/case-notes';
 
   it.each([
-    [[issue, repository], repository],
+    [[`${repository}/issues/67`, repository], repository],
     [[`${repository}/`], `${repository}/`],
-    [[issue, blob, external], undefined],
+    [
+      [`${repository}/blob/main/docs/a.md`, 'https://example.com/a/b'],
+      undefined,
+    ],
     [[`${repository}/tree/main`], undefined],
     [['http://github.com/a/b'], undefined],
+    [['https://github.com/orgs/x'], undefined],
+    [[`${repository}?tab=readme`], undefined],
+    [[`${repository}#readme`], undefined],
     [undefined, undefined],
   ] as const)('finds the repository in %o', (links, expected) => {
     expect(getRepositoryUrl(links)).toBe(expected);
-  });
-
-  it('returns every link except the repository root', () => {
-    expect(getEvidenceLinks([repository, issue, blob, external])).toEqual([
-      issue,
-      blob,
-      external,
-    ]);
-    expect(getEvidenceLinks(undefined)).toEqual([]);
-    expect(getEvidenceLinks([repository])).toEqual([]);
-  });
-
-  it.each([
-    [issue, 'Issue #67'],
-    [blob, 'content-strategy.md'],
-    [external, 'example.com/writing/case-notes'],
-    ['https://example.com/', 'example.com'],
-  ])('labels %s as %s', (url, label) => {
-    expect(getEvidenceLabel(url)).toBe(label);
   });
 });

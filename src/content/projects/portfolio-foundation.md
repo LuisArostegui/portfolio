@@ -84,11 +84,11 @@ Trade-off: there is no blanket coverage target; each test has to protect a real 
 
 The current MVP includes static routes for Home, project detail, and Accessibility. The content boundary validates project and experience frontmatter at build time, and browser tests cover navigation, generated routes, responsive layout risks, and automated accessibility scans.
 
-| Evidence type        | Public-safe purpose                          | Validation route                                                                                                                                                          |
-| -------------------- | -------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Product documents    | Explain audience, scope, and content rules   | Repository documentation and page copy                                                                                                                                    |
-| Architecture records | Capture accepted technical boundaries        | [ADRs](https://github.com/LuisArostegui/portfolio/tree/main/docs/architecture/decisions) and [implementation review](https://github.com/LuisArostegui/portfolio/pull/110) |
-| Automated tests      | Protect route, link, and accessibility risks | [Vitest and Playwright quality gates](https://github.com/LuisArostegui/portfolio/blob/main/.github/workflows/quality.yml)                                                 |
+| Evidence type        | Public-safe purpose                          | Validation route                                                                                                                                                                   |
+| -------------------- | -------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Product documents    | Explain audience, scope, and content rules   | [content-strategy.md](https://github.com/LuisArostegui/portfolio/blob/main/docs/product/content-strategy.md) and [Issue #67](https://github.com/LuisArostegui/portfolio/issues/67) |
+| Architecture records | Capture accepted technical boundaries        | [ADRs](https://github.com/LuisArostegui/portfolio/tree/main/docs/architecture/decisions) and [implementation review](https://github.com/LuisArostegui/portfolio/pull/110)          |
+| Automated tests      | Protect route, link, and accessibility risks | [Vitest and Playwright quality gates](https://github.com/LuisArostegui/portfolio/blob/main/.github/workflows/quality.yml)                                                          |
 
 ## Outcome
 
