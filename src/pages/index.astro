@@ -111,7 +111,10 @@ function getYear(period: string) {
                   <span class="role__summary">{data.summary}</span>
                 </div>
                 <div class="role__body">
-                  <h3>{data.role}</h3>
+                  <h3>
+                    {data.role}
+                    <span class="visually-hidden">at {data.organisation}</span>
+                  </h3>
                   <div class="role__content">
                     <Content />
                   </div>
@@ -209,6 +212,7 @@ function getYear(period: string) {
         }, 2000);
       } catch {
         window.getSelection()?.selectAllChildren(address);
+        copyStatus.textContent = 'Selected, press Ctrl+C to copy';
       }
     });
   }

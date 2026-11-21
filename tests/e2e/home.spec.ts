@@ -221,6 +221,28 @@ test('home exposes SEO metadata and public-safe Person structured data', async (
     'https://luis-arostegui-portfolio.luisarosteguiruizit.workers.dev/',
   );
 
+  const socialPreviewUrl =
+    'https://luis-arostegui-portfolio.luisarosteguiruizit.workers.dev/social-preview.png';
+  await expect(page.locator('meta[property="og:image"]')).toHaveAttribute(
+    'content',
+    socialPreviewUrl,
+  );
+  await expect(page.locator('meta[property="og:image:width"]')).toHaveAttribute(
+    'content',
+    '1200',
+  );
+  await expect(
+    page.locator('meta[property="og:image:height"]'),
+  ).toHaveAttribute('content', '630');
+  await expect(page.locator('meta[name="twitter:card"]')).toHaveAttribute(
+    'content',
+    'summary_large_image',
+  );
+  await expect(page.locator('meta[name="twitter:image"]')).toHaveAttribute(
+    'content',
+    socialPreviewUrl,
+  );
+
   const jsonLd = await page
     .locator('script[type="application/ld+json"]')
     .textContent();
@@ -231,4 +253,68 @@ test('home exposes SEO metadata and public-safe Person structured data', async (
     name: 'Luis Arostegui Ruiz',
     jobTitle: 'Software Engineer',
   });
+});
+
+test('skip link is the first focus stop and targets main content', async ({
+  page,
+}) => {
+  await page.goto('/');
+  await page.keyboard.press('Tab');
+
+  const skipLink = page.getByRole('link', { name: 'Skip to main content' });
+  await expect(skipLink).toBeFocused();
+  await expect(skipLink).toHaveAttribute('href', '#main-content');
+});
+
+test('experience role headings are unique and name the organisation', async ({
+  page,
+}) => {
+  await page.goto('/');
+
+  const names = await page
+    .locator('#experience')
+    .getByRole('heading', { level: 3 })
+    .evaluateAll((headings) =>
+      headings.map((heading) =>
+        (heading.textContent ?? '').replace(/\s+/g, ' ').trim(),
+      ),
+    );
+
+  expect(names.length).toBeGreaterThan(1);
+  expect(new Set(names).size).toBe(names.length);
+  expect(names.some((name) => name.includes('Openbank'))).toBe(true);
+  expect(names.some((name) => name.includes('Nucleoo'))).toBe(true);
+  await expect(
+    page.getByRole('heading', {
+      level: 3,
+      name: 'Software Engineer at Openbank',
+    }),
+  ).toBeVisible();
+});
+
+test('copy failure falls back to selecting the address', async ({ page }) => {
+  await page.addInitScript(() => {
+    Object.defineProperty(navigator, 'clipboard', {
+      configurable: true,
+      value: { writeText: () => Promise.reject(new Error('denied')) },
+    });
+  });
+  await page.goto('/');
+
+  await page.getByRole('button', { name: 'Copy address' }).click();
+
+  await expect(page.locator('#contact [role="status"]')).toHaveText(
+    'Selected, press Ctrl+C to copy',
+  );
+  expect(await page.evaluate(() => window.getSelection()?.toString())).toBe(
+    'luisarosteguiruizit@gmail.com',
+  );
+});
+
+test('pipeline caption is generic for any project', async ({ page }) => {
+  await page.goto('/');
+
+  await expect(page.locator('#work figure figcaption')).toHaveText(
+    'How this project gets from the repository to production.',
+  );
 });
