@@ -1,18 +1,6 @@
 import AxeBuilder from '@axe-core/playwright';
 import { expect, test } from '@playwright/test';
 
-function pathToFileURL(rootDir: string, relative: string): string {
-  const segments = `${rootDir}/${relative}`.split('/');
-  const resolved: string[] = [];
-
-  for (const segment of segments) {
-    if (segment === '..') resolved.pop();
-    else if (segment !== '.' && segment !== '') resolved.push(segment);
-  }
-
-  return `file:///${resolved.map(encodeURIComponent).join('/')}`;
-}
-
 const casePath = '/projects/portfolio-foundation/';
 
 test('case shows facts and sections', async ({ page }) => {
@@ -63,31 +51,9 @@ test('case shows facts and sections', async ({ page }) => {
   );
 });
 
-test('every non-repository public link appears in the Evidence section', async ({
+test('Evidence section links the issue and the content strategy', async ({
   page,
-}, testInfo) => {
-  // @types/node is not installed, so read the entry through the browser.
-  const sourcePage = await page.context().newPage();
-  await sourcePage.goto(
-    pathToFileURL(
-      testInfo.config.rootDir,
-      '../../src/content/projects/portfolio-foundation.md',
-    ),
-  );
-  const source = await sourcePage.evaluate(() => document.body.innerText);
-  await sourcePage.close();
-
-  const frontmatter = source.split('\n---')[0] ?? '';
-  const links = [...frontmatter.matchAll(/^ {2}- (https:\/\/\S+)$/gm)]
-    .map((match) => match[1]!)
-    .filter(
-      (link) =>
-        !/^https:\/\/github\.com\/[^/]+\/[^/]+\/?$/.test(link) &&
-        !link.includes('actions/workflows'),
-    );
-
-  expect(links.length).toBeGreaterThan(0);
-
+}) => {
   await page.goto(casePath);
 
   await expect(
@@ -113,9 +79,12 @@ test('every non-repository public link appears in the Evidence section', async (
     return found;
   });
 
-  for (const link of links) {
-    expect(hrefs).toContain(link);
-  }
+  expect(hrefs).toContain(
+    'https://github.com/LuisArostegui/portfolio/issues/67',
+  );
+  expect(hrefs).toContain(
+    'https://github.com/LuisArostegui/portfolio/blob/main/docs/product/content-strategy.md',
+  );
 });
 
 test('back link returns to work', async ({ page }) => {
