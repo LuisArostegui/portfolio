@@ -1,263 +1,106 @@
 import AxeBuilder from '@axe-core/playwright';
 import { expect, test } from '@playwright/test';
 
-test('projects lists canonical production entries and links to generated project detail', async ({
-  page,
-}) => {
-  await page.goto('/projects/');
+const casePath = '/projects/portfolio-foundation/';
 
-  await expect(
-    page.getByRole('heading', { name: 'Projects', level: 1 }),
-  ).toBeVisible();
-
-  const portfolioProject = page.getByRole('article').filter({
-    has: page.getByRole('heading', { name: 'Portfolio foundation' }),
-  });
-
-  await expect(portfolioProject).toContainText(
-    'A public Astro portfolio built to present professional experience, project evidence, and engineering practice through typed content and static-first routes.',
-  );
-  await expect(portfolioProject).toContainText('Repository maintainer');
-  await expect(portfolioProject).toContainText('active');
-  await expect(portfolioProject).toContainText('Content modelling');
-  await expect(portfolioProject).toContainText('Astro');
-  await expect(page.getByText('Content model example')).toHaveCount(0);
-
-  const projectLink = portfolioProject.getByRole('link', {
-    name: 'View project: Portfolio foundation',
-  });
-  await expect(projectLink).toHaveAttribute(
-    'href',
-    '/projects/portfolio-foundation/',
-  );
-
-  await page.goto('/projects/portfolio-foundation/');
-  await expect(
-    page.getByRole('heading', { name: 'Portfolio foundation', level: 1 }),
-  ).toBeVisible();
-  await expect(
-    page.getByRole('link', { name: 'Back to Projects' }),
-  ).toHaveAttribute('href', '/projects/');
-});
-
-test('project detail renders canonical narrative, evidence, and continuation', async ({
-  page,
-}) => {
-  await page.goto('/projects/portfolio-foundation/');
+test('case shows facts and sections', async ({ page }) => {
+  await page.goto(casePath);
 
   await expect(page.getByRole('heading', { level: 1 })).toHaveCount(1);
   await expect(
     page.getByRole('heading', { name: 'Portfolio foundation', level: 1 }),
   ).toBeVisible();
-  await expect(
-    page.getByRole('heading', { name: 'Context', level: 2 }),
-  ).toBeVisible();
-  await expect(
-    page.getByText(
-      'The portfolio needs to communicate professional positioning, experience, selected project evidence, and contact paths without relying on a CMS or runtime content service.',
-    ),
-  ).toBeVisible();
-  await expect(
-    page.getByRole('heading', { name: 'Decisions and trade-offs', level: 2 }),
-  ).toBeVisible();
-  await expect(
-    page.getByText(
-      'The implementation uses Astro Content Collections for projects and experience so previews and detail pages derive from one canonical Markdown entry per content item.',
-    ),
-  ).toBeVisible();
 
-  await expect(
-    page.getByRole('heading', { name: 'Public evidence', level: 2 }),
-  ).toBeVisible();
-  await expect(
-    page.getByRole('link', { name: 'GitHub repository' }),
-  ).toHaveAttribute('href', 'https://github.com/LuisArostegui/portfolio');
-  await expect(
-    page.getByRole('link', { name: 'GitHub issue' }),
-  ).toHaveAttribute(
+  const facts = page.locator('[data-case-facts]');
+  await expect(facts.locator('dt', { hasText: 'role' })).toBeVisible();
+  await expect(facts).toContainText('Repository maintainer');
+  await expect(facts.locator('dt', { hasText: 'stack' })).toBeVisible();
+  await expect(facts).toContainText('Astro, TypeScript');
+  await expect(facts.locator('dt', { hasText: 'source' })).toBeVisible();
+  await expect(facts.getByRole('link', { name: 'GitHub' })).toHaveAttribute(
     'href',
-    'https://github.com/LuisArostegui/portfolio/issues/67',
+    'https://github.com/LuisArostegui/portfolio',
   );
-  await expect(
-    page.getByRole('link', { name: 'GitHub documentation' }),
-  ).toHaveAttribute(
-    'href',
-    'https://github.com/LuisArostegui/portfolio/blob/main/docs/product/content-strategy.md',
-  );
+  // Hosting is not in the project content, so it is omitted rather than hard-coded.
+  await expect(facts.locator('dt', { hasText: 'hosting' })).toHaveCount(0);
 
-  await expect(
-    page.getByRole('navigation', { name: 'Project continuation' }),
-  ).toBeVisible();
-  await expect(
-    page.getByRole('link', { name: 'All projects' }),
-  ).toHaveAttribute('href', '/projects/');
+  const steps = page.locator('[data-case-steps]');
+  for (const [name, id] of [
+    ['Problem', 'problem'],
+    ['Decisions', 'decisions'],
+    ['Evidence', 'evidence'],
+    ['Outcome', 'outcome'],
+  ] as const) {
+    await expect(steps.getByRole('link', { name })).toHaveAttribute(
+      'href',
+      `#${id}`,
+    );
+    await expect(page.getByRole('heading', { name, level: 2 })).toHaveAttribute(
+      'id',
+      id,
+    );
+  }
+
+  await expect(page.locator('h1[data-case-title]')).toHaveAttribute(
+    'data-case-title',
+    'portfolio-foundation',
+  );
+  await expect(page.locator('[data-read-progress]')).toHaveAttribute(
+    'aria-hidden',
+    'true',
+  );
 });
 
-test('project detail does not introduce page-level horizontal scrolling on mobile', async ({
-  page,
-}, testInfo) => {
-  test.skip(
-    testInfo.project.name !== 'mobile-chromium',
-    'Mobile-only responsive check',
-  );
-
-  await page.goto('/projects/portfolio-foundation/');
+test('back link returns to work', async ({ page }) => {
+  await page.goto(casePath);
 
   await expect(
-    page.getByRole('heading', { name: 'Technical evidence' }),
+    page.getByRole('link', { name: 'Back to work' }),
+  ).toHaveAttribute('href', '/#work');
+});
+
+test('next case only when another exists', async ({ page }) => {
+  await page.goto(casePath);
+
+  await expect(page.getByRole('link', { name: /Next case/ })).toHaveCount(0);
+});
+
+test('Work is current in navigation', async ({ page }) => {
+  await page.goto(casePath);
+
+  const menuToggle = page.getByRole('button', { name: 'Open navigation menu' });
+  if (await menuToggle.isVisible()) {
+    await menuToggle.click();
+  }
+
+  await expect(
+    page
+      .getByRole('navigation', { name: 'Primary navigation' })
+      .getByRole('link', { name: 'Work' }),
+  ).toHaveAttribute('aria-current', 'page');
+});
+
+test('no horizontal scroll at 320 px', async ({ page }) => {
+  await page.setViewportSize({ width: 320, height: 700 });
+  await page.goto(casePath);
+
+  await expect(
+    page.getByRole('heading', { name: 'Evidence', level: 2 }),
   ).toBeVisible();
 
-  const hasPageLevelHorizontalScroll = await page.evaluate(
+  const overflows = await page.evaluate(
     () =>
       document.documentElement.scrollWidth >
       document.documentElement.clientWidth,
   );
 
-  expect(hasPageLevelHorizontalScroll).toBe(false);
-
-  const technicalContentLayout = await page.evaluate(() => {
-    const codeBlock = document.querySelector('.project-prose pre');
-    const table = document.querySelector('.project-prose table');
-
-    if (
-      codeBlock === null ||
-      table === null ||
-      codeBlock.parentElement === null ||
-      table.parentElement === null
-    ) {
-      throw new Error('Expected project technical content was not rendered.');
-    }
-
-    return {
-      codeBlockLocallyScrolls:
-        codeBlock.scrollWidth > codeBlock.clientWidth &&
-        codeBlock.clientWidth <= document.documentElement.clientWidth,
-      tableFitsPage: table.scrollWidth <= document.documentElement.clientWidth,
-    };
-  });
-
-  expect(technicalContentLayout).toEqual({
-    codeBlockLocallyScrolls: true,
-    tableFitsPage: true,
-  });
+  expect(overflows).toBe(false);
 });
 
-test('projects and project detail have no automatically detectable accessibility violations', async ({
-  page,
-}) => {
-  await page.goto('/projects/');
+test('no axe violations', async ({ page }) => {
+  await page.goto(casePath);
 
-  const projectsScanResults = await new AxeBuilder({ page }).analyze();
+  const results = await new AxeBuilder({ page }).analyze();
 
-  expect(projectsScanResults.violations).toEqual([]);
-
-  await page.goto('/projects/portfolio-foundation/');
-
-  const detailScanResults = await new AxeBuilder({ page }).analyze();
-
-  expect(detailScanResults.violations).toEqual([]);
-});
-
-test('project-card feedback uses restrained motion and respects reduced motion', async ({
-  browser,
-  baseURL,
-  page,
-}) => {
-  if (!baseURL) {
-    throw new Error(
-      'Playwright baseURL is required for reduced-motion checks.',
-    );
-  }
-
-  await page.goto('/projects/');
-
-  const projectCard = page.locator('.project-card').first();
-  const defaultMotion = await projectCard.evaluate((element) => {
-    const styles = getComputedStyle(element);
-
-    return {
-      backgroundColor: styles.backgroundColor,
-      borderColor: styles.borderTopColor,
-      transitionDuration: styles.transitionDuration,
-      transitionProperty: styles.transitionProperty,
-      transform: styles.transform,
-    };
-  });
-
-  expect(defaultMotion.transitionProperty).toContain('background-color');
-  expect(defaultMotion.transitionProperty).toContain('border-color');
-  expect(defaultMotion.transitionDuration).not.toBe('0s');
-  expect(defaultMotion.transform).toBe('none');
-
-  await projectCard
-    .getByRole('link', { name: 'View project: Portfolio foundation' })
-    .focus();
-
-  await expect
-    .poll(async () => {
-      const styles = await projectCard.evaluate((element) => {
-        const styles = getComputedStyle(element);
-
-        return {
-          backgroundColor: styles.backgroundColor,
-          borderColor: styles.borderTopColor,
-          transform: styles.transform,
-        };
-      });
-
-      return (
-        styles.backgroundColor !== defaultMotion.backgroundColor &&
-        styles.borderColor !== defaultMotion.borderColor
-      );
-    })
-    .toBe(true);
-
-  const focusWithinStyle = await projectCard.evaluate((element) => {
-    const styles = getComputedStyle(element);
-
-    return {
-      backgroundColor: styles.backgroundColor,
-      borderColor: styles.borderTopColor,
-      transform: styles.transform,
-    };
-  });
-
-  expect(focusWithinStyle.backgroundColor).not.toBe(
-    defaultMotion.backgroundColor,
-  );
-  expect(focusWithinStyle.borderColor).not.toBe(defaultMotion.borderColor);
-  expect(focusWithinStyle.transform).toBe('none');
-
-  const reducedMotionContext = await browser.newContext({
-    baseURL,
-    reducedMotion: 'reduce',
-  });
-  const reducedMotionPage = await reducedMotionContext.newPage();
-
-  try {
-    await reducedMotionPage.goto('/projects/');
-
-    const reducedMotionCard = reducedMotionPage
-      .locator('.project-card')
-      .first();
-    await expect(
-      reducedMotionCard.getByRole('link', {
-        name: 'View project: Portfolio foundation',
-      }),
-    ).toBeVisible();
-
-    const reducedMotionStyle = await reducedMotionCard.evaluate((element) => {
-      const styles = getComputedStyle(element);
-
-      return {
-        transitionDuration: styles.transitionDuration,
-        transform: styles.transform,
-      };
-    });
-
-    expect(reducedMotionStyle.transitionDuration).toBe('0s');
-    expect(reducedMotionStyle.transform).toBe('none');
-  } finally {
-    await reducedMotionContext.close();
-  }
+  expect(results.violations).toEqual([]);
 });

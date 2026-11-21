@@ -36,30 +36,53 @@ pipeline:
     detail: static assets
 ---
 
-## Context
+## Problem
 
-The portfolio needs to communicate professional positioning, experience, selected project evidence, and contact paths without relying on a CMS or runtime content service.
-
-## Constraints
+The portfolio has to communicate professional positioning, experience, selected project evidence, and contact paths without relying on a CMS or runtime content service.
 
 The repository is public, so content and assets must be safe to disclose before they are committed. The MVP also needs to stay static-first, use Git-tracked content, avoid unnecessary dependencies, and keep Home previews derived from canonical project and experience entries.
 
-## Decisions and trade-offs
+## Decisions
 
-The implementation uses Astro Content Collections for projects and experience so previews and detail pages derive from one canonical Markdown entry per content item. This keeps content reviewable in Git and avoids introducing a CMS before there is a measured editorial need.
+<section class="decision">
 
-Astro pages own route composition and semantic HTML. Shared query modules keep collection access, sorting, and mapping out of page templates, while CSS remains local to route files unless reuse justifies extraction.
+ADR-0004
 
-## Technical evidence
+### One Markdown entry per project, validated at build time
 
-The current MVP includes static routes for Home, Projects, project detail, and Experience. The content boundary validates project and experience frontmatter at build time, and browser tests cover navigation, generated routes, responsive layout risks, and automated accessibility scans.
+The implementation uses Astro Content Collections for projects and experience, so previews and detail pages derive from one canonical Markdown entry per content item. Content stays reviewable in Git.
 
-```ts
-const portfolioContentBoundary =
-  'Astro Content Collections validate canonical project and experience entries before production output is generated.';
-const longPublicRouteEvidenceIdentifier =
-  'portfolio_project_detail_markdown_code_block_overflow_validation_for_static_public_evidence_without_runtime_content_dependencies';
-```
+Trade-off: there is no editing interface until a measured editorial need justifies introducing a CMS.
+
+</section>
+
+<section class="decision">
+
+ADR-0001
+
+### Static pages first, client code only where it earns its place
+
+Astro pages own route composition and semantic HTML. Shared query modules keep collection access, sorting, and mapping out of page templates.
+
+Trade-off: every interactive feature has to justify what it costs the client.
+
+</section>
+
+<section class="decision">
+
+ADR-0006
+
+### Tests chosen by risk
+
+Browser tests cover navigation, generated routes, responsive layout risks, and automated accessibility scans, while the content boundary validates project and experience frontmatter at build time.
+
+Trade-off: there is no blanket coverage target; each test has to protect a real journey or risk.
+
+</section>
+
+## Evidence
+
+The current MVP includes static routes for Home, Experience, and project detail. The content boundary validates project and experience frontmatter at build time, and browser tests cover navigation, generated routes, responsive layout risks, and automated accessibility scans.
 
 | Evidence type        | Public-safe purpose                          | Validation route                       |
 | -------------------- | -------------------------------------------- | -------------------------------------- |

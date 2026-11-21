@@ -1,7 +1,10 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import TagList from '../../components/TagList.astro';
-import { getProjectById, getProjects } from '../../lib/content/projects';
+import {
+  getProjectById,
+  getProjectState,
+  getProjects,
+} from '../../lib/content/projects';
 import type { RootRelativePath } from '../../lib/siteMetadata';
 
 export async function getStaticPaths() {
@@ -28,38 +31,19 @@ const project = projectDocument.data;
 const Content = projectDocument.Content;
 const pathname = `/projects/${project.id}/` as RootRelativePath;
 
-function formatPublicLinkLabel(link: string): string {
-  const url = new URL(link);
-  const hostname = url.hostname.replace(/^www\./, '');
-  const [owner, repo, section, ...pathParts] = url.pathname
-    .split('/')
-    .filter(Boolean);
-
-  if (hostname === 'github.com') {
-    if (owner !== undefined && repo !== undefined && section === undefined) {
-      return 'GitHub repository';
-    }
-
-    if (section === 'issues') {
-      return 'GitHub issue';
-    }
-
-    if (section === 'pull') {
-      return 'GitHub pull request';
-    }
-
-    if (
-      (section === 'blob' || section === 'tree') &&
-      pathParts.includes('docs')
-    ) {
-      return 'GitHub documentation';
-    }
-
-    return 'GitHub evidence';
-  }
-
-  return `Public evidence on ${hostname}`;
-}
+const state = getProjectState(project);
+const projects = await getProjects();
+const nextProject = projects.find((candidate) => candidate.id !== project.id);
+const sourceUrl = project.publicLinks?.find((link) =>
+  /^https:\/\/github\.com\//.test(link),
+);
+const stack = project.technologies?.join(', ');
+const steps = [
+  { id: 'problem', label: 'Problem' },
+  { id: 'decisions', label: 'Decisions' },
+  { id: 'evidence', label: 'Evidence' },
+  { id: 'outcome', label: 'Outcome' },
+];
 ---
 
 <BaseLayout
@@ -67,76 +51,68 @@ function formatPublicLinkLabel(link: string): string {
   description={project.summary}
   pathname={pathname}
 >
-  <a class="back-link" href="/projects/">Back to Projects</a>
+  <a class="back-link" href="/#work">Back to work</a>
 
-  <article class="project-detail" aria-labelledby="project-heading">
-    <header class="project-header">
-      <p class="eyebrow">{project.status} project</p>
-      <h1 id="project-heading">{project.title}</h1>
-      <p>{project.summary}</p>
-    </header>
-
-    <section class="project-overview" aria-labelledby="overview-heading">
-      <h2 id="overview-heading">Project overview</h2>
-      <dl class="project-facts">
+  <article class="case-page" aria-labelledby="case-title">
+    <header class="case-head">
+      <span class="read-progress" data-read-progress aria-hidden="true"></span>
+      <p class="case-state" data-tone={state.tone}>
+        <span aria-hidden="true">{state.symbol}</span>{' '}{state.label}
+      </p>
+      <h1 id="case-title" data-case-title={project.id}>{project.title}</h1>
+      <p class="lede">{project.summary}</p>
+      <dl class="facts" data-case-facts>
         <div>
-          <dt>Role</dt>
+          <dt>role</dt>
           <dd>{project.role}</dd>
         </div>
-        <div>
-          <dt>Status</dt>
-          <dd>{project.status}</dd>
-        </div>
+        {
+          stack !== undefined && (
+            <div>
+              <dt>stack</dt>
+              <dd>{stack}</dd>
+            </div>
+          )
+        }
+        {
+          sourceUrl !== undefined && (
+            <div>
+              <dt>source</dt>
+              <dd>
+                <a href={sourceUrl} rel="noreferrer">
+                  GitHub repository
+                </a>
+              </dd>
+            </div>
+          )
+        }
       </dl>
-    </section>
+    </header>
 
-    <section class="project-metadata" aria-labelledby="capabilities-heading">
-      <h2 id="capabilities-heading">Capabilities</h2>
-      <TagList
-        items={project.capabilities}
-        ariaLabel={`${project.title} capabilities`}
-      />
-    </section>
-
-    <div class="project-prose">
-      <Content />
+    <div class="case-layout">
+      <ol class="steps" data-case-steps aria-label="Case sections">
+        {
+          steps.map((step) => (
+            <li>
+              <a href={`#${step.id}`}>{step.label}</a>
+            </li>
+          ))
+        }
+      </ol>
+      <div class="prose">
+        <Content />
+      </div>
     </div>
 
     {
-      project.technologies !== undefined && (
-        <section
-          class="project-metadata"
-          aria-labelledby="technologies-heading"
-        >
-          <h2 id="technologies-heading">Technologies</h2>
-          <TagList
-            items={project.technologies}
-            quiet
-            ariaLabel={`${project.title} technologies`}
-          />
-        </section>
+      nextProject !== undefined && (
+        <nav class="case-next" aria-label="Case navigation">
+          <a href={`/projects/${nextProject.id}/`}>
+            Next case: {nextProject.title}
+          </a>
+        </nav>
       )
     }
-
-    {
-      project.publicLinks !== undefined && (
-        <section class="project-evidence" aria-labelledby="evidence-heading">
-          <h2 id="evidence-heading">Public evidence</h2>
-          <ul aria-label={`${project.title} public evidence`}>
-            {project.publicLinks.map((link) => (
-              <li>
-                <a href={link}>{formatPublicLinkLabel(link)}</a>
-              </li>
-            ))}
-          </ul>
-        </section>
-      )
-    }
-
-    <nav class="project-continuation" aria-label="Project continuation">
-      <h2>Continue exploring</h2>
-      <a href="/projects/">All projects</a>
-    </nav>
   </article>
 </BaseLayout>
 
@@ -148,223 +124,203 @@ function formatPublicLinkLabel(link: string): string {
     );
   }
 
-  .back-link {
+  .back-link,
+  .case-next a {
     display: inline-flex;
     min-block-size: 44px;
     align-items: center;
-    margin-block-end: var(--space-6);
-    color: var(--colour-signal);
-    font-family: var(--type-label-font-family);
-    font-size: var(--type-label-font-size);
-    font-weight: var(--type-label-font-weight);
+    color: var(--colour-text-primary);
+    font-family: var(--font-data);
+    font-size: 0.875rem;
   }
 
-  .project-detail,
-  .project-header,
-  .project-overview,
-  .project-metadata,
-  .project-prose,
-  .project-evidence,
-  .project-continuation {
+  .back-link:hover,
+  .case-next a:hover {
+    color: var(--colour-signal-hover);
+  }
+
+  .case-page {
     min-inline-size: 0;
     overflow-wrap: anywhere;
   }
 
-  .project-detail {
+  .case-head {
+    position: relative;
     display: grid;
-    gap: var(--space-6);
+    gap: var(--space-5);
+    padding-block: var(--space-6) var(--space-7);
   }
 
-  .project-header {
-    max-inline-size: var(--layout-content-readable);
-    padding-block-end: var(--space-6);
-    border-block-end: 1px solid var(--colour-border-subtle);
+  .read-progress {
+    position: absolute;
+    inset-block-end: 0;
+    inset-inline: 0;
+    block-size: 0;
   }
 
-  .project-header h1 {
-    margin-block: var(--space-3) var(--space-4);
-    font-size: var(--type-heading-1-font-size);
-    line-height: var(--type-heading-1-line-height);
-  }
-
-  .project-header p:not(.eyebrow) {
-    margin-block: 0;
-    color: var(--colour-text-secondary);
-    font-size: var(--type-body-large-font-size);
-    line-height: var(--type-body-large-line-height);
-  }
-
-  .eyebrow {
-    margin-block: 0;
-    color: var(--colour-text-muted);
-    font-family: var(--type-metadata-font-family);
-    font-size: var(--type-metadata-font-size);
-    font-weight: var(--type-metadata-font-weight);
-    line-height: var(--type-metadata-line-height);
-    text-transform: uppercase;
-  }
-
-  .project-overview,
-  .project-metadata,
-  .project-prose,
-  .project-evidence,
-  .project-continuation {
-    max-inline-size: var(--layout-content-readable);
-  }
-
-  .project-overview h2,
-  .project-metadata h2,
-  .project-evidence h2,
-  .project-continuation h2 {
-    margin-block: 0 var(--space-4);
-    font-size: var(--type-heading-3-font-size);
-    line-height: var(--type-heading-3-line-height);
-  }
-
-  .project-facts {
-    display: grid;
-    gap: var(--space-3);
+  .case-state {
     margin: 0;
-  }
-
-  .project-facts div {
-    padding-block-start: var(--space-3);
-    border-block-start: 1px solid var(--colour-border-subtle);
-  }
-
-  dt {
-    color: var(--colour-text-primary);
-    font-family: var(--type-label-font-family);
-    font-size: var(--type-label-font-size);
-    font-weight: var(--type-label-font-weight);
-    line-height: var(--type-label-line-height);
-  }
-
-  dd {
-    margin: var(--space-1) 0 0;
-    color: var(--colour-text-secondary);
-  }
-
-  .project-prose {
-    color: var(--colour-text-secondary);
-  }
-
-  .project-prose :global(*) {
-    max-inline-size: 100%;
-  }
-
-  .project-prose :global(* + *) {
-    margin-block-start: var(--space-4);
-  }
-
-  .project-prose :global(h2),
-  .project-prose :global(h3),
-  .project-prose :global(h4) {
-    color: var(--colour-text-primary);
-    overflow-wrap: anywhere;
-  }
-
-  .project-prose :global(h2) {
-    margin-block: var(--space-6) var(--space-3);
-    font-size: var(--type-heading-3-font-size);
-    line-height: var(--type-heading-3-line-height);
-  }
-
-  .project-prose :global(h3) {
-    margin-block: var(--space-5) var(--space-3);
-    font-size: var(--type-body-large-font-size);
-    line-height: var(--type-body-large-line-height);
-  }
-
-  .project-prose :global(p),
-  .project-prose :global(li),
-  .project-prose :global(blockquote),
-  .project-prose :global(td),
-  .project-prose :global(th) {
-    overflow-wrap: anywhere;
-  }
-
-  .project-prose :global(p),
-  .project-prose :global(ul),
-  .project-prose :global(ol),
-  .project-prose :global(blockquote) {
-    margin-block-end: 0;
-  }
-
-  .project-prose :global(blockquote) {
-    padding-inline-start: var(--space-4);
-    border-inline-start: 3px solid var(--colour-signal);
     color: var(--colour-text-muted);
+    font-family: var(--font-data);
+    font-size: 0.875rem;
   }
 
-  .project-prose :global(pre) {
-    max-inline-size: 100%;
+  .case-state[data-tone='signal'] {
+    color: var(--colour-signal);
+  }
+
+  .case-state[data-tone='caution'] {
+    color: var(--colour-caution);
+  }
+
+  h1 {
+    margin: 0;
+    font-size: clamp(2.5rem, 8vw, 5.5rem);
+    line-height: 0.95;
+    letter-spacing: -0.04em;
+    text-wrap: balance;
+  }
+
+  .lede {
+    max-inline-size: 46ch;
+    margin: 0;
+    color: var(--colour-text-secondary);
+    font-size: clamp(1.15rem, 2.2vw, 1.5rem);
+    line-height: 1.4;
+  }
+
+  .facts {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1px;
+    margin: 0;
+    border: 1px solid var(--colour-border-subtle);
+    background-color: var(--colour-border-subtle);
+  }
+
+  .facts div {
     padding: var(--space-4);
-    overflow-x: auto;
-    border: 1px solid var(--colour-border-subtle);
-    border-radius: var(--radius-1);
-    background-color: var(--colour-surface-default);
+    background-color: var(--colour-surface-page);
   }
 
-  .project-prose :global(pre code) {
-    overflow-wrap: normal;
-    white-space: pre;
+  .facts dt {
+    color: var(--colour-text-muted);
+    font-family: var(--font-data);
+    font-size: 0.8125rem;
   }
 
-  .project-prose :global(:not(pre) > code) {
-    padding: 0 var(--space-1);
-    border-radius: var(--radius-0);
-    background-color: var(--colour-surface-subtle);
-    overflow-wrap: anywhere;
+  .facts dd {
+    margin: var(--space-1) 0 0;
+    font-weight: 600;
   }
 
-  .project-prose :global(table) {
-    border-collapse: collapse;
+  .facts a {
+    color: var(--colour-text-primary);
   }
 
-  .project-prose :global(th),
-  .project-prose :global(td) {
-    padding: var(--space-2) var(--space-3);
-    border: 1px solid var(--colour-border-subtle);
-    overflow-wrap: anywhere;
-    text-align: start;
-  }
-
-  .project-prose :global(img),
-  .project-prose :global(video),
-  .project-prose :global(canvas),
-  .project-prose :global(svg),
-  .project-prose :global(iframe) {
-    block-size: auto;
-    max-inline-size: 100%;
-  }
-
-  .project-evidence,
-  .project-continuation {
-    padding-block-start: var(--space-5);
+  .case-layout {
+    display: grid;
+    gap: var(--space-5);
+    padding-block-start: var(--space-6);
     border-block-start: 1px solid var(--colour-border-subtle);
   }
 
-  .project-evidence ul {
-    display: grid;
-    gap: var(--space-3);
+  .steps {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2) var(--space-5);
     padding: 0;
     margin: 0;
+    font-family: var(--font-data);
+    font-size: 0.875rem;
     list-style: none;
   }
 
-  .project-evidence a,
-  .project-continuation a {
+  .steps a {
     display: inline-flex;
     min-block-size: 44px;
     align-items: center;
-    font-family: var(--type-label-font-family);
-    font-size: var(--type-label-font-size);
-    font-weight: var(--type-label-font-weight);
+    color: var(--colour-text-secondary);
+    text-decoration: none;
   }
 
-  .project-continuation h2 {
-    margin-block-end: var(--space-2);
+  .steps a:hover {
+    color: var(--colour-signal-hover);
+  }
+
+  .prose {
+    min-inline-size: 0;
+    color: var(--colour-text-secondary);
+  }
+
+  .prose :global(h2) {
+    margin: 0 0 var(--space-4);
+    color: var(--colour-text-primary);
+    font-size: clamp(1.7rem, 3.4vw, 2.4rem);
+    letter-spacing: -0.03em;
+    line-height: 1.05;
+    scroll-margin-block-start: var(--space-8);
+  }
+
+  .prose :global(h2:not(:first-child)) {
+    margin-block-start: var(--space-8);
+  }
+
+  .prose :global(p) {
+    max-inline-size: 64ch;
+    margin: 0 0 var(--space-3);
+  }
+
+  .prose :global(.decision) {
+    display: grid;
+    gap: var(--space-2);
+    padding: var(--space-5);
+    margin-block-end: var(--space-4);
+    border: 1px solid var(--colour-border-subtle);
+    background-color: var(--colour-surface-default);
+  }
+
+  .prose :global(.decision h3) {
+    margin: 0;
+    color: var(--colour-text-primary);
+    font-size: 1.3rem;
+    line-height: 1.25;
+  }
+
+  .prose :global(.decision p) {
+    margin: 0;
+  }
+
+  .prose :global(.decision p:first-child) {
+    color: var(--colour-text-muted);
+    font-family: var(--font-data);
+    font-size: 0.8125rem;
+  }
+
+  .prose :global(.decision p:last-child) {
+    color: var(--colour-text-muted);
+  }
+
+  .prose :global(table) {
+    display: block;
+    max-inline-size: 100%;
+    overflow-x: auto;
+    border-collapse: collapse;
+  }
+
+  .prose :global(th),
+  .prose :global(td) {
+    padding: var(--space-2) var(--space-3);
+    border: 1px solid var(--colour-border-subtle);
+    text-align: start;
+  }
+
+  .case-next {
+    display: flex;
+    flex-wrap: wrap;
+    padding-block: var(--space-6) var(--space-8);
+    margin-block-start: var(--space-6);
+    border-block-start: 1px solid var(--colour-border-subtle);
   }
 
   @media (min-width: 48rem) {
@@ -373,6 +329,24 @@ function formatPublicLinkLabel(link: string): string {
         100% - (2 * var(--layout-gutter-tablet)),
         var(--layout-content-standard)
       );
+    }
+  }
+
+  @media (min-width: 51.25rem) {
+    .case-layout {
+      grid-template-columns: 200px minmax(0, 1fr);
+      gap: var(--space-8);
+      padding-block-start: var(--space-7);
+    }
+
+    .steps {
+      position: sticky;
+      inset-block-start: 96px;
+      align-self: start;
+      display: grid;
+      gap: var(--space-1);
+      padding-inline-start: var(--space-4);
+      border-inline-start: 2px solid var(--colour-border-subtle);
     }
   }
 
