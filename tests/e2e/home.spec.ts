@@ -218,6 +218,34 @@ test('mobile navigation is keyboard operable and restores focus when closed', as
   await expect(menuButton).toBeFocused();
 });
 
+test('downloading the CV from the mobile menu returns focus to the menu button', async ({
+  page,
+}, testInfo) => {
+  test.skip(
+    testInfo.project.name !== 'mobile-chromium',
+    'Mobile-only interaction',
+  );
+
+  await page.goto('/');
+
+  const menuButton = page.locator('[data-menu-toggle]');
+  await menuButton.focus();
+  await page.keyboard.press('Enter');
+  await expect(menuButton).toHaveAttribute('aria-expanded', 'true');
+
+  const cvLink = page
+    .getByRole('navigation', { name: 'Primary navigation' })
+    .getByRole('link', { name: 'CV', exact: true });
+  await cvLink.focus();
+
+  const download = page.waitForEvent('download');
+  await page.keyboard.press('Enter');
+  await download;
+
+  await expect(menuButton).toHaveAttribute('aria-expanded', 'false');
+  await expect(menuButton).toBeFocused();
+});
+
 test('mobile menu closes after choosing a link and the target clears the header', async ({
   page,
 }, testInfo) => {

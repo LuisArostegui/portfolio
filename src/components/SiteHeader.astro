@@ -151,12 +151,17 @@ const pathname = Astro.url.pathname;
       });
 
       navigation.addEventListener('click', (event) => {
-        if (
-          compactNavigation.matches &&
-          event.target instanceof Element &&
-          event.target.closest('a')
-        ) {
+        const link =
+          event.target instanceof Element ? event.target.closest('a') : null;
+
+        if (compactNavigation.matches && link) {
           setExpanded(false);
+
+          // A download keeps the visitor on the page, so the hidden link would
+          // drop focus to <body>; return it to the control that opened the menu.
+          if (link.hasAttribute('download')) {
+            toggle.focus();
+          }
         }
       });
 
