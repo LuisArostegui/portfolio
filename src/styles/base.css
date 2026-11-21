@@ -74,10 +74,14 @@ html {
 }
 
 a {
-  color: var(--colour-signal);
+  color: var(--colour-text-primary);
   text-decoration-line: underline;
   text-decoration-thickness: from-font;
   text-underline-offset: 4px;
+}
+
+a:hover {
+  color: var(--colour-signal);
 }
 
 a,
