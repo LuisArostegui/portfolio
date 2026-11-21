@@ -208,9 +208,9 @@ test('top-level routes expose SEO metadata in generated HTML', async ({
       path: '/',
       title: 'Luis Arostegui Ruiz | Software Engineer',
       description:
-        'Software engineer with strong frontend expertise in React, TypeScript, accessibility, testing, and maintainable web products.',
+        'Frontend-focused software engineer building customer banking journeys in React and TypeScript at Openbank.',
       canonical:
-        'https://luis-arostegui-portfolio.luisarosteguiruizit.workers.dev',
+        'https://luis-arostegui-portfolio.luisarosteguiruizit.workers.dev/',
     },
     {
       path: '/projects/',
@@ -293,7 +293,7 @@ test('home exposes public-safe Person structured data', async ({ page }) => {
     '@type': 'Person',
     name: 'Luis Arostegui Ruiz',
     jobTitle: 'Software Engineer',
-    url: 'https://luis-arostegui-portfolio.luisarosteguiruizit.workers.dev',
+    url: 'https://luis-arostegui-portfolio.luisarosteguiruizit.workers.dev/',
   });
   expect(JSON.parse(jsonLd ?? '')).toMatchObject({
     sameAs: [

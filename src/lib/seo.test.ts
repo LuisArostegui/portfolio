@@ -37,7 +37,21 @@ describe('SEO metadata helpers', () => {
 
     expect(metadata.title).toBe(siteMetadata.defaultTitle);
     expect(metadata.description).toBe(siteMetadata.defaultDescription);
-    expect(metadata.canonicalUrl).toBe(siteMetadata.siteUrl);
+    expect(metadata.canonicalUrl).toBe(`${siteMetadata.siteUrl}/`);
+  });
+
+  it('resolves the root canonical with a trailing slash', () => {
+    const metadata = getSeoMetadata({ pathname: '/' });
+
+    expect(metadata.canonicalUrl).toBe(
+      'https://luis-arostegui-portfolio.luisarosteguiruizit.workers.dev/',
+    );
+  });
+
+  it('omits the canonical URL when a page opts out', () => {
+    const metadata = getSeoMetadata({ canonical: false });
+
+    expect(metadata.canonicalUrl).toBeUndefined();
   });
 
   it('includes confirmed public profile URLs in Person structured data', () => {
@@ -48,7 +62,8 @@ describe('SEO metadata helpers', () => {
       '@type': 'Person',
       name: 'Luis Arostegui Ruiz',
       jobTitle: 'Software Engineer',
-      url: siteMetadata.siteUrl,
+      url: `${siteMetadata.siteUrl}/`,
+      mainEntityOfPage: `${siteMetadata.siteUrl}/`,
     });
     expect(structuredData).toMatchObject({
       sameAs: [
