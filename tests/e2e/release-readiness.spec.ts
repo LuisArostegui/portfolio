@@ -54,8 +54,11 @@ test('custom not-found output is generated without exposing technical details', 
     page.getByRole('main').getByRole('link', { name: 'Go home' }),
   ).toHaveAttribute('href', '/');
   await expect(
-    page.getByRole('main').getByRole('link', { name: 'View projects' }),
-  ).toHaveAttribute('href', '/projects/');
+    page.getByRole('main').getByRole('link', { name: 'See experience' }),
+  ).toHaveAttribute('href', '/#experience');
+  await expect(
+    page.getByRole('main').getByRole('link', { name: 'See work' }),
+  ).toHaveAttribute('href', '/#work');
   await expect(page.getByText('Stack trace')).toHaveCount(0);
   await expect(page.getByText('Exception')).toHaveCount(0);
 });
