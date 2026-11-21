@@ -47,6 +47,43 @@ export function getProjectState(
   };
 }
 
+const repositoryPattern = /^https:\/\/github\.com\/[^/\s]+\/[^/\s]+\/?$/;
+
+export function getRepositoryUrl(
+  links: readonly string[] | undefined,
+): string | undefined {
+  return links?.find((link) => repositoryPattern.test(link));
+}
+
+export function getEvidenceLinks(
+  links: readonly string[] | undefined,
+): string[] {
+  const repository = getRepositoryUrl(links);
+
+  return (links ?? []).filter((link) => link !== repository);
+}
+
+export function getEvidenceLabel(url: string): string {
+  const { hostname, pathname } = new URL(url);
+  const path = pathname.replace(/\/+$/, '');
+
+  if (hostname === 'github.com') {
+    const issue = /^\/[^/]+\/[^/]+\/issues\/(\d+)$/.exec(path);
+
+    if (issue?.[1] !== undefined) {
+      return `Issue #${issue[1]}`;
+    }
+
+    const blob = /^\/[^/]+\/[^/]+\/blob\/.+\/([^/]+)$/.exec(path);
+
+    if (blob?.[1] !== undefined) {
+      return blob[1];
+    }
+  }
+
+  return `${hostname}${path}`;
+}
+
 function toProjectDetail(entry: ProjectEntry): ProjectDetail {
   const preview = toProjectPreview(entry);
 

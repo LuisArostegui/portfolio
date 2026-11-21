@@ -51,6 +51,33 @@ test('case shows facts and sections', async ({ page }) => {
   );
 });
 
+test('case lists evidence links and names the repository explicitly', async ({
+  page,
+}) => {
+  await page.goto(casePath);
+
+  await expect(
+    page
+      .locator('[data-case-facts]')
+      .getByRole('link', { name: 'GitHub repository', exact: true }),
+  ).toHaveAttribute('href', 'https://github.com/LuisArostegui/portfolio');
+
+  const evidence = page.locator('[data-case-evidence]');
+  await expect(
+    evidence.getByRole('link', { name: 'Issue #67', exact: true }),
+  ).toHaveAttribute(
+    'href',
+    'https://github.com/LuisArostegui/portfolio/issues/67',
+  );
+  await expect(
+    evidence.getByRole('link', { name: 'content-strategy.md', exact: true }),
+  ).toHaveAttribute(
+    'href',
+    'https://github.com/LuisArostegui/portfolio/blob/main/docs/product/content-strategy.md',
+  );
+  await expect(evidence.getByRole('link')).toHaveCount(2);
+});
+
 test('back link returns to work', async ({ page }) => {
   await page.goto(casePath);
 

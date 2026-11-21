@@ -1,6 +1,6 @@
 ---
 import type { ProjectDetail } from '../lib/content/models';
-import { getProjectState } from '../lib/content/projects';
+import { getProjectState, getRepositoryUrl } from '../lib/content/projects';
 
 interface Props {
   project: ProjectDetail;
@@ -10,9 +10,7 @@ const { project } = Astro.props;
 const state = getProjectState(project);
 const repositoryUrl =
   project.visibility === 'public'
-    ? project.publicLinks?.find((link) =>
-        /^https:\/\/github\.com\/[^/]+\/[^/]+\/?$/.test(link),
-      )
+    ? getRepositoryUrl(project.publicLinks)
     : undefined;
 const titleId = `case-${project.id}-title`;
 ---
