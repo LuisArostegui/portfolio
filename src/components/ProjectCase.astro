@@ -1,0 +1,312 @@
+---
+import type { ProjectDetail } from '../lib/content/models';
+import { getProjectState } from '../lib/content/projects';
+
+interface Props {
+  project: ProjectDetail;
+}
+
+const { project } = Astro.props;
+const state = getProjectState(project);
+const repositoryUrl =
+  project.visibility === 'public'
+    ? project.publicLinks?.find((link) =>
+        /^https:\/\/github\.com\/[^/]+\/[^/]+\/?$/.test(link),
+      )
+    : undefined;
+const titleId = `case-${project.id}-title`;
+---
+
+<article
+  class:list={['case', project.pipeline && 'case--with-pipeline']}
+  aria-labelledby={titleId}
+  data-case
+>
+  <div class="case__body">
+    <p class="case__state" data-tone={state.tone}>
+      <span aria-hidden="true">{state.symbol}</span>{' '}{state.label}
+    </p>
+    <h3 class="case__title" id={titleId} data-case-title={project.id}>
+      {project.title}
+    </h3>
+    <p class="case__summary">{project.summary}</p>
+    {
+      project.checks && (
+        <ul
+          class="case__checks"
+          aria-label="Checks the CI workflow runs on every pull request"
+        >
+          {project.checks.labels.map((label) => (
+            <li>
+              <a href={project.checks!.url} rel="noreferrer">
+                <span class="case__tick" aria-hidden="true" data-tick>
+                  ✓
+                </span>
+                {label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      )
+    }
+    <div class="case__links">
+      <a class="case__read" href={`/projects/${project.id}/`}>
+        Read the {project.title} case study
+      </a>
+      {
+        repositoryUrl && (
+          <a href={repositoryUrl} rel="noreferrer" target="_blank">
+            Repository on GitHub ↗
+          </a>
+        )
+      }
+    </div>
+  </div>
+  {
+    project.pipeline && (
+      <figure class="case__pipeline">
+        <div class="case__run">
+          <ol class="case__stages" aria-label="From content to production">
+            {project.pipeline.map((step) => (
+              <li class="case__stage" data-stage>
+                <span class="case__lamp" aria-hidden="true" />
+                <span>
+                  <span class="case__stage-label">{step.label}</span>
+                  <span class="case__stage-detail">{step.detail}</span>
+                </span>
+              </li>
+            ))}
+          </ol>
+          <span class="case__pulse" aria-hidden="true" data-pulse />
+        </div>
+        <figcaption>
+          How a project gets from the repository to this page.
+        </figcaption>
+      </figure>
+    )
+  }
+</article>
+
+<style>
+  .case {
+    display: grid;
+    border: 1px solid var(--colour-border-subtle);
+    background-color: var(--colour-surface-default);
+  }
+
+  .case--with-pipeline {
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+  }
+
+  .case__body {
+    display: grid;
+    align-content: start;
+    gap: var(--space-4);
+    padding: var(--space-6);
+  }
+
+  .case__state {
+    margin: 0;
+    color: var(--colour-text-muted);
+    font-family: var(--font-data);
+    font-size: 13px;
+  }
+
+  .case__state[data-tone='signal'] {
+    color: var(--colour-signal);
+  }
+
+  .case__state[data-tone='caution'] {
+    color: var(--colour-caution);
+  }
+
+  .case__title {
+    margin: 0;
+    font-size: clamp(2rem, 4vw, 2.75rem);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1;
+  }
+
+  .case__summary {
+    max-inline-size: 52ch;
+    margin: 0;
+    color: var(--colour-text-secondary);
+  }
+
+  .case__checks {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    padding: 0;
+    margin: var(--space-1) 0 0;
+    list-style: none;
+  }
+
+  .case__checks a {
+    display: inline-flex;
+    min-block-size: 44px;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-1) var(--space-3);
+    border: 1px solid var(--colour-border-subtle);
+    color: var(--colour-text-secondary);
+    font-family: var(--font-data);
+    font-size: 13px;
+    text-decoration: none;
+  }
+
+  .case__checks a:hover {
+    border-color: var(--colour-signal);
+    color: var(--colour-text-primary);
+  }
+
+  .case__tick {
+    display: inline-grid;
+    inline-size: 16px;
+    block-size: 16px;
+    place-items: center;
+    border-radius: 50%;
+    background-color: var(--colour-signal);
+    color: var(--colour-text-on-signal);
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 1;
+  }
+
+  .case__links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3) var(--space-5);
+    margin-block-start: var(--space-1);
+  }
+
+  .case__links a {
+    display: inline-flex;
+    min-block-size: 44px;
+    align-items: center;
+    color: var(--colour-text-primary);
+  }
+
+  .case__links a:hover {
+    color: var(--colour-signal);
+  }
+
+  .case__links .case__read {
+    color: var(--colour-signal);
+    font-weight: 600;
+  }
+
+  .case__links .case__read:hover {
+    color: var(--colour-signal-hover);
+  }
+
+  .case__pipeline {
+    display: grid;
+    align-content: center;
+    gap: var(--space-4);
+    padding: var(--space-6);
+    margin: 0;
+    border-inline-start: 1px solid var(--colour-border-subtle);
+  }
+
+  .case__pipeline figcaption {
+    color: var(--colour-text-muted);
+    font-family: var(--font-data);
+    font-size: 13px;
+  }
+
+  .case__run {
+    position: relative;
+  }
+
+  .case__stages {
+    position: relative;
+    display: grid;
+    gap: var(--space-3);
+    padding: 0;
+    margin: 0;
+    list-style: none;
+  }
+
+  .case__stages::before {
+    position: absolute;
+    inset-block: var(--space-5);
+    inset-inline-start: 27px;
+    inline-size: 2px;
+    background-color: var(--colour-border-subtle);
+    content: '';
+  }
+
+  .case__stage {
+    position: relative;
+    display: grid;
+    grid-template-columns: 28px minmax(0, 1fr);
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-3) 14px;
+    border: 1px solid var(--colour-border-subtle);
+    background-color: var(--colour-surface-page);
+  }
+
+  .case__lamp {
+    inline-size: 12px;
+    block-size: 12px;
+    justify-self: center;
+    border-radius: 50%;
+    background-color: var(--colour-signal);
+  }
+
+  .case__stage-label {
+    display: block;
+    font-weight: 600;
+  }
+
+  .case__stage-detail {
+    display: block;
+    color: var(--colour-text-muted);
+    font-family: var(--font-data);
+    font-size: 12px;
+    line-height: 18px;
+    overflow-wrap: anywhere;
+  }
+
+  .case__pulse {
+    position: absolute;
+    inset-block-start: 18px;
+    inset-inline-start: 22px;
+    inline-size: 12px;
+    block-size: 12px;
+    border-radius: 50%;
+    background-color: var(--colour-signal);
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  @media (max-width: 819.98px) {
+    .case--with-pipeline {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .case__pipeline {
+      border-block-start: 1px solid var(--colour-border-subtle);
+      border-inline-start: 0;
+    }
+  }
+
+  @media (max-width: 479.98px) {
+    .case__body,
+    .case__pipeline {
+      padding: var(--space-5);
+    }
+  }
+
+  @media (forced-colors: active) {
+    .case__tick,
+    .case__lamp {
+      forced-color-adjust: none;
+      background-color: Highlight;
+      color: HighlightText;
+    }
+  }
+</style>

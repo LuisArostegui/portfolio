@@ -1,79 +1,28 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import TagList from '../components/TagList.astro';
-import { getExperience } from '../lib/content/experience';
-import { getFeaturedProjects } from '../lib/content/projects';
+import ProjectCase from '../components/ProjectCase.astro';
+import { getCvLabel } from '../lib/cv';
+import { getExperienceDocuments } from '../lib/content/experience';
+import type { ProjectDetail } from '../lib/content/models';
+import { getFeaturedProjects, getProjectById } from '../lib/content/projects';
+import { siteMetadata } from '../lib/siteMetadata';
+import { cvAction } from '../lib/siteNavigation';
 
+const cvLabel = getCvLabel();
+const experience = await getExperienceDocuments();
 const featuredProjects = await getFeaturedProjects(3);
-const selectedExperience = (await getExperience()).slice(0, 2);
-const githubProfileUrl = 'https://github.com/LuisArostegui';
-const linkedinProfileUrl = 'https://www.linkedin.com/in/luisarosteguiruiz/';
-const cvPath = '/CV-Luis-Arostegui-Ruiz.pdf';
+const cases = (
+  await Promise.all(
+    featuredProjects.map(async ({ id }) => (await getProjectById(id))?.data),
+  )
+).filter((project): project is ProjectDetail => project !== undefined);
+
+const [githubUrl, linkedInUrl] = siteMetadata.owner.profileUrls;
 const contactEmail = 'luisarosteguiruizit@gmail.com';
 
-const strengths = [
-  {
-    label: 'Architecture',
-    title: 'React and TypeScript engineering',
-    description:
-      'I design typed UI boundaries, reusable component structures, and application surfaces that remain understandable as product flows grow.',
-    href: '#selected-projects',
-    linkLabel: 'See project evidence',
-  },
-  {
-    label: 'Accessibility',
-    title: 'Inclusive interaction by design',
-    description:
-      'I treat semantics, keyboard access, focus visibility, and resilient content as normal engineering requirements rather than late-stage polish.',
-    href: '#about',
-    linkLabel: 'Read the summary',
-  },
-  {
-    label: 'Quality',
-    title: 'Testing for delivery confidence',
-    description:
-      'I use typed contracts, automated checks, and browser-level validation where they protect real user journeys and maintenance risk.',
-    href: '#process',
-    linkLabel: 'Review the process',
-  },
-  {
-    label: 'Product reasoning',
-    title: 'Decisions with context and trade-offs',
-    description:
-      'I connect implementation choices to product goals, constraints, accessibility, and future maintenance instead of treating code as isolated output.',
-    href: 'https://github.com/LuisArostegui/portfolio',
-    linkLabel: 'Open repository evidence',
-    external: true,
-  },
-];
-
-const processSteps = [
-  {
-    title: 'Define',
-    description:
-      'Start from the product outcome, audience, content ownership, and public-safety constraints.',
-  },
-  {
-    title: 'Decide',
-    description:
-      'Record meaningful technical trade-offs through architecture decisions before implementation pressure blurs the reasoning.',
-  },
-  {
-    title: 'Design',
-    description:
-      'Translate the product hierarchy into responsive, semantic, accessible experiences that can be implemented statically first.',
-  },
-  {
-    title: 'Build and validate',
-    description:
-      'Compose pages in Astro, keep content typed, and use proportionate checks where they guard public behaviour.',
-  },
-  {
-    title: 'Review and evolve',
-    description:
-      'Use issues, pull requests, documentation, and validation results to make change reviewable and iterative.',
-  },
-];
+function getYear(period: string) {
+  return period.slice(0, 4);
+}
 ---
 
 <BaseLayout
@@ -81,678 +30,571 @@ const processSteps = [
   description="Frontend-focused software engineer building customer banking journeys in React and TypeScript at Openbank."
   pathname="/"
 >
-  <section class="hero" aria-labelledby="home-heading">
-    <div class="hero__content">
-      <p class="eyebrow">Luis Arostegui Ruiz</p>
-      <h1 id="home-heading">
-        Software Engineer with strong frontend expertise
-      </h1>
-      <p class="hero__summary">
-        I build reliable, accessible, and maintainable web products with deep
-        React and TypeScript experience, product reasoning, and a wider
-        software-engineering view of the systems around the interface.
+  <div class="frame">
+    <div class="trace" aria-hidden="true" data-trace></div>
+
+    <section id="top" class="hero" aria-labelledby="hero-name">
+      <span class="node" aria-hidden="true" data-node></span>
+      <p class="hero__status">
+        <span class="hero__lamp" aria-hidden="true"></span>
+        Software Engineer at Openbank
       </p>
-      <div class="action-group" aria-label="Primary Home actions">
-        <a class="action action--primary" href="#selected-projects">
-          View selected projects
+      <h1 id="hero-name" class="hero-name">
+        <span>Luis</span>
+        <span>Arostegui</span>
+        <span>Ruiz</span>
+      </h1>
+      <p class="hero__lede">
+        Frontend-focused software engineer. I build customer banking journeys in
+        React and TypeScript, from KYC to deposits.
+      </p>
+      <div class="actions">
+        <a class="button button--primary" href="#experience">
+          See my experience
         </a>
-        <a class="action action--secondary" href="/experience/">
-          View experience
-        </a>
-        <a class="action action--secondary" href={cvPath} download>
-          Download CV
+        <a class="button" href={cvAction.href} download>
+          Download {cvLabel}
         </a>
       </div>
-    </div>
-
-    <aside class="hero__support" aria-labelledby="hero-support-heading">
-      <h2 id="hero-support-heading">Engineering focus</h2>
-      <dl class="fact-list">
-        <div>
-          <dt>Primary specialisation</dt>
-          <dd>React, TypeScript, and frontend architecture</dd>
+      <dl class="hero__facts">
+        <div class="hero__fact">
+          <dt>since 2024</dt>
+          <dd>Openbank, Santander group</dd>
         </div>
-        <div>
-          <dt>Quality focus</dt>
-          <dd>Accessibility, testing, maintainability, and clear boundaries</dd>
+        <div class="hero__fact">
+          <dt>daily stack</dt>
+          <dd>React, TypeScript, Jest</dd>
         </div>
-        <div>
-          <dt>Engineering approach</dt>
-          <dd>Product context, trade-offs, and evidence-led delivery</dd>
+        <div class="hero__fact">
+          <dt>2022–2024</dt>
+          <dd>Nucleoo, consultancy</dd>
         </div>
       </dl>
-    </aside>
-  </section>
+    </section>
 
-  <section
-    class="section section--summary"
-    id="about"
-    aria-labelledby="about-heading"
-  >
-    <div class="section__header">
-      <p class="eyebrow">About</p>
-      <h2 id="about-heading">Professional summary</h2>
-    </div>
-    <div class="summary-layout">
-      <div class="prose">
+    <section
+      id="experience"
+      class="section"
+      aria-labelledby="experience-heading"
+    >
+      <span class="node" aria-hidden="true" data-node></span>
+      <h2 id="experience-heading">Experience</h2>
+      <p class="section__intro">
+        Shipping product since 2022, most recently customer banking journeys at
+        Openbank.
+      </p>
+      {
+        experience.length > 0 && (
+          <ol class="roles" id="selected-experience">
+            {experience.map(({ data, Content }) => (
+              <li class="role" data-role>
+                <div class="role__when">
+                  <span
+                    class:list={[
+                      'role__dates',
+                      data.isCurrent && 'role__dates--current',
+                    ]}
+                  >
+                    <time datetime={data.startPeriod}>
+                      {getYear(data.startPeriod)}
+                    </time>
+                    {' – '}
+                    {data.endPeriod === null ? (
+                      'now'
+                    ) : (
+                      <time datetime={data.endPeriod}>
+                        {getYear(data.endPeriod)}
+                      </time>
+                    )}
+                  </span>
+                  <span class="role__organisation">{data.organisation}</span>
+                  <span class="role__summary">{data.summary}</span>
+                </div>
+                <div class="role__body">
+                  <h3>{data.role}</h3>
+                  <div class="role__content">
+                    <Content />
+                  </div>
+                </div>
+              </li>
+            ))}
+          </ol>
+        )
+      }
+    </section>
+
+    <section id="work" class="section" aria-labelledby="work-heading">
+      <span class="node" aria-hidden="true" data-node></span>
+      <h2 id="work-heading">Work</h2>
+      <p class="section__intro">
+        Public projects with their decisions and evidence.
+      </p>
+      {
+        cases.length > 0 && (
+          <div class="cases" id="selected-projects">
+            {cases.map((project) => (
+              <ProjectCase project={project} />
+            ))}
+          </div>
+        )
+      }
+    </section>
+
+    <section id="about" class="section" aria-labelledby="about-heading">
+      <span class="node" aria-hidden="true" data-node></span>
+      <h2 id="about-heading">About</h2>
+      <div class="about" id="process">
+        <p class="about__highlight">
+          I care about the behaviour behind the interface as much as the
+          interface itself.
+        </p>
         <p>
           My strongest professional depth is in frontend engineering: React,
           TypeScript, semantic interfaces, component architecture, complex user
-          flows, and maintainable product surfaces. I care about the behaviour
-          behind the UI as much as the visual result.
-        </p>
-        <p>
-          I also bring broader software ownership from working across API,
-          persistence, delivery, and documentation boundaries when a product
-          needs that context. That breadth supports better collaboration without
-          turning the portfolio into a backend-first profile.
+          flows, and maintainable product surfaces.
         </p>
       </div>
-      <dl class="summary-facts">
-        <div>
-          <dt>Specialisation</dt>
-          <dd>Frontend engineering with React and TypeScript</dd>
-        </div>
-        <div>
-          <dt>Practice</dt>
-          <dd>Accessible, well-tested, and maintainable web products</dd>
-        </div>
-        <div>
-          <dt>Perspective</dt>
-          <dd>Product reasoning with wider software-system awareness</dd>
-        </div>
-      </dl>
-    </div>
-  </section>
+    </section>
 
-  <section
-    class="section"
-    id="selected-projects"
-    aria-labelledby="selected-projects-heading"
-  >
-    <div class="section__header section__header--split">
-      <div>
-        <p class="eyebrow">Evidence</p>
-        <h2 id="selected-projects-heading">Selected projects</h2>
-      </div>
-      <a class="text-link" href="/projects/">View all projects</a>
-    </div>
-
-    {
-      featuredProjects.length > 0 && (
-        <ol class="project-list" aria-label="Featured project previews">
-          {featuredProjects.map((project, index) => (
-            <li class:list={['project-preview', index === 0 && 'is-featured']}>
-              <article>
-                <p class="metadata">{project.status} project</p>
-                <h3>{project.title}</h3>
-                <p>{project.summary}</p>
-                <p class="project-preview__role">{project.role}</p>
-                <TagList
-                  items={project.capabilities}
-                  ariaLabel={`${project.title} capabilities`}
-                />
-                <a
-                  class="text-link project-preview__link"
-                  href={`/projects/${project.id}/`}
-                  aria-label={`View project: ${project.title}`}
-                >
-                  View project
-                </a>
-              </article>
-            </li>
-          ))}
-        </ol>
-      )
-    }
-  </section>
-
-  <section class="section" aria-labelledby="strengths-heading">
-    <div class="section__header">
-      <p class="eyebrow">Capabilities</p>
-      <h2 id="strengths-heading">Engineering strengths</h2>
-    </div>
-    <ol class="strength-list">
-      {
-        strengths.map((strength, index) => (
-          <li class="strength-item">
-            <p class="strength-item__number">
-              {String(index + 1).padStart(2, '0')}
-            </p>
-            <div>
-              <p class="metadata">{strength.label}</p>
-              <h3>{strength.title}</h3>
-              <p>{strength.description}</p>
-              <a
-                class="text-link"
-                href={strength.href}
-                rel={strength.external ? 'noreferrer' : undefined}
-                target={strength.external ? '_blank' : undefined}
-              >
-                {strength.linkLabel}
-              </a>
-            </div>
-          </li>
-        ))
-      }
-    </ol>
-  </section>
-
-  <section
-    class="section"
-    id="selected-experience"
-    aria-labelledby="selected-experience-heading"
-  >
-    <div class="section__header section__header--split">
-      <div>
-        <p class="eyebrow">Trajectory</p>
-        <h2 id="selected-experience-heading">Selected experience</h2>
-      </div>
-      <a class="text-link" href="/experience/">View full experience</a>
-    </div>
-
-    {
-      selectedExperience.length > 0 && (
-        <ol class="experience-list" aria-label="Selected experience previews">
-          {selectedExperience.map((experience) => (
-            <li class="experience-preview">
-              <article>
-                <p class="metadata">
-                  {experience.isCurrent ? 'Current role' : 'Previous role'}
-                </p>
-                <h3>{experience.role}</h3>
-                <p class="experience-preview__organisation">
-                  {experience.organisation}
-                </p>
-                <p>{experience.summary}</p>
-                <TagList
-                  items={experience.capabilities}
-                  ariaLabel={`${experience.role} capabilities`}
-                />
-              </article>
-            </li>
-          ))}
-        </ol>
-      )
-    }
-  </section>
-
-  <section class="section" id="process" aria-labelledby="process-heading">
-    <div class="section__header">
-      <p class="eyebrow">Practice</p>
-      <h2 id="process-heading">Engineering process</h2>
-    </div>
-    <ol class="process-list">
-      {
-        processSteps.map((step) => (
-          <li>
-            <h3>{step.title}</h3>
-            <p>{step.description}</p>
-          </li>
-        ))
-      }
-    </ol>
-    <p class="process-evidence">
-      This public repository exposes the product documentation, architecture
-      decisions, typed content boundary, tests, and review workflow that shape
-      the portfolio itself.
-    </p>
-    <a
-      class="text-link"
-      href="https://github.com/LuisArostegui/portfolio"
-      rel="noreferrer"
-      target="_blank"
+    <section
+      id="contact"
+      class="section contact"
+      aria-labelledby="contact-heading"
     >
-      GitHub repository
-    </a>
-  </section>
-
-  <section
-    class="contact-section"
-    id="contact"
-    aria-labelledby="contact-heading"
-  >
-    <div>
-      <p class="eyebrow">Contact</p>
+      <span class="node" aria-hidden="true" data-node></span>
       <h2 id="contact-heading">Contact</h2>
-      <p>
-        For professional conversations, use email or LinkedIn. The CV, public
-        profiles, and repository evidence are available directly from this MVP
-        without adding a contact form or collecting visitor data.
-      </p>
-    </div>
-    <div class="contact-section__actions" aria-label="Professional resources">
-      <a class="action action--primary" href={`mailto:${contactEmail}`}>
-        Send an email
-      </a>
-      <a
-        class="action action--secondary"
-        href={linkedinProfileUrl}
-        rel="noreferrer"
-        target="_blank"
-      >
-        LinkedIn profile
-      </a>
-      <a
-        class="action action--secondary"
-        href={githubProfileUrl}
-        rel="noreferrer"
-        target="_blank"
-      >
-        GitHub profile
-      </a>
-      <a class="action action--secondary" href={cvPath} download>
-        Download CV
-      </a>
-    </div>
-  </section>
+      <p class="section__intro">Email is the quickest way to reach me.</p>
+      <div class="contact__address">
+        <code id="contact-address">{contactEmail}</code>
+        <button
+          class="button contact__copy"
+          id="copy-address"
+          type="button"
+          hidden
+        >
+          Copy address
+        </button>
+        <span class="contact__status" id="copy-status" role="status"></span>
+      </div>
+      <div class="actions">
+        <a class="button" href={linkedInUrl} rel="noreferrer" target="_blank">
+          LinkedIn ↗
+        </a>
+        <a class="button" href={githubUrl} rel="noreferrer" target="_blank">
+          GitHub ↗
+        </a>
+        <a class="button" href={cvAction.href} download>{cvLabel}</a>
+      </div>
+    </section>
+  </div>
 </BaseLayout>
 
+<script>
+  const address = document.querySelector<HTMLElement>('#contact-address');
+  const copyButton = document.querySelector<HTMLButtonElement>('#copy-address');
+  const copyStatus = document.querySelector<HTMLElement>('#copy-status');
+
+  if (address && copyButton && copyStatus && navigator.clipboard) {
+    let resetTimer: number | undefined;
+
+    copyButton.hidden = false;
+    copyButton.addEventListener('click', async () => {
+      window.clearTimeout(resetTimer);
+
+      try {
+        await navigator.clipboard.writeText(address.textContent?.trim() ?? '');
+        copyStatus.textContent = 'Copied';
+        resetTimer = window.setTimeout(() => {
+          copyStatus.textContent = '';
+        }, 2000);
+      } catch {
+        window.getSelection()?.selectAllChildren(address);
+      }
+    });
+  }
+</script>
+
 <style>
-  :global(#main-content) {
-    inline-size: min(
-      100% - (2 * var(--layout-gutter-mobile)),
-      var(--layout-content-wide)
-    );
+  .frame {
+    --trace-gutter: 56px;
+
+    position: relative;
+    padding-inline-start: var(--trace-gutter);
+    overflow-wrap: break-word;
   }
 
-  .hero,
-  .section,
-  .contact-section {
-    overflow-wrap: anywhere;
+  .trace {
+    position: absolute;
+    inset-block: 0;
+    inset-inline-start: 11px;
+    inline-size: 2px;
+    background-color: var(--colour-signal);
+    opacity: 0.9;
   }
 
+  .node {
+    position: absolute;
+    inset-block-start: 6px;
+    inset-inline-start: calc(-1 * var(--trace-gutter) + 4px);
+    box-sizing: border-box;
+    inline-size: 16px;
+    block-size: 16px;
+    border: 2px solid var(--colour-signal);
+    border-radius: 50%;
+    background-color: var(--colour-surface-page);
+  }
+
+  .node::after {
+    position: absolute;
+    inset: 2px;
+    border-radius: 50%;
+    background-color: var(--colour-signal);
+    content: '';
+  }
+
+  section {
+    position: relative;
+  }
+
+  /* Hero */
   .hero {
     display: grid;
+    grid-template-columns: minmax(0, 1fr);
     gap: var(--space-6);
-    padding-block-end: var(--space-8);
-    border-block-end: 1px solid var(--colour-border-subtle);
+    padding-block: var(--space-5) var(--space-9);
   }
 
-  .hero__content {
-    max-inline-size: var(--layout-content-readable);
-  }
-
-  .hero h1 {
-    max-inline-size: 12ch;
-    margin-block: var(--space-3) var(--space-4);
-    font-size: var(--type-heading-2-font-size);
-    line-height: var(--type-heading-2-line-height);
-  }
-
-  .hero__summary {
-    max-inline-size: var(--layout-content-readable);
-    margin-block: 0;
+  .hero__status {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0;
     color: var(--colour-text-secondary);
-    font-size: var(--type-body-large-font-size);
-    line-height: var(--type-body-large-line-height);
+    font-family: var(--font-data);
+    font-size: 13px;
   }
 
-  .hero__support,
-  .contact-section,
-  .project-preview,
-  .experience-preview {
+  .hero__lamp {
+    inline-size: 9px;
+    block-size: 9px;
+    flex: none;
+    border-radius: 50%;
+    background-color: var(--colour-signal);
+    box-shadow: 0 0 0 4px
+      color-mix(in srgb, var(--colour-signal) 18%, transparent);
+  }
+
+  .hero-name {
+    margin: 0;
+    font-size: clamp(2.5rem, min(11vw, 16vh), 9.5rem);
+    font-weight: 800;
+    letter-spacing: -0.045em;
+    line-height: 0.86;
+  }
+
+  .hero-name span {
+    display: block;
+  }
+
+  .hero__lede {
+    max-inline-size: 34ch;
+    margin: 0;
+    color: var(--colour-text-primary);
+    font-size: clamp(1.25rem, 2.4vw, 1.75rem);
+    font-weight: 500;
+    line-height: 1.35;
+  }
+
+  .hero__facts {
+    display: grid;
+    max-inline-size: 860px;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr));
+    gap: 1px;
+    margin: 0;
     border: 1px solid var(--colour-border-subtle);
-    border-radius: var(--radius-1);
-    background-color: var(--colour-surface-default);
+    background-color: var(--colour-border-subtle);
   }
 
-  .hero__support {
-    padding: var(--space-5);
+  .hero__fact {
+    display: grid;
+    gap: var(--space-1);
+    padding: 18px 20px;
+    background-color: var(--colour-surface-page);
   }
 
-  .hero__support h2 {
-    margin-block: 0 var(--space-4);
-    font-size: var(--type-heading-3-font-size);
-    line-height: var(--type-heading-3-line-height);
-  }
-
-  .eyebrow,
-  .metadata,
-  .strength-item__number {
-    margin-block: 0;
+  .hero__fact dt {
     color: var(--colour-text-muted);
-    font-family: var(--type-metadata-font-family);
-    font-size: var(--type-metadata-font-size);
-    font-weight: var(--type-metadata-font-weight);
-    line-height: var(--type-metadata-line-height);
-    text-transform: uppercase;
+    font-family: var(--font-data);
+    font-size: 13px;
   }
 
-  .action-group,
-  .contact-section__actions {
+  .hero__fact dd {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+  }
+
+  .actions {
     display: flex;
     flex-wrap: wrap;
     gap: var(--space-3);
-    margin-block-start: var(--space-5);
   }
 
-  .action {
+  .button {
     display: inline-flex;
-    min-block-size: 44px;
+    min-block-size: 48px;
     align-items: center;
-    justify-content: center;
-    padding: var(--space-3) var(--space-4);
-    border: 1px solid var(--colour-border-strong);
-    border-radius: var(--radius-1);
-    font-family: var(--type-label-font-family);
-    font-size: var(--type-label-font-size);
-    font-weight: var(--type-label-font-weight);
-    text-align: center;
+    padding: 0 22px;
+    border: 1px solid var(--colour-text-primary);
+    background-color: transparent;
+    color: var(--colour-text-primary);
+    font: inherit;
+    font-weight: 600;
     text-decoration: none;
-    transition-duration: var(--motion-duration-fast);
-    transition-property: background-color, border-color, color;
-    transition-timing-function: var(--motion-ease-standard);
+    cursor: pointer;
   }
 
-  .action--primary {
+  .button:hover {
+    border-color: var(--colour-signal);
+    color: var(--colour-text-primary);
+  }
+
+  .button--primary {
     border-color: var(--colour-signal);
     background-color: var(--colour-signal);
     color: var(--colour-text-on-signal);
   }
 
-  .action--primary:hover {
+  .button--primary:hover {
+    border-color: var(--colour-signal-hover);
     background-color: var(--colour-signal-hover);
     color: var(--colour-text-on-signal);
   }
 
-  .action--primary:active {
-    background-color: var(--colour-signal);
-    color: var(--colour-text-on-signal);
-    outline: 1px solid var(--colour-text-on-signal);
-    outline-offset: -4px;
+  .button[hidden] {
+    display: none;
   }
 
-  .action--secondary {
-    color: var(--colour-text-primary);
-  }
-
-  .action--secondary:hover {
-    border-color: var(--colour-signal);
-    color: var(--colour-text-primary);
-  }
-
+  /* Sections */
   .section {
-    padding-block: var(--space-8);
-    border-block-end: 1px solid var(--colour-border-subtle);
-  }
-
-  .section__header {
-    max-inline-size: var(--layout-content-readable);
-    margin-block-end: var(--space-5);
-  }
-
-  .section__header h2,
-  .contact-section h2 {
-    margin-block: var(--space-2) 0;
-  }
-
-  .section__header--split {
-    display: grid;
-    max-inline-size: none;
-    gap: var(--space-4);
-  }
-
-  .section__header--split .text-link {
-    align-self: end;
-  }
-
-  .summary-layout {
-    display: grid;
-    gap: var(--space-5);
-  }
-
-  .prose {
-    max-inline-size: var(--layout-content-readable);
-    color: var(--colour-text-secondary);
-    font-size: var(--type-body-large-font-size);
-    line-height: var(--type-body-large-line-height);
-  }
-
-  .prose p {
-    margin-block: 0;
-  }
-
-  .prose p + p {
-    margin-block-start: var(--space-4);
-  }
-
-  .fact-list,
-  .summary-facts {
-    display: grid;
-    gap: var(--space-4);
-    margin: 0;
-  }
-
-  .fact-list div,
-  .summary-facts div {
-    padding-block-start: var(--space-4);
+    padding-block: 56px 80px;
     border-block-start: 1px solid var(--colour-border-subtle);
   }
 
-  dt {
-    color: var(--colour-text-primary);
-    font-family: var(--type-label-font-family);
-    font-size: var(--type-label-font-size);
-    font-weight: var(--type-label-font-weight);
-    line-height: var(--type-label-line-height);
+  .section > h2 {
+    margin: 0 0 var(--space-2);
+    font-size: clamp(2rem, 4.5vw, 3.25rem);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1;
   }
 
-  dd {
-    margin: var(--space-1) 0 0;
+  .section__intro {
+    max-inline-size: 58ch;
+    margin: 0 0 40px;
     color: var(--colour-text-secondary);
   }
 
-  .project-list,
-  .experience-list,
-  .strength-list,
-  .process-list {
+  /* Experience */
+  .roles {
+    display: grid;
+    gap: 28px;
     padding: 0;
     margin: 0;
     list-style: none;
   }
 
-  .project-list,
-  .experience-list {
+  .role {
+    position: relative;
     display: grid;
-    gap: var(--space-4);
+    grid-template-columns: 180px minmax(0, 1fr);
+    gap: var(--space-2) 40px;
+    padding: 28px;
+    border: 1px solid var(--colour-border-subtle);
+    background-color: var(--colour-surface-default);
   }
 
-  .project-preview,
-  .experience-preview {
-    padding: var(--space-5);
+  .role::before {
+    position: absolute;
+    inset-block-start: 40px;
+    inset-inline-start: calc(-1 * var(--trace-gutter) + 12px);
+    inline-size: calc(var(--trace-gutter) - 12px);
+    block-size: 1px;
+    background-color: var(--colour-border-subtle);
+    content: '';
   }
 
-  .project-preview h3,
-  .experience-preview h3,
-  .strength-item h3,
-  .process-list h3 {
-    margin-block: var(--space-2) var(--space-3);
-    font-size: var(--type-heading-3-font-size);
-    line-height: var(--type-heading-3-line-height);
+  .role__when {
+    display: grid;
+    align-content: start;
+    gap: var(--space-1);
+    color: var(--colour-text-muted);
   }
 
-  .project-preview p,
-  .experience-preview p,
-  .strength-item p,
-  .process-list p,
-  .process-evidence,
-  .contact-section p {
+  .role__dates {
+    font-family: var(--font-data);
+    font-size: 13px;
+  }
+
+  .role__dates--current {
+    color: var(--colour-signal);
+  }
+
+  .role__organisation {
+    color: var(--colour-text-primary);
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    line-height: 1.3;
+  }
+
+  .role__summary {
+    font-size: var(--type-body-small-font-size);
+    line-height: var(--type-body-small-line-height);
+  }
+
+  .role__body h3 {
+    margin: 0 0 var(--space-2);
+    font-size: 22px;
+    letter-spacing: -0.01em;
+    line-height: 1.3;
+  }
+
+  .role__content {
+    max-inline-size: 64ch;
     color: var(--colour-text-secondary);
   }
 
-  .project-preview p,
-  .experience-preview p,
-  .strength-item p,
-  .process-list p,
-  .process-evidence,
-  .contact-section p {
-    margin-block: 0;
-  }
-
-  .project-preview__role,
-  .experience-preview__organisation {
-    margin-block-start: var(--space-3);
+  .role__content :global(h4),
+  .role__content :global(h5) {
+    margin: var(--space-5) 0 var(--space-2);
     color: var(--colour-text-primary);
-    font-family: var(--type-label-font-family);
-    font-size: var(--type-label-font-size);
-    font-weight: var(--type-label-font-weight);
+    font-size: var(--type-body-font-size);
+    font-weight: 700;
+    line-height: var(--type-body-line-height);
   }
 
-  :global(.project-preview .tag-list),
-  :global(.experience-preview .tag-list) {
+  .role__content :global(h5) {
     margin-block-start: var(--space-4);
+    color: var(--colour-text-secondary);
   }
 
-  .project-preview__link {
-    display: inline-flex;
-    min-block-size: 44px;
+  .role__content :global(h4:first-child) {
+    margin-block-start: 0;
+  }
+
+  .role__content :global(p) {
+    margin: 0;
+  }
+
+  .role__content :global(ul) {
+    display: grid;
+    gap: 6px;
+    padding-inline-start: 18px;
+    margin: 0;
+  }
+
+  /* Work */
+  .cases {
+    display: grid;
+    gap: var(--space-6);
+  }
+
+  /* About */
+  .about {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
+    gap: var(--space-6);
+  }
+
+  .about p {
+    margin: 0;
+    color: var(--colour-text-secondary);
+  }
+
+  .about .about__highlight {
+    color: var(--colour-text-primary);
+    font-size: clamp(1.4rem, 2.6vw, 1.9rem);
+    font-weight: 600;
+    line-height: 1.3;
+  }
+
+  /* Contact */
+  .contact .section__intro {
+    margin-block-end: var(--space-5);
+  }
+
+  .contact__address {
+    display: flex;
+    flex-wrap: wrap;
     align-items: center;
-    margin-block-start: var(--space-4);
+    gap: var(--space-3);
+    margin-block-end: var(--space-5);
   }
 
-  .strength-list {
-    display: grid;
-    gap: var(--space-5);
+  .contact__address code {
+    min-inline-size: 0;
+    max-inline-size: 100%;
+    padding: 10px 14px;
+    border: 1px solid var(--colour-border-subtle);
+    background-color: var(--colour-surface-default);
+    font-size: 16px;
+    overflow-wrap: anywhere;
+    user-select: all;
   }
 
-  .strength-item {
-    display: grid;
-    gap: var(--space-4);
-    padding-block-end: var(--space-5);
-    border-block-end: 1px solid var(--colour-border-subtle);
+  .contact__copy {
+    min-block-size: 44px;
+    padding: 0 var(--space-4);
   }
 
-  .strength-item:last-child {
-    padding-block-end: 0;
-    border-block-end: 0;
-  }
-
-  .strength-item__number {
+  .contact__status {
     color: var(--colour-signal);
+    font-family: var(--font-data);
+    font-size: 13px;
   }
 
-  .text-link {
-    font-family: var(--type-label-font-family);
-    font-size: var(--type-label-font-size);
-    font-weight: var(--type-label-font-weight);
-    transition-duration: var(--motion-duration-fast);
-    transition-property: color;
-    transition-timing-function: var(--motion-ease-standard);
-  }
-
-  .process-list {
-    display: grid;
-    gap: var(--space-4);
-    counter-reset: process;
-  }
-
-  .process-list li {
-    position: relative;
-    padding-block-start: var(--space-5);
-    border-block-start: 1px solid var(--colour-border-subtle);
-    counter-increment: process;
-  }
-
-  .process-list li::before {
-    content: counter(process, decimal-leading-zero);
-    color: var(--colour-signal);
-    font-family: var(--type-metadata-font-family);
-    font-size: var(--type-metadata-font-size);
-    font-weight: var(--type-metadata-font-weight);
-    line-height: var(--type-metadata-line-height);
-  }
-
-  .process-evidence {
-    max-inline-size: var(--layout-content-readable);
-    margin-block: var(--space-5) var(--space-3);
-  }
-
-  .contact-section {
-    display: grid;
-    gap: var(--space-5);
-    padding: var(--space-6);
-    margin-block-start: var(--space-8);
-  }
-
-  .contact-section p {
-    max-inline-size: var(--layout-content-readable);
-    margin-block-start: var(--space-3);
-  }
-
-  @media (min-width: 48rem) {
-    :global(#main-content) {
-      inline-size: min(
-        100% - (2 * var(--layout-gutter-tablet)),
-        var(--layout-content-wide)
-      );
-    }
-
-    .hero {
-      grid-template-columns: minmax(0, 1.4fr) minmax(18rem, 0.8fr);
-      align-items: end;
-    }
-
-    .hero h1 {
-      font-size: var(--type-heading-1-font-size);
-      line-height: var(--type-heading-1-line-height);
-    }
-
-    .summary-layout,
-    .contact-section {
-      grid-template-columns: minmax(0, 1.2fr) minmax(16rem, 0.8fr);
-      align-items: start;
-    }
-
-    .section__header--split {
-      grid-template-columns: minmax(0, 1fr) auto;
-      align-items: end;
-    }
-
-    .project-list {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-
-    .project-preview.is-featured {
-      grid-column: 1 / -1;
-    }
-
-    .strength-item {
-      grid-template-columns: 4rem minmax(0, 1fr);
-    }
-
-    .process-list {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+  @media (max-width: 719.98px) {
+    .role {
+      grid-template-columns: minmax(0, 1fr);
+      padding: 22px;
     }
   }
 
-  @media (min-width: 70rem) {
-    :global(#main-content) {
-      inline-size: min(
-        100% - (2 * var(--layout-gutter-desktop)),
-        var(--layout-content-wide)
-      );
+  @media (max-width: 479.98px) {
+    .frame {
+      --trace-gutter: 32px;
     }
 
-    .hero {
-      gap: var(--space-8);
+    .trace {
+      inset-inline-start: 7px;
     }
 
-    .project-list {
-      grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+    .node {
+      inset-inline-start: calc(-1 * var(--trace-gutter));
     }
 
-    .project-preview.is-featured {
-      grid-row: span 2;
-      grid-column: auto;
+    .role {
+      padding: var(--space-4);
     }
 
-    .experience-list {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+    .contact__address code {
+      font-size: 14px;
+    }
+  }
+
+  @media (forced-colors: active) {
+    .trace,
+    .node,
+    .node::after,
+    .hero__lamp {
+      forced-color-adjust: none;
+      border-color: CanvasText;
+      background-color: CanvasText;
     }
 
-    .process-list {
-      grid-template-columns: repeat(5, minmax(0, 1fr));
+    .node {
+      background-color: Canvas;
     }
   }
 </style>
