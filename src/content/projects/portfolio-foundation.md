@@ -17,6 +17,23 @@ publicLinks:
   - https://github.com/LuisArostegui/portfolio
   - https://github.com/LuisArostegui/portfolio/issues/67
   - https://github.com/LuisArostegui/portfolio/blob/main/docs/product/content-strategy.md
+visibility: public
+checks:
+  url: https://github.com/LuisArostegui/portfolio/actions/workflows/quality.yml?query=branch%3Amain
+  labels:
+    - type check
+    - lint
+    - unit tests
+    - browser + axe
+pipeline:
+  - label: Markdown entry
+    detail: src/content/projects/*.md
+  - label: Zod schema
+    detail: invalid data fails the build
+  - label: Astro pages
+    detail: static HTML, no client router
+  - label: Cloudflare Workers
+    detail: static assets
 ---
 
 ## Context

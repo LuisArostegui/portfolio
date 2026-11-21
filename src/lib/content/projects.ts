@@ -17,6 +17,33 @@ function toProjectPreview({ id, data }: ProjectEntry): ProjectPreview {
     ...(data.technologies === undefined
       ? {}
       : { technologies: [...data.technologies] }),
+    visibility: data.visibility ?? 'public',
+    ...(data.checks === undefined
+      ? {}
+      : { checks: { url: data.checks.url, labels: [...data.checks.labels] } }),
+    ...(data.pipeline === undefined
+      ? {}
+      : { pipeline: data.pipeline.map((step) => ({ ...step })) }),
+  };
+}
+
+export interface ProjectState {
+  symbol: '●' | '◐';
+  label: string;
+  tone: 'signal' | 'caution' | 'muted';
+}
+
+export function getProjectState(
+  project: Pick<ProjectPreview, 'status' | 'visibility'>,
+): ProjectState {
+  if (project.visibility === 'private') {
+    return { symbol: '◐', label: 'private', tone: 'caution' };
+  }
+
+  return {
+    symbol: '●',
+    label: project.status,
+    tone: project.status === 'active' ? 'signal' : 'muted',
   };
 }
 
