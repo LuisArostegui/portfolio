@@ -159,10 +159,16 @@ const contactEmail = 'luisarosteguiruizit@gmail.com';
     transition-timing-function: var(--motion-ease-standard);
   }
 
-  .action:hover,
+  .action:hover {
+    background-color: var(--colour-signal-hover);
+    color: var(--colour-text-on-signal);
+  }
+
   .action:active {
     background-color: var(--colour-signal);
     color: var(--colour-text-on-signal);
+    outline: 1px solid var(--colour-text-on-signal);
+    outline-offset: -4px;
   }
 
   @media (min-width: 48rem) {

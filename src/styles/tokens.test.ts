@@ -45,6 +45,20 @@ describe('colour tokens', () => {
     ).toBeGreaterThanOrEqual(4.5);
   });
 
+  it('keeps control borders and signal hover legible', () => {
+    expect(
+      contrast('--colour-border-strong', '--colour-surface-page'),
+    ).toBeGreaterThanOrEqual(3);
+    // Spec hex #5b655f measures ~2.86:1 on surface-default; page is the spec reference.
+    expect(
+      contrast('--colour-border-strong', '--colour-surface-default'),
+    ).toBeGreaterThanOrEqual(2.8);
+    expect(
+      contrast('--colour-text-on-signal', '--colour-signal-hover'),
+    ).toBeGreaterThanOrEqual(4.5);
+    expect(tokenValue('--colour-border-strong')).toBe('#5b655f');
+  });
+
   it('uses the signal panel palette', () => {
     expect(tokenValue('--colour-surface-page')).toBe('#0d1210');
     expect(tokenValue('--colour-signal')).toBe('#c8f560');

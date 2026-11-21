@@ -22,11 +22,12 @@
   --colour-surface-subtle: #1b2420;
   --colour-surface-elevated: #222c28;
   --colour-border-subtle: #2b3530;
-  --colour-border-strong: #3d4a43;
+  --colour-border-strong: #5b655f;
   --colour-text-primary: #e6ece8;
   --colour-text-secondary: #b9c3bd;
   --colour-text-muted: #8e9a93;
   --colour-signal: #c8f560;
+  --colour-signal-hover: #dbff85;
   --colour-caution: #f2b54a;
   --colour-text-on-signal: #0d1210;
   --colour-focus-ring: #c8f560;

@@ -451,10 +451,16 @@ const processSteps = [
     color: var(--colour-text-on-signal);
   }
 
-  .action--primary:hover,
+  .action--primary:hover {
+    background-color: var(--colour-signal-hover);
+    color: var(--colour-text-on-signal);
+  }
+
   .action--primary:active {
     background-color: var(--colour-signal);
     color: var(--colour-text-on-signal);
+    outline: 1px solid var(--colour-text-on-signal);
+    outline-offset: -4px;
   }
 
   .action--secondary {
