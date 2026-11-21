@@ -12,17 +12,17 @@ capabilities:
   - Technical coordination
 ---
 
-### Context
+#### Context
 
 Openbank is a Santander group digital bank. My work focuses on customer-facing banking experiences built with React, TypeScript, and modern JavaScript.
 
-### Responsibilities
+#### Responsibilities
 
 - Build and maintain banking journeys including customer profiles, KYC, consent management, accounts, and deposits.
 - Collaborate with Product, UX/UI, backend engineers, and QA from requirements and prototypes through implementation, testing, and release.
 - Coordinate technical decisions and delivery within the Customer vertical, identifying dependencies, reviewing implementations, and supporting engineers during critical releases.
 
-### Selected contributions
+#### Selected contributions
 
 - Led the design and delivery of customer-facing banking experiences with React and TypeScript.
 - Designed a reusable dynamic form architecture used across web and hybrid applications, reducing duplicated implementation work and improving consistency between banking journeys.

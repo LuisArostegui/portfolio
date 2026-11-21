@@ -10,7 +10,12 @@ vi.mock('astro:content', () => ({
 }));
 
 import { getExperience } from './experience';
-import { getFeaturedProjects, getProjects } from './projects';
+import {
+  getFeaturedProjects,
+  getProjectState,
+  getProjects,
+  getRepositoryUrl,
+} from './projects';
 
 const projectEntries = [
   {
@@ -152,6 +157,74 @@ describe('project content queries', () => {
   );
 });
 
+describe('project visibility, checks and pipeline', () => {
+  it('maps visibility to public when absent', async () => {
+    getCollectionMock.mockResolvedValue(projectEntries);
+
+    const projects = await getProjects();
+
+    expect(projects.every(({ visibility }) => visibility === 'public')).toBe(
+      true,
+    );
+  });
+
+  it('omits checks and pipeline when absent', async () => {
+    getCollectionMock.mockResolvedValue(projectEntries);
+
+    const [project] = await getProjects();
+
+    expect(project).not.toHaveProperty('checks');
+    expect(project).not.toHaveProperty('pipeline');
+  });
+
+  it('copies visibility, checks and pipeline when present', async () => {
+    getCollectionMock.mockResolvedValue([
+      {
+        ...projectEntries[0],
+        data: {
+          ...projectEntries[0]!.data,
+          visibility: 'private',
+          checks: { url: 'https://example.com/ci', labels: ['lint'] },
+          pipeline: [
+            { label: 'A', detail: 'a' },
+            { label: 'B', detail: 'b' },
+          ],
+        },
+      },
+    ]);
+
+    const [project] = await getProjects();
+
+    expect(project).toMatchObject({
+      visibility: 'private',
+      checks: { url: 'https://example.com/ci', labels: ['lint'] },
+      pipeline: [
+        { label: 'A', detail: 'a' },
+        { label: 'B', detail: 'b' },
+      ],
+    });
+  });
+});
+
+describe('getProjectState', () => {
+  it.each([
+    [
+      { status: 'active', visibility: 'public' },
+      { symbol: '●', label: 'active', tone: 'signal' },
+    ],
+    [
+      { status: 'active', visibility: 'private' },
+      { symbol: '◐', label: 'private', tone: 'caution' },
+    ],
+    [
+      { status: 'archived', visibility: 'public' },
+      { symbol: '●', label: 'archived', tone: 'muted' },
+    ],
+  ] as const)('maps %o to %o', (input, expected) => {
+    expect(getProjectState(input)).toEqual(expected);
+  });
+});
+
 describe('experience content queries', () => {
   it('orders recent roles first and prioritises a current role when start periods match', async () => {
     getCollectionMock.mockResolvedValue(experienceEntries);
@@ -163,5 +236,26 @@ describe('experience content queries', () => {
       { id: 'ended-role', isCurrent: false },
       { id: 'older-current-role', isCurrent: true },
     ]);
+  });
+});
+
+describe('getRepositoryUrl', () => {
+  const repository = 'https://github.com/LuisArostegui/portfolio';
+
+  it.each([
+    [[`${repository}/issues/67`, repository], repository],
+    [[`${repository}/`], `${repository}/`],
+    [
+      [`${repository}/blob/main/docs/a.md`, 'https://example.com/a/b'],
+      undefined,
+    ],
+    [[`${repository}/tree/main`], undefined],
+    [['http://github.com/a/b'], undefined],
+    [['https://github.com/orgs/x'], undefined],
+    [[`${repository}?tab=readme`], undefined],
+    [[`${repository}#readme`], undefined],
+    [undefined, undefined],
+  ] as const)('finds the repository in %o', (links, expected) => {
+    expect(getRepositoryUrl(links)).toBe(expected);
   });
 });

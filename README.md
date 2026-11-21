@@ -132,6 +132,7 @@ Commit only `pnpm-lock.yaml`; do not create or commit lockfiles from other packa
 - [Experience and shared navigation high-fidelity design](docs/design/experience-navigation-design.md)
 - [Interactive prototype and interaction contract](docs/design/interactive-prototype.md)
 - [Design validation and implementation handoff](docs/design/design-validation-handoff.md)
+- Direction B redesign (supersedes the page designs above): [static prototype](https://claude.ai/artifact/F5AhU9xzXQYYYMWxuVhgfn) (row B), [motion prototype](https://claude.ai/artifact/V1yBk4j8fck83vbi7f1veX), [issue #120](https://github.com/LuisArostegui/portfolio/issues/120), and the revised [information architecture](docs/product/information-architecture.md)
 
 ## Git workflow
 

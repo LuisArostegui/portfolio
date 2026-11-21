@@ -1,46 +1,88 @@
 import { describe, expect, it } from 'vitest';
 import {
+  cvAction,
+  footerNavigation,
   getLinkAttributes,
   isCurrentPage,
+  primaryNavigation,
   type NavigationItem,
 } from './siteNavigation';
 
 describe('site navigation', () => {
-  it('marks an internal route and its generated child routes as current', () => {
-    const projects: NavigationItem = {
-      label: 'Projects',
-      href: '/projects/',
-      kind: 'internal',
-    };
+  const item = (label: string): NavigationItem => {
+    const found = primaryNavigation.find((entry) => entry.label === label);
 
-    expect(isCurrentPage(projects, '/projects')).toBe(true);
-    expect(isCurrentPage(projects, '/projects/')).toBe(true);
-    expect(isCurrentPage(projects, '/projects///')).toBe(true);
-    expect(isCurrentPage(projects, '/projects/portfolio-foundation/')).toBe(
-      true,
+    if (!found) {
+      throw new Error(`Missing navigation item: ${label}`);
+    }
+
+    return found;
+  };
+  const experience = item('Experience');
+  const work = item('Work');
+  const about = item('About');
+  const contact = item('Contact');
+
+  it('lists the primary destinations in order', () => {
+    expect(primaryNavigation).toEqual([
+      { label: 'Experience', href: '/#experience', kind: 'internal' },
+      { label: 'Work', href: '/#work', kind: 'internal' },
+      { label: 'About', href: '/#about', kind: 'internal' },
+      { label: 'Contact', href: '/#contact', kind: 'internal' },
+    ]);
+  });
+
+  it('exposes the CV as a download action', () => {
+    expect(cvAction).toEqual({
+      label: 'CV',
+      href: '/CV-Luis-Arostegui-Ruiz.pdf',
+      kind: 'download',
+    });
+    expect(cvAction.kind).toBe('download');
+  });
+
+  it('extends the footer with accessibility and profile links', () => {
+    expect(footerNavigation.slice(0, 4)).toEqual(primaryNavigation);
+    expect(footerNavigation.slice(4)).toEqual([
+      { label: 'Accessibility', href: '/accessibility/', kind: 'internal' },
+      {
+        label: 'GitHub',
+        href: 'https://github.com/LuisArostegui',
+        kind: 'external',
+      },
+      {
+        label: 'LinkedIn',
+        href: 'https://www.linkedin.com/in/luisarosteguiruiz/',
+        kind: 'external',
+      },
+    ]);
+  });
+
+  it('marks Work as current on project routes only', () => {
+    expect(isCurrentPage(work, '/projects/portfolio-foundation/')).toBe(true);
+    expect(isCurrentPage(work, '/projects/portfolio-foundation')).toBe(true);
+    expect(isCurrentPage(work, '/')).toBe(false);
+  });
+
+  it('never marks a home section anchor as current on the home page', () => {
+    for (const entry of [experience, work, about, contact]) {
+      expect(isCurrentPage(entry, '/')).toBe(false);
+    }
+    expect(isCurrentPage(experience, '/projects/portfolio-foundation/')).toBe(
+      false,
     );
-    expect(isCurrentPage(projects, '/projects-example/')).toBe(false);
   });
 
-  it('keeps Home current only for the root route', () => {
-    const home: NavigationItem = {
-      label: 'Home',
-      href: '/',
+  it('marks a route page and its child routes as current', () => {
+    const accessibility: NavigationItem = {
+      label: 'Accessibility',
+      href: '/accessibility/',
       kind: 'internal',
     };
 
-    expect(isCurrentPage(home, '/')).toBe(true);
-    expect(isCurrentPage(home, '/projects/portfolio-foundation/')).toBe(false);
-  });
-
-  it('does not mark a home section anchor as the current page route', () => {
-    const contact: NavigationItem = {
-      label: 'Contact',
-      href: '/#contact',
-      kind: 'internal',
-    };
-
-    expect(isCurrentPage(contact, '/')).toBe(false);
+    expect(isCurrentPage(accessibility, '/accessibility')).toBe(true);
+    expect(isCurrentPage(accessibility, '/accessibility///')).toBe(true);
+    expect(isCurrentPage(accessibility, '/accessibility-example/')).toBe(false);
   });
 
   it('derives safe external-link attributes from the item kind', () => {

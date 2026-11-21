@@ -145,10 +145,10 @@ const contactEmail = 'luisarosteguiruizit@gmail.com';
     justify-content: center;
     padding: var(--space-3) var(--space-4);
     margin-block-start: var(--space-5);
-    border: 1px solid var(--colour-accent-default);
+    border: 1px solid var(--colour-signal);
     border-radius: var(--radius-1);
-    background-color: var(--colour-accent-default);
-    color: var(--colour-text-on-accent);
+    background-color: var(--colour-signal);
+    color: var(--colour-text-on-signal);
     font-family: var(--type-label-font-family);
     font-size: var(--type-label-font-size);
     font-weight: var(--type-label-font-weight);
@@ -159,10 +159,16 @@ const contactEmail = 'luisarosteguiruizit@gmail.com';
     transition-timing-function: var(--motion-ease-standard);
   }
 
-  .action:hover,
+  .action:hover {
+    background-color: var(--colour-signal-hover);
+    color: var(--colour-text-on-signal);
+  }
+
   .action:active {
-    background-color: var(--colour-accent-hover);
-    color: var(--colour-text-on-accent);
+    background-color: var(--colour-signal);
+    color: var(--colour-text-on-signal);
+    outline: 1px solid var(--colour-text-on-signal);
+    outline-offset: -4px;
   }
 
   @media (min-width: 48rem) {

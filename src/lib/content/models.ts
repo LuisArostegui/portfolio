@@ -3,6 +3,18 @@ import type { RenderResult } from 'astro:content';
 export type ProjectStatus =
   'planned' | 'experimental' | 'active' | 'completed' | 'archived';
 
+export type ProjectVisibility = 'public' | 'private';
+
+export interface ProjectChecks {
+  url: string;
+  labels: string[];
+}
+
+export interface ProjectPipelineStep {
+  label: string;
+  detail: string;
+}
+
 export interface ContentPeriod {
   start: string;
   end: string | null;
@@ -18,6 +30,9 @@ export interface ProjectPreview {
   order: number;
   capabilities: string[];
   technologies?: string[];
+  visibility: ProjectVisibility;
+  checks?: ProjectChecks;
+  pipeline?: ProjectPipelineStep[];
 }
 
 export interface ProjectDetail extends ProjectPreview {

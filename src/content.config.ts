@@ -43,6 +43,18 @@ const projects = defineCollection({
       technologies: z.array(nonEmptyText).min(1).optional(),
       period: period.optional(),
       publicLinks: z.array(z.url()).min(1).optional(),
+      visibility: z.enum(['public', 'private']).optional(),
+      checks: z
+        .object({
+          url: z.url(),
+          labels: z.array(nonEmptyText).min(1),
+        })
+        .strict()
+        .optional(),
+      pipeline: z
+        .array(z.object({ label: nonEmptyText, detail: nonEmptyText }).strict())
+        .min(2)
+        .optional(),
     })
     .strict(),
 });

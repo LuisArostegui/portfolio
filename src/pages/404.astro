@@ -6,6 +6,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   title="Page not found"
   description="The requested portfolio page could not be found."
   pathname="/404/"
+  canonical={false}
 >
   <section class="not-found" aria-labelledby="not-found-heading">
     <h1 id="not-found-heading">Page not found</h1>
@@ -15,10 +16,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     </p>
     <div class="action-group" aria-label="Not-found continuation paths">
       <a class="action action--primary" href="/">Go home</a>
-      <a class="action action--secondary" href="/projects/">View projects</a>
-      <a class="action action--secondary" href="/experience/">
-        View experience
-      </a>
+      <a class="action action--secondary" href="/#experience">See experience</a>
+      <a class="action action--secondary" href="/#work">See work</a>
     </div>
   </section>
 </BaseLayout>
@@ -84,15 +83,21 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   }
 
   .action--primary {
-    border-color: var(--colour-accent-default);
-    background-color: var(--colour-accent-default);
-    color: var(--colour-text-on-accent);
+    border-color: var(--colour-signal);
+    background-color: var(--colour-signal);
+    color: var(--colour-text-on-signal);
   }
 
-  .action--primary:hover,
+  .action--primary:hover {
+    background-color: var(--colour-signal-hover);
+    color: var(--colour-text-on-signal);
+  }
+
   .action--primary:active {
-    background-color: var(--colour-accent-hover);
-    color: var(--colour-text-on-accent);
+    background-color: var(--colour-signal);
+    color: var(--colour-text-on-signal);
+    outline: 1px solid var(--colour-text-on-signal);
+    outline-offset: -4px;
   }
 
   .action--secondary {
@@ -100,7 +105,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   }
 
   .action--secondary:hover {
-    border-color: var(--colour-border-accent);
+    border-color: var(--colour-signal);
     color: var(--colour-text-primary);
   }
 

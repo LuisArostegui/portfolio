@@ -39,28 +39,40 @@ The hierarchy and navigation must remain understandable on narrow screens. The M
 
 The structure should allow future articles, localisation, and additional case studies when justified. Empty sections, speculative content types, and unnecessary top-level destinations should not be included in the MVP.
 
-## 3. Initial sitemap
+## 3. Sitemap
+
+> **Superseded in part by direction B.** The approved direction B redesign (issue [#120](https://github.com/LuisArostegui/portfolio/issues/120)) replaces the initial sitemap below. The `/projects` and `/experience` index routes no longer exist; Experience, Work, About, and Contact are sections of Home. Where this document and direction B differ, direction B governs; sections not mentioned here are unchanged.
 
 ```mermaid
 flowchart TD
-    Home["Home /"] --> Projects["Projects /projects"]
-    Home --> Experience["Experience /experience"]
-    Home -.-> About["About /about or Home section"]
-    Home -.-> Contact["Contact /contact or Home section"]
+    Home["Home /"] --> Experience["Experience #experience"]
+    Home --> Work["Work #work"]
+    Home --> About["About #about"]
+    Home --> Contact["Contact #contact"]
 
-    Projects --> ProjectDetail["Project detail /projects/:project-slug"]
-    ProjectDetail --> CaseStudy["Case-study content within project detail"]
+    Work --> ProjectDetail["Case study /projects/:project-slug/"]
 
     Home --> CV["Download CV"]
     Home --> GitHub["GitHub"]
     Home --> LinkedIn["LinkedIn"]
+
+    Footer["Footer"] --> Accessibility["Accessibility /accessibility/"]
 ```
 
-The home page is the entry point to the portfolio's main internal destinations. Projects provide the path from a curated overview to detailed technical evidence. In the MVP, case studies are an in-depth presentation mode within project detail pages rather than a separate content hierarchy or top-level route.
+The routes are:
 
-Home, Projects, Project detail, and Experience are the initial routes required by this architecture. About and Contact are required content destinations, but may begin as home-page sections. Their dotted connections in the diagram indicate that dedicated routes are conditional on having enough distinct, credible content.
+- `/`: Home, with the sections hero (`#top`), `#experience`, `#work`, `#about`, and `#contact`.
+- `/projects/<slug>/`: a decision-led case study per project, organised as Problem, Decisions, Evidence, and Outcome.
+- `/accessibility/`: the accessibility statement, linked from the footer.
+- The 404 page, which has no canonical URL.
 
-The CV, GitHub, and LinkedIn are direct actions or external resources, not primary internal pages. The exact route syntax may change during implementation, but the content hierarchy should remain equivalent.
+`/projects` and `/experience` were removed. `public/_redirects` sends `/projects` and `/projects/` to `/#work`, and `/experience` and `/experience/` to `/#experience`, with a 301 status.
+
+The legacy anchors `#selected-experience`, `#selected-projects`, and `#process` are kept as aliases on inner elements so existing fragment links keep resolving.
+
+The home page is the entry point to the portfolio's main internal destinations. Case studies are the path from the curated Work overview to detailed technical evidence, and remain an in-depth presentation mode within project detail pages rather than a separate content hierarchy.
+
+The CV, GitHub, and LinkedIn are direct actions or external resources, not primary internal pages.
 
 ## 4. Page inventory
 
@@ -70,9 +82,11 @@ The CV, GitHub, and LinkedIn are direct actions or external resources, not prima
 
 **Primary audience:** All visitors, particularly recruiters, hiring managers, and first-time visitors.
 
-**Expected content:** Professional positioning, a concise summary, selected project and experience previews, evidence-supported engineering strengths, an overview of engineering process, primary actions, and a contact call to action. Home is a curated overview and should not reproduce every detail from other pages.
+**Expected content:** Professional positioning, a concise summary, selected project and experience previews, primary actions, and a contact call to action. Home is a curated overview and should not reproduce every detail from other pages. The engineering strengths and engineering process sections were removed in direction B; their evidence role moves into each case study.
 
-### Projects — `/projects`
+### Projects — `/projects` (removed in direction B)
+
+> Removed. `/projects` and `/projects/` redirect (301) to `/#work`, where the Work section is the curated project overview. The description below is the original MVP intent and is kept for context only.
 
 **Purpose:** Present selected projects that can be shown publicly without exposing confidential information, help visitors compare them by problem, role, technologies, and engineering relevance, and provide access to detailed project or case-study content.
 
@@ -80,15 +94,21 @@ The CV, GitHub, and LinkedIn are direct actions or external resources, not prima
 
 **Expected content:** A curated project collection with concise context, my role, relevant technologies, professional relevance, and links to credible detail pages. It is not an exhaustive archive.
 
-### Project detail — `/projects/:project-slug`
+### Project detail — `/projects/<slug>/`
 
 **Purpose:** Explain one selected project in depth and provide technical evidence without exposing confidential information. This is the canonical location for a project's case study in the MVP.
 
 **Primary audience:** Engineering managers, technical leads, software engineers, and interested recruiters.
 
-**Expected content:** Context, problem, constraints, responsibilities, decisions, trade-offs, implementation approach, quality practices, and outcomes. Depth may vary by project, and only factual, public-safe evidence should be included.
+**Expected content:** A decision-led case study organised as Problem, Decisions, Evidence, and Outcome. Depth may vary by project, and only factual, public-safe evidence should be included. The evidence previously shown in the home strengths and process sections lives here; for example, Portfolio foundation links the architecture decision records and continuous integration.
 
-### Experience — `/experience`
+### Accessibility — `/accessibility/`
+
+**Purpose:** State the portfolio's accessibility approach and provide a route for feedback. It is linked from the footer and is not a primary navigation destination.
+
+### Experience — `/experience` (removed in direction B)
+
+> Removed. `/experience` and `/experience/` redirect (301) to `/#experience`, the Experience section of Home. The description below is the original MVP intent and is kept for context only.
 
 **Purpose:** Explain my professional trajectory, relevant responsibilities, and the development of my frontend specialisation and wider software experience.
 
@@ -116,7 +136,9 @@ About may initially be integrated into the home page if there is not enough dist
 
 ## 5. Home-page sections
 
-The home page should contain the following sections in this order.
+> **Superseded in part by direction B.** The home page now has the sections hero (`#top`), Experience (`#experience`), Work (`#work`), About (`#about`), and Contact (`#contact`), in that order. The Engineering strengths and Engineering process sections were removed. The legacy anchors `#selected-experience`, `#selected-projects`, and `#process` remain as aliases on inner elements. The original MVP list follows for context.
+
+The original MVP home page contained the following sections in this order.
 
 ### 1. Hero and professional positioning
 
@@ -136,7 +158,7 @@ Present key areas supported by evidence, including React and TypeScript, compone
 
 ### 5. Selected experience
 
-Provide a concise preview of professional experience and responsibilities. Detailed, canonical experience content belongs on `/experience`.
+Provide a concise preview of professional experience and responsibilities. Detailed, canonical experience content belongs on `/experience` (now the Experience section of Home; `/experience` redirects to `/#experience`).
 
 ### 6. Engineering process
 
@@ -152,17 +174,16 @@ Include essential navigation, external professional links, and any legally requi
 
 ## 6. Main navigation
 
-The primary navigation should expose these content destinations:
+Direction B updates the primary navigation. It exposes these destinations, all of which are sections of Home:
 
-- Home
-- Projects
 - Experience
+- Work
 - About
 - Contact
 
-About and Contact may link to sections on Home until dedicated routes are justified. This changes their initial form, not their position in the content hierarchy or their availability to visitors.
+The CV is a prominent action beside the navigation, and the name links to `/`, so Home has no separate item. The footer adds Accessibility, GitHub, and LinkedIn.
 
-Download CV, GitHub, and LinkedIn should appear as prominent actions or secondary navigation items rather than equal top-level destinations.
+The original MVP navigation listed Home, Projects, Experience, About, and Contact; Projects is now Work, and About and Contact link to Home sections until dedicated routes are justified.
 
 The navigation should follow these rules:
 
@@ -232,15 +253,17 @@ For the MVP:
 Content ownership is defined as follows:
 
 - **Professional positioning:** Canonical concise version on Home.
-- **Detailed professional history:** Experience.
+- **Detailed professional history:** The Experience section of Home, derived from the `experience` collection entries.
 - **Engineering values and personal context:** About, whether presented on Home or on a dedicated page.
-- **Project summaries:** Projects index.
-- **Detailed project evidence:** Project detail.
+- **Project summaries:** The Work section of Home, derived from the featured, ordered entries of the `projects` collection.
+- **Detailed project evidence:** Project detail (case study).
 - **Contact channels:** Contact, whether presented on Home or on a dedicated page.
 - **CV:** External or downloadable resource.
 - **Repository process and technical documentation:** Repository and linked documentation.
 
 Other pages may contain short previews, but should link to the canonical location instead of duplicating entire sections.
+
+The Astro content collections remain the single source of truth. Home previews are derived from the `projects` and `experience` entries rather than written separately. Direction B adds the optional project fields `visibility`, `checks`, and `pipeline`.
 
 ## 10. Key visitor journeys
 
@@ -260,7 +283,7 @@ The recruiter should be able to identify my role and professional relevance with
 
 ```text
 Home
-→ Review engineering strengths
+→ Review Work and Experience
 → Open selected project
 → Read decisions, trade-offs, testing, and architecture
 → Review experience
@@ -301,12 +324,12 @@ Home
 
 ## 11. MVP scope
 
-The MVP requires these routes:
+The MVP requires these routes (updated by direction B):
 
-- Home.
-- Projects index.
-- Project detail pages.
-- Experience.
+- Home, including the Experience, Work, About, and Contact sections.
+- Project detail pages (case studies) at `/projects/<slug>/`.
+- Accessibility statement at `/accessibility/`.
+- Redirects from the removed `/projects` and `/experience` routes.
 
 It also requires these destinations and resources:
 

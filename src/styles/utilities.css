@@ -14,10 +14,11 @@
   position: fixed;
   inset-block-start: var(--space-4);
   inset-inline-start: var(--space-4);
-  z-index: 1;
+  /* Above the sticky site header (z-index: 10). */
+  z-index: 20;
   padding: var(--space-3) var(--space-4);
-  background-color: var(--colour-accent-default);
-  color: var(--colour-text-on-accent);
+  background-color: var(--colour-signal);
+  color: var(--colour-text-on-signal);
   transform: translateY(calc(-100% - var(--space-4)));
 }
 

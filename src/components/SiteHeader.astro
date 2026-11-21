@@ -1,5 +1,7 @@
 ---
+import { siteMetadata } from '../lib/siteMetadata';
 import {
+  cvAction,
   getLinkAttributes,
   isCurrentPage,
   primaryNavigation,
@@ -10,7 +12,9 @@ const pathname = Astro.url.pathname;
 
 <header class="site-header" data-site-header>
   <div class="site-header__content">
-    <a class="site-header__brand" href="/">Portfolio</a>
+    <a class="site-header__brand" href="/" data-compact-name>
+      {siteMetadata.owner.name}
+    </a>
     <button
       class="site-header__menu-toggle"
       type="button"
@@ -70,6 +74,13 @@ const pathname = Astro.url.pathname;
           ))
         }
       </ul>
+      <a
+        class="site-header__cv"
+        href={cvAction.href}
+        {...getLinkAttributes(cvAction)}
+      >
+        {cvAction.label}
+      </a>
     </nav>
   </div>
 </header>
@@ -128,6 +139,32 @@ const pathname = Astro.url.pathname;
         }
       });
 
+      header.addEventListener('focusout', (event) => {
+        if (
+          compactNavigation.matches &&
+          toggle.getAttribute('aria-expanded') === 'true' &&
+          event.relatedTarget instanceof Node &&
+          !header.contains(event.relatedTarget)
+        ) {
+          setExpanded(false);
+        }
+      });
+
+      navigation.addEventListener('click', (event) => {
+        const link =
+          event.target instanceof Element ? event.target.closest('a') : null;
+
+        if (compactNavigation.matches && link) {
+          setExpanded(false);
+
+          // A download keeps the visitor on the page, so the hidden link would
+          // drop focus to <body>; return it to the control that opened the menu.
+          if (link.hasAttribute('download')) {
+            toggle.focus();
+          }
+        }
+      });
+
       compactNavigation.addEventListener('change', updateLayout);
       updateLayout();
     }
@@ -136,7 +173,11 @@ const pathname = Astro.url.pathname;
 
 <style>
   .site-header {
+    position: relative;
+    z-index: 10;
+    top: env(safe-area-inset-top, 0px);
     border-block-end: 1px solid var(--colour-border-subtle);
+    background-color: var(--colour-surface-page);
   }
 
   .site-header__content {
@@ -156,7 +197,8 @@ const pathname = Astro.url.pathname;
     color: var(--colour-text-primary);
     font-family: var(--type-heading-3-font-family);
     font-size: var(--type-label-font-size);
-    font-weight: var(--type-heading-3-font-weight);
+    font-weight: 800;
+    letter-spacing: -0.02em;
     text-decoration: none;
     transition-duration: var(--motion-duration-fast);
     transition-property: color;
@@ -182,7 +224,7 @@ const pathname = Astro.url.pathname;
   }
 
   .site-header__menu-toggle:hover {
-    border-color: var(--colour-border-accent);
+    border-color: var(--colour-signal);
     background-color: var(--colour-surface-subtle);
   }
 
@@ -208,7 +250,13 @@ const pathname = Astro.url.pathname;
     list-style: none;
   }
 
-  .site-header__navigation a {
+  .site-header__navigation {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+  }
+
+  .site-header__navigation-list a {
     display: inline-flex;
     min-block-size: 44px;
     align-items: center;
@@ -222,17 +270,46 @@ const pathname = Astro.url.pathname;
     transition-timing-function: var(--motion-ease-standard);
   }
 
-  .site-header__navigation a:hover {
+  .site-header__navigation-list a:hover {
     color: var(--colour-text-primary);
   }
 
-  .site-header__navigation a[aria-current='page'] {
-    border-block-end-color: var(--colour-border-accent);
+  .site-header__cv {
+    display: inline-flex;
+    min-block-size: 44px;
+    align-items: center;
+    padding-inline: var(--space-4);
+    border-radius: var(--radius-1);
+    background-color: var(--colour-signal);
+    color: var(--colour-text-on-signal);
+    font-family: var(--type-label-font-family);
+    font-size: var(--type-label-font-size);
+    font-weight: 800;
+    text-decoration: none;
+    transition-duration: var(--motion-duration-fast);
+    transition-property: background-color;
+    transition-timing-function: var(--motion-ease-standard);
+  }
+
+  .site-header__cv:hover {
+    background-color: var(--colour-signal-hover);
+  }
+
+  .site-header__navigation-list a[aria-current='page'] {
+    border-block-end-color: var(--colour-signal);
     color: var(--colour-text-primary);
     font-weight: var(--type-label-font-weight);
   }
 
+  .site-header[data-navigation-enhanced] {
+    position: sticky;
+  }
+
   @media (min-width: 48rem) {
+    .site-header {
+      position: sticky;
+    }
+
     .site-header__content {
       inline-size: min(
         100% - (2 * var(--layout-gutter-tablet)),
@@ -259,7 +336,16 @@ const pathname = Astro.url.pathname;
     }
 
     .site-header__navigation {
+      display: grid;
       grid-column: 1 / -1;
+      gap: var(--space-3);
+      padding-block-end: var(--space-3);
+      max-block-size: calc(100dvh - 72px);
+      overflow-y: auto;
+    }
+
+    .site-header__cv {
+      justify-self: start;
     }
 
     .site-header__navigation-list {
@@ -269,7 +355,7 @@ const pathname = Astro.url.pathname;
       border-block-start: 1px solid var(--colour-border-subtle);
     }
 
-    .site-header__navigation a {
+    .site-header__navigation-list a {
       padding-inline: 0;
     }
 

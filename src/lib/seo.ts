@@ -13,12 +13,13 @@ export type PageSeoMetadata = {
   pathname?: RootRelativePath;
   imagePath?: RootRelativePath;
   openGraphType?: OpenGraphType;
+  canonical?: boolean;
 };
 
 export type ResolvedSeoMetadata = {
   title: string;
   description: string;
-  canonicalUrl: AbsoluteUrl;
+  canonicalUrl: AbsoluteUrl | undefined;
   imageUrl: AbsoluteUrl;
   imageAlt: string;
   imageType: string;
@@ -52,7 +53,7 @@ function resolveTitle(title?: string) {
 
 function resolveAbsoluteUrl(path: RootRelativePath) {
   if (path === '/') {
-    return siteMetadata.siteUrl;
+    return `${siteMetadata.siteUrl}/` as AbsoluteUrl;
   }
 
   return new URL(path, `${siteMetadata.siteUrl}/`).toString() as AbsoluteUrl;
@@ -67,7 +68,10 @@ export function getSeoMetadata(
   return {
     title: resolveTitle(pageMetadata.title),
     description: pageMetadata.description ?? siteMetadata.defaultDescription,
-    canonicalUrl: resolveAbsoluteUrl(pageMetadata.pathname ?? '/'),
+    canonicalUrl:
+      pageMetadata.canonical === false
+        ? undefined
+        : resolveAbsoluteUrl(pageMetadata.pathname ?? '/'),
     imageUrl: resolveAbsoluteUrl(imagePath),
     imageAlt: siteMetadata.socialPreviewImage.alt,
     imageType: siteMetadata.socialPreviewImage.mimeType,
@@ -87,8 +91,8 @@ export function getPersonStructuredData(): PersonStructuredData {
     name: siteMetadata.owner.name,
     jobTitle: siteMetadata.owner.jobTitle,
     description: siteMetadata.owner.description,
-    url: siteMetadata.siteUrl,
-    mainEntityOfPage: siteMetadata.siteUrl,
+    url: resolveAbsoluteUrl('/'),
+    mainEntityOfPage: resolveAbsoluteUrl('/'),
     knowsAbout: siteMetadata.owner.knowsAbout,
   };
 

@@ -17,36 +17,20 @@
 }
 
 :root {
-  --colour-neutral-0: #ffffff;
-  --colour-neutral-100: #f5f7fa;
-  --colour-neutral-300: #d4d9e1;
-  --colour-neutral-500: #8a93a3;
-  --colour-neutral-700: #444c5a;
-  --colour-neutral-800: #2b313b;
-  --colour-neutral-850: #22272f;
-  --colour-neutral-900: #171b21;
-  --colour-neutral-950: #0d0f12;
-
-  --colour-accent-400: #a9b4ff;
-  --colour-accent-500: #8b9cff;
-  --colour-accent-600: #6f7fea;
-
-  --colour-surface-page: var(--colour-neutral-950);
-  --colour-surface-default: var(--colour-neutral-900);
-  --colour-surface-subtle: var(--colour-neutral-850);
-  --colour-surface-elevated: var(--colour-neutral-800);
-  --colour-text-primary: var(--colour-neutral-100);
-  --colour-text-secondary: var(--colour-neutral-300);
-  --colour-text-muted: var(--colour-neutral-500);
-  --colour-text-accent: var(--colour-accent-400);
-  --colour-text-on-accent: var(--colour-neutral-950);
-  --colour-border-subtle: var(--colour-neutral-800);
-  --colour-border-strong: var(--colour-neutral-700);
-  --colour-border-accent: var(--colour-accent-500);
-  --colour-accent-default: var(--colour-accent-500);
-  --colour-accent-hover: var(--colour-accent-400);
-  --colour-accent-active: var(--colour-accent-600);
-  --colour-focus-ring: var(--colour-accent-400);
+  --colour-surface-page: #0d1210;
+  --colour-surface-default: #151c19;
+  --colour-surface-subtle: #1b2420;
+  --colour-surface-elevated: #222c28;
+  --colour-border-subtle: #2b3530;
+  --colour-border-strong: #5b655f;
+  --colour-text-primary: #e6ece8;
+  --colour-text-secondary: #b9c3bd;
+  --colour-text-muted: #8e9a93;
+  --colour-signal: #c8f560;
+  --colour-signal-hover: #dbff85;
+  --colour-caution: #f2b54a;
+  --colour-text-on-signal: #0d1210;
+  --colour-focus-ring: #c8f560;
 
   --space-1: 4px;
   --space-2: 8px;
@@ -109,7 +93,8 @@
   --type-metadata-font-size: 12px;
   --type-metadata-line-height: 18px;
   --type-metadata-font-weight: 500;
-  --type-code-font-family: 'IBM Plex Mono', ui-monospace, monospace;
+  --font-data: 'IBM Plex Mono', ui-monospace, monospace;
+  --type-code-font-family: var(--font-data);
   --type-code-font-size: 14px;
   --type-code-line-height: 22px;
   --type-code-font-weight: 400;
