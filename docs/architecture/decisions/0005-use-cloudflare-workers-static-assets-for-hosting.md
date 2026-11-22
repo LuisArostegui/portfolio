@@ -1,6 +1,7 @@
 # ADR 0005: Use Cloudflare Workers Static Assets for hosting
 
 - **Status:** Accepted
+- **Amended by:** [ADR 0008](0008-use-the-production-workers-dev-host-as-the-v1-canonical-origin.md), which makes the production `workers.dev` host the v1 canonical origin
 - **Date:** 2026-08-04
 - **Decision owners:** Portfolio maintainer
 - **Related issue:** [PT-12 — Evaluate hosting and deployment platform](https://github.com/LuisArostegui/portfolio/issues/15)

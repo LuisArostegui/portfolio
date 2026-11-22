@@ -62,3 +62,41 @@ test('custom not-found output is generated without exposing technical details', 
   await expect(page.getByText('Stack trace')).toHaveCount(0);
   await expect(page.getByText('Exception')).toHaveCount(0);
 });
+
+test('every sitemap URL matches the canonical of the page it points to', async ({
+  page,
+  request,
+}) => {
+  const sitemap = await request.get('/sitemap.xml');
+  expect(sitemap.ok()).toBe(true);
+
+  const locations = [
+    ...(await sitemap.text()).matchAll(/<loc>([^<]+)<\/loc>/g),
+  ].map(([, location]) => location ?? '');
+  expect(locations.length).toBeGreaterThan(0);
+
+  for (const location of locations) {
+    const { pathname } = new URL(location);
+    expect(pathname).not.toMatch(/^\/(projects|experience)\/?$/);
+
+    const response = await page.goto(pathname);
+    expect(response?.status()).toBe(200);
+    await expect(page.locator('link[rel="canonical"]')).toHaveAttribute(
+      'href',
+      location,
+    );
+  }
+});
+
+test('robots.txt allows crawling and names the sitemap', async ({
+  request,
+}) => {
+  const robots = await request.get('/robots.txt');
+  expect(robots.ok()).toBe(true);
+
+  const body = await robots.text();
+  expect(body).toContain('User-agent: *');
+  expect(body).toContain('Allow: /');
+  expect(body).not.toMatch(/^Disallow: \/\s*$/m);
+  expect(body).toMatch(/^Sitemap: https:\/\/\S+\/sitemap\.xml$/m);
+});
