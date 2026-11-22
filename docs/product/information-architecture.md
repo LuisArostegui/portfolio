@@ -330,6 +330,9 @@ The MVP requires these routes (updated by direction B):
 - Project detail pages (case studies) at `/projects/<slug>/`.
 - Accessibility statement at `/accessibility/`.
 - Redirects from the removed `/projects` and `/experience` routes.
+- A custom 404 page for unknown paths and slugs.
+
+The full contract, with status codes, trailing-slash handling and the rules for new routes, is in [routing and error handling](../architecture/routing.md).
 
 It also requires these destinations and resources:
 
@@ -340,7 +343,7 @@ It also requires these destinations and resources:
 - Basic footer navigation.
 - Repository and technical-documentation references where relevant.
 
-The MVP may initially launch with a limited number of carefully selected projects. A route should exist only when it has credible content; empty project detail pages and placeholder sections should not be created solely to satisfy the sitemap.
+The MVP launches with one approved case study, `portfolio-foundation` (decision of 2026-11-22, [#85](https://github.com/LuisArostegui/portfolio/issues/85)). A second case needs its own issue and publishable material. A route should exist only when it has credible content; empty project detail pages and placeholder sections should not be created solely to satisfy the sitemap.
 
 ## 12. Future extensions
 

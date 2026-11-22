@@ -1,5 +1,7 @@
 # Projects and project-detail high-fidelity design
 
+> **Historical record.** Direction B ([#120](https://github.com/LuisArostegui/portfolio/issues/120)) superseded this design. It is kept for traceability and is not an active reference. Start from the [design documentation index](README.md).
+
 ## 1. Purpose and scope
 
 PT-22 defines the approved high-fidelity design for:

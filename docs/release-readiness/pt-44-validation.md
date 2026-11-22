@@ -1,5 +1,7 @@
 # PT-44 Portfolio MVP validation record
 
+> **Historical record.** This record validated the MVP before Direction B ([#120](https://github.com/LuisArostegui/portfolio/issues/120)). The `/projects` and `/experience` routes it lists now redirect to `/#work` and `/#experience`. Current routes are in [routing and error handling](../architecture/routing.md). Release evidence for the Direction B launch belongs in [#70](https://github.com/LuisArostegui/portfolio/issues/70).
+
 ## Purpose
 
 This record tracks implementation-level validation for

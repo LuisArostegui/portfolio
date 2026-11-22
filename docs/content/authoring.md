@@ -13,9 +13,29 @@ Every project requires `title`, `summary`, `role`, `status`, `featured`, `order`
 
 `technologies`, `period`, and `publicLinks` are optional. Technologies remain subordinate labels. When present, a period uses `YYYY-MM` for `start` and either `YYYY-MM` or `null` for `end`. Public links must be real public URLs; omit them when none exist.
 
+Direction B ([#120](https://github.com/LuisArostegui/portfolio/issues/120)) added three optional fields. Each one renders nothing when it is absent.
+
+| Field        | Values                                      | Effect on the published HTML                                                                                                                                                                                        |
+| ------------ | ------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `visibility` | `public` or `private`; defaults to `public` | Describes the project's source code, not the case study. `private` shows the state as `◐ private` instead of `status`, and hides the repository link and the `checks` row on the home card and the case page.       |
+| `checks`     | `{ url, labels }` with at least one label   | On the home card, a row of check labels linking to `url` (for example a CI run). Shown only when `visibility` is `public`.                                                                                          |
+| `pipeline`   | At least two `{ label, detail }` steps      | A described pipeline figure on the home card, lit stage by stage by the scroll motion ([ADR 0007](../architecture/decisions/0007-allow-purposeful-scroll-driven-motion.md)). Every stage is visible without motion. |
+
+`src/lib/content/projects.ts` maps these fields into the page-facing models: `toProjectPreview()` applies the `visibility` default, `getProjectState()` derives the state label and symbol, and `getRepositoryUrl()` picks the repository link from `publicLinks`.
+
 ## Experience frontmatter
 
 Every experience entry requires `organisation`, `role`, `summary`, `startPeriod`, `endPeriod`, and at least one `capabilities` value. Periods use `YYYY-MM`. Set `endPeriod: null` for a current role; the application derives `isCurrent` from that value. Experience is ordered by its stored start period, not by presentation text.
+
+## Publication contract
+
+Every entry in the `projects` collection is published. `getStaticPaths()` in `src/pages/projects/[id].astro` generates `/projects/<slug>/` for all of them, and featured entries also appear in the home Work section. There is no draft state today.
+
+- `visibility: private` does not unpublish anything. A case study about a project whose code is private can be public and indexable when its text is approved.
+- Commit only approved, public-safe text. A case without approved material stays out of the repository rather than behind a flag.
+- If drafts are ever needed, add an explicit publication field and apply it to the routes, the home previews and the sitemap in the same change. See [routing and error handling](../architecture/routing.md#dynamic-routes).
+
+v1 launches with one approved case study, `portfolio-foundation` (decision of 2026-11-22, recorded in [#85](https://github.com/LuisArostegui/portfolio/issues/85)). A second case needs its own issue and publishable material.
 
 ## Publication boundary
 

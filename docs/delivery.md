@@ -36,7 +36,9 @@ https://:version.:subdomain.workers.dev/*
 
 This is Cloudflare's documented pattern for preventing versioned and technical `workers.dev` URLs from being indexed. It does not match a future canonical custom domain, which remains indexable by default. Do not replace it with a global `/*` rule.
 
-`_redirects` is intentionally absent. No approved redirect requirement or canonical hostname exists, and the static site must not receive an SPA fallback.
+The pattern also matches the current production host, `luis-arostegui-portfolio.<account>.workers.dev` (`:version` matches the Worker name and `:subdomain` the account). Production therefore responds with `X-Robots-Tag: noindex` today; this was confirmed on 2026-11-22 for `/`, the case study and `/accessibility/`. ADR 0005 states that `workers.dev` is not the public canonical URL. The production-origin decision is pending, and this rule stays unchanged until it is made.
+
+`public/_redirects` holds the four 301 redirects that Direction B ([#120](https://github.com/LuisArostegui/portfolio/issues/120)) introduced: `/projects` and `/projects/` to `/#work`, and `/experience` and `/experience/` to `/#experience`. `src/lib/redirects.test.ts` covers the file. Do not add an SPA fallback. The full route contract is in [routing and error handling](architecture/routing.md).
 
 ## Cloudflare Workers Builds setup
 
@@ -88,7 +90,7 @@ Validate the repository-owned deployment configuration without publishing:
 pnpm exec wrangler deploy --dry-run
 ```
 
-Confirm that `dist/_headers` exists and contains the scoped `workers.dev` rule after each production build.
+Confirm that `dist/_headers` exists and contains the scoped `workers.dev` rule, and that `dist/_redirects` contains the four Direction B redirects, after each production build.
 
 ## Preview and production verification
 

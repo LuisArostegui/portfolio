@@ -56,6 +56,29 @@ layout.content.readable → --layout-content-readable
 
 PT-18 does not implement those properties.
 
+## Direction B palette
+
+Direction B ([#120](https://github.com/LuisArostegui/portfolio/issues/120)) replaced the periwinkle palette in sections 4 and 5 with a green-black surface and a single lime signal. The token names and roles stay the same; the values below come from `src/styles/tokens.css`, which is the source of truth. `src/styles/tokens.test.ts` checks WCAG AA contrast for the text, signal and caution pairs. Sections 4 and 5 are kept as the historical MVP palette.
+
+| Token                       | Value     | Role                                                                                |
+| --------------------------- | --------- | ----------------------------------------------------------------------------------- |
+| `--colour-surface-page`     | `#0d1210` | Page canvas                                                                         |
+| `--colour-surface-default`  | `#151c19` | Grouped content                                                                     |
+| `--colour-surface-subtle`   | `#1b2420` | Quiet tonal separation                                                              |
+| `--colour-surface-elevated` | `#222c28` | Raised context                                                                      |
+| `--colour-border-subtle`    | `#2b3530` | Quiet grouping                                                                      |
+| `--colour-border-strong`    | `#5b655f` | Explicit boundaries                                                                 |
+| `--colour-text-primary`     | `#e6ece8` | Primary reading text                                                                |
+| `--colour-text-secondary`   | `#b9c3bd` | Supporting text                                                                     |
+| `--colour-text-muted`       | `#8e9a93` | Secondary metadata                                                                  |
+| `--colour-signal`           | `#c8f560` | Single accent: links, active state, trace                                           |
+| `--colour-signal-hover`     | `#dbff85` | Hover feedback                                                                      |
+| `--colour-caution`          | `#f2b54a` | Caution state (for example a private project), always paired with text and a symbol |
+| `--colour-text-on-signal`   | `#0d1210` | Text on a signal-coloured control                                                   |
+| `--colour-focus-ring`       | `#c8f560` | Focus-visible ring                                                                  |
+
+Colour still never carries meaning alone. Status uses a symbol and text as well as colour.
+
 ## 4. Primitive colour foundations
 
 ### Neutral scale
