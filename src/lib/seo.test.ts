@@ -21,7 +21,7 @@ describe('SEO metadata helpers', () => {
         'https://luis-arostegui-portfolio.luisarosteguiruizit.workers.dev/projects/',
       imageUrl:
         'https://luis-arostegui-portfolio.luisarosteguiruizit.workers.dev/social-preview.png',
-      imageAlt: 'Luis Arostegui Ruiz portfolio preview',
+      imageAlt: 'Luis Arostegui Ruiz, Software Engineer at Openbank',
       imageHeight: 630,
       imageType: 'image/png',
       imageWidth: 1200,
@@ -46,6 +46,18 @@ describe('SEO metadata helpers', () => {
     expect(metadata.canonicalUrl).toBe(
       'https://luis-arostegui-portfolio.luisarosteguiruizit.workers.dev/',
     );
+  });
+
+  it('uses a page-specific social preview image and alt text', () => {
+    const metadata = getSeoMetadata({
+      imagePath: '/projects/example/social-preview.png',
+      imageAlt: 'Example case study',
+    });
+
+    expect(metadata.imageUrl).toBe(
+      'https://luis-arostegui-portfolio.luisarosteguiruizit.workers.dev/projects/example/social-preview.png',
+    );
+    expect(metadata.imageAlt).toBe('Example case study');
   });
 
   it('omits the canonical URL when a page opts out', () => {

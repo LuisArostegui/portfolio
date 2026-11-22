@@ -12,6 +12,7 @@ export type PageSeoMetadata = {
   description?: string;
   pathname?: RootRelativePath;
   imagePath?: RootRelativePath;
+  imageAlt?: string;
   openGraphType?: OpenGraphType;
   canonical?: boolean;
 };
@@ -73,7 +74,7 @@ export function getSeoMetadata(
         ? undefined
         : resolveAbsoluteUrl(pageMetadata.pathname ?? '/'),
     imageUrl: resolveAbsoluteUrl(imagePath),
-    imageAlt: siteMetadata.socialPreviewImage.alt,
+    imageAlt: pageMetadata.imageAlt ?? siteMetadata.socialPreviewImage.alt,
     imageType: siteMetadata.socialPreviewImage.mimeType,
     imageWidth: siteMetadata.socialPreviewImage.width,
     imageHeight: siteMetadata.socialPreviewImage.height,

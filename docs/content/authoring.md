@@ -23,6 +23,8 @@ Direction B ([#120](https://github.com/LuisArostegui/portfolio/issues/120)) adde
 
 `visibility` describes the project's source code, not the case study. The repository link also needs a GitHub repository URL in `publicLinks`; without one it is omitted on both surfaces.
 
+A case page uses its own social preview when `public/projects/<id>/social-preview.png` exists (1200 × 630 PNG, Direction B palette). Without that file it falls back to the site default, `public/social-preview.png`.
+
 `src/lib/content/projects.ts` maps these fields into the page-facing models: `toProjectPreview()` applies the `visibility` default, `getProjectState()` derives the state label and symbol, and `getRepositoryUrl()` picks the repository link from `publicLinks`.
 
 ## Experience frontmatter
