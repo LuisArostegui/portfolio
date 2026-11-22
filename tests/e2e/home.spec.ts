@@ -218,6 +218,9 @@ test('mobile navigation is keyboard operable and restores focus when closed', as
   await page.keyboard.press('Escape');
   await expect(menuButton).toHaveAttribute('aria-expanded', 'false');
   await expect(menuButton).toBeFocused();
+  await expect(
+    page.getByRole('navigation', { name: 'Primary navigation' }),
+  ).toBeHidden();
 });
 
 test('downloading the CV from the mobile menu returns focus to the menu button', async ({
@@ -280,6 +283,106 @@ test('mobile menu closes after choosing a link and the target clears the header'
         : Number.NEGATIVE_INFINITY;
     })
     .toBeGreaterThanOrEqual(-1);
+});
+
+test('mobile menu opens over the page without moving it and closes on an outside tap', async ({
+  page,
+}, testInfo) => {
+  test.skip(
+    testInfo.project.name !== 'mobile-chromium',
+    'Mobile-only interaction',
+  );
+
+  await page.goto('/');
+
+  const menuButton = page.locator('[data-menu-toggle]');
+  const navigation = page.getByRole('navigation', {
+    name: 'Primary navigation',
+  });
+  const heroName = page.locator('#hero-name');
+  const before = await heroName.boundingBox();
+
+  await menuButton.tap();
+  await expect(navigation.getByRole('link', { name: 'Work' })).toBeVisible();
+  expect((await heroName.boundingBox())?.y).toBe(before?.y);
+
+  await page.touchscreen.tap(200, 760);
+  await expect(menuButton).toHaveAttribute('aria-expanded', 'false');
+  await expect(navigation).toBeHidden();
+});
+
+test('mobile menu settles in the state of the last of several quick taps', async ({
+  page,
+}, testInfo) => {
+  test.skip(
+    testInfo.project.name !== 'mobile-chromium',
+    'Mobile-only interaction',
+  );
+
+  await page.goto('/');
+
+  const menuButton = page.locator('[data-menu-toggle]');
+  const navigation = page.getByRole('navigation', {
+    name: 'Primary navigation',
+  });
+
+  for (let tap = 0; tap < 5; tap += 1) {
+    await menuButton.tap();
+  }
+
+  await expect(menuButton).toHaveAttribute('aria-expanded', 'true');
+  await expect(navigation.getByRole('link', { name: 'Work' })).toBeVisible();
+  await expect
+    .poll(() =>
+      navigation.evaluate((element) => getComputedStyle(element).opacity),
+    )
+    .toBe('1');
+
+  await menuButton.tap();
+  await menuButton.tap();
+  await menuButton.tap();
+  await expect(menuButton).toHaveAttribute('aria-expanded', 'false');
+  await expect(navigation).toBeHidden();
+});
+
+test('mobile menu changes state immediately with reduced motion', async ({
+  page,
+}, testInfo) => {
+  test.skip(
+    testInfo.project.name !== 'mobile-chromium',
+    'Mobile-only interaction',
+  );
+
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.goto('/');
+
+  const states = await page.evaluate(() => {
+    const toggle = document.querySelector<HTMLElement>('[data-menu-toggle]');
+    const navigation = document.querySelector<HTMLElement>('[data-navigation]');
+    const firstItem = navigation?.querySelector('li');
+
+    if (!toggle || !navigation || !firstItem) {
+      return null;
+    }
+
+    const read = () => ({
+      display: getComputedStyle(navigation).display,
+      panelOpacity: getComputedStyle(navigation).opacity,
+      itemOpacity: getComputedStyle(firstItem).opacity,
+    });
+
+    toggle.click();
+    const opened = read();
+    toggle.click();
+    const closed = read();
+
+    return { opened, closed };
+  });
+
+  expect(states).toEqual({
+    opened: { display: 'grid', panelOpacity: '1', itemOpacity: '1' },
+    closed: { display: 'none', panelOpacity: '0', itemOpacity: '1' },
+  });
 });
 
 test('header is not sticky on small screens without JavaScript', async ({
