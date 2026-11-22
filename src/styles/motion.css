@@ -1,0 +1,357 @@
+/*
+ * Page motion (ADR-0007, amending ADR-0003).
+ *
+ * The static page is complete: trace full, nodes lit, lamps and ticks shown.
+ * Everything below only layers motion on top of that state:
+ * - every animation sits inside `prefers-reduced-motion: no-preference`;
+ * - scroll-driven animations also need scroll-timeline support;
+ * - only transform and opacity move, except colour on nodes and lamps;
+ * - nothing waits for scroll below opacity 0.35.
+ * Each block names its motion (M1–M9 in the design spec) and its purpose.
+ *
+ * Scroll-driven rules use animation longhands: the build minifier folds
+ * `animation-timeline` into the `animation` shorthand, which browsers reject.
+ */
+
+:root {
+  --motion-ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  /* M7 Home card → case page. Purpose: continuity. The card title and the
+     case H1 share `view-transition-name: case-title-<id>`. Browsers without
+     cross-document view transitions navigate normally. */
+  @view-transition {
+    navigation: auto;
+  }
+
+  [data-case-title] {
+    view-transition-class: case-title;
+  }
+
+  ::view-transition-group(*.case-title) {
+    animation-duration: 0.45s;
+    animation-timing-function: var(--motion-ease-out);
+  }
+
+  /* M1 Load. Purpose: hierarchy and identity. The only time-based sequence:
+     the name rises line by line and the status lamp lights once. */
+  .hero-name span {
+    animation: motion-rise 0.7s var(--motion-ease-out) backwards;
+  }
+
+  .hero-name span:nth-child(2) {
+    animation-delay: 0.08s;
+  }
+
+  .hero-name span:nth-child(3) {
+    animation-delay: 0.16s;
+  }
+
+  .hero__lamp {
+    animation: motion-lamp-on 0.9s 0.35s ease-out backwards;
+  }
+
+  @keyframes motion-rise {
+    from {
+      opacity: 0.35;
+      transform: translateY(40%);
+    }
+  }
+
+  @keyframes motion-lamp-on {
+    from {
+      opacity: 0.35;
+      transform: scale(0.6);
+    }
+  }
+
+  @supports ((animation-timeline: scroll()) and (animation-range: 0 1px)) {
+    /* M2 Hero → header. Purpose: orientation and continuity. The large name
+       shrinks away over the first 55vh while the compact name in the header
+       takes over. The compact name, a link, starts at opacity 0.6 so it keeps
+       AA contrast (6.2:1) while it waits at the top of the page. */
+    .hero-name {
+      transform-origin: left bottom;
+      animation-name: motion-name-out;
+      animation-timing-function: linear;
+      animation-fill-mode: both;
+      animation-timeline: scroll(root);
+      animation-range: 0 55vh;
+    }
+
+    :root:has(.hero-name) [data-compact-name] {
+      animation-name: motion-name-in;
+      animation-timing-function: linear;
+      animation-fill-mode: both;
+      animation-timeline: scroll(root);
+      animation-range: 25vh 55vh;
+    }
+
+    @keyframes motion-name-out {
+      to {
+        opacity: 0;
+        transform: translateY(-12%) scale(0.72);
+      }
+    }
+
+    @keyframes motion-name-in {
+      from {
+        opacity: 0.6;
+        transform: translateY(6px);
+      }
+    }
+
+    /* M3 Signal trace. Purpose: reading progress. The margin line dims to a
+       track and fills with signal as the page is read. */
+    [data-trace] {
+      --trace-track: var(--colour-border-subtle);
+    }
+
+    [data-trace]::after {
+      position: absolute;
+      inset: 0;
+      background-color: var(--colour-signal);
+      content: '';
+      transform-origin: top;
+      animation-name: motion-fill;
+      animation-timing-function: linear;
+      animation-fill-mode: both;
+      animation-timeline: scroll(root);
+    }
+
+    @keyframes motion-fill {
+      from {
+        transform: scaleY(0);
+      }
+    }
+
+    /* M4 Section nodes. Purpose: orientation. Each node lights as its
+       section heading reaches the middle of the viewport. */
+    [data-node] {
+      animation-name: motion-node-on;
+      animation-timing-function: linear;
+      animation-fill-mode: both;
+      animation-timeline: view();
+      animation-range: entry 100% cover 45%;
+    }
+
+    [data-node]::after {
+      animation-name: motion-node-core;
+      animation-timing-function: linear;
+      animation-fill-mode: both;
+      animation-timeline: view();
+      animation-range: entry 100% cover 45%;
+    }
+
+    @keyframes motion-node-on {
+      from {
+        border-color: var(--colour-border-subtle);
+        transform: scale(0.7);
+      }
+    }
+
+    @keyframes motion-node-core {
+      from {
+        transform: scale(0);
+      }
+    }
+
+    /* M5 Experience roles. Purpose: relation to the timeline. Each role
+       slides out of the trace and its connector draws. */
+    [data-role] {
+      animation-name: motion-from-trace;
+      animation-timing-function: linear;
+      animation-fill-mode: both;
+      animation-timeline: view();
+      animation-range: entry 0% cover 35%;
+    }
+
+    [data-role]::before {
+      transform-origin: left;
+      animation-name: motion-wire;
+      animation-timing-function: linear;
+      animation-fill-mode: both;
+      animation-timeline: view();
+      animation-range: entry 0% cover 35%;
+    }
+
+    @keyframes motion-from-trace {
+      from {
+        opacity: 0.35;
+        transform: translateX(-28px);
+      }
+    }
+
+    @keyframes motion-wire {
+      from {
+        transform: scaleX(0);
+      }
+    }
+
+    /* M6 Case pipeline run. Purpose: explain a relation. Scrolling through
+       the card lights the stages in order, a pulse travels down the line and
+       the checks tick one after another. Check labels never move. */
+    [data-case] {
+      view-timeline: --run block;
+    }
+
+    [data-stage],
+    [data-stage] [data-lamp] {
+      animation-timeline: --run;
+      animation-fill-mode: both;
+      animation-timing-function: linear;
+    }
+
+    [data-stage] {
+      animation-name: motion-stage-in;
+    }
+
+    [data-stage] [data-lamp] {
+      animation-name: motion-lamp;
+    }
+
+    [data-stage]:nth-child(1),
+    [data-stage]:nth-child(1) [data-lamp] {
+      animation-range: cover 18% cover 26%;
+    }
+
+    [data-stage]:nth-child(2),
+    [data-stage]:nth-child(2) [data-lamp] {
+      animation-range: cover 26% cover 34%;
+    }
+
+    [data-stage]:nth-child(3),
+    [data-stage]:nth-child(3) [data-lamp] {
+      animation-range: cover 34% cover 42%;
+    }
+
+    [data-stage]:nth-child(4),
+    [data-stage]:nth-child(4) [data-lamp] {
+      animation-range: cover 42% cover 50%;
+    }
+
+    [data-stage]:nth-child(5),
+    [data-stage]:nth-child(5) [data-lamp] {
+      animation-range: cover 50% cover 58%;
+    }
+
+    [data-stage]:nth-child(6),
+    [data-stage]:nth-child(6) [data-lamp] {
+      animation-range: cover 58% cover 66%;
+    }
+
+    @keyframes motion-stage-in {
+      from {
+        border-color: var(--colour-border-subtle);
+      }
+      to {
+        border-color: color-mix(
+          in srgb,
+          var(--colour-signal) 45%,
+          var(--colour-border-subtle)
+        );
+      }
+    }
+
+    @keyframes motion-lamp {
+      from {
+        background-color: var(--colour-border-subtle);
+        transform: scale(0.6);
+      }
+    }
+
+    /* The pulse wrapper covers the stage list inside a clipped track, so
+       translating it from -100% to 0 moves the dot exactly one list height. */
+    [data-pulse] {
+      animation-name: motion-travel;
+      animation-timing-function: linear;
+      animation-fill-mode: both;
+      animation-timeline: --run;
+      animation-range: cover 16% cover 52%;
+    }
+
+    @keyframes motion-travel {
+      0% {
+        opacity: 0;
+        transform: translateY(-100%);
+      }
+      8%,
+      92% {
+        opacity: 1;
+      }
+      100% {
+        opacity: 0;
+        transform: translateY(0);
+      }
+    }
+
+    [data-tick] {
+      animation-name: motion-tick;
+      animation-timing-function: linear;
+      animation-fill-mode: both;
+      animation-timeline: --run;
+    }
+
+    li:nth-child(1) > a > [data-tick] {
+      animation-range: cover 30% cover 34%;
+    }
+
+    li:nth-child(2) > a > [data-tick] {
+      animation-range: cover 34% cover 38%;
+    }
+
+    li:nth-child(3) > a > [data-tick] {
+      animation-range: cover 38% cover 42%;
+    }
+
+    li:nth-child(4) > a > [data-tick] {
+      animation-range: cover 42% cover 46%;
+    }
+
+    li:nth-child(n + 5) > a > [data-tick] {
+      animation-range: cover 46% cover 50%;
+    }
+
+    @keyframes motion-tick {
+      from {
+        background-color: var(--colour-border-subtle);
+        transform: scale(0) rotate(-90deg);
+      }
+    }
+
+    /* M8 Case page. Purpose: reading progress. A bar at the top of the
+       viewport grows with the page, and decisions and evidence settle in. */
+    [data-read-progress] {
+      animation-name: motion-grow;
+      animation-timing-function: linear;
+      animation-fill-mode: both;
+      animation-timeline: scroll(root);
+    }
+
+    @keyframes motion-grow {
+      from {
+        transform: scaleX(0);
+      }
+      to {
+        transform: scaleX(1);
+      }
+    }
+
+    [data-case-prose] .decision,
+    [data-case-prose] .evidence li {
+      animation-name: motion-settle;
+      animation-timing-function: linear;
+      animation-fill-mode: both;
+      animation-timeline: view();
+      animation-range: entry 0% cover 30%;
+    }
+
+    @keyframes motion-settle {
+      from {
+        opacity: 0.4;
+        transform: translateY(24px) scale(0.98);
+      }
+    }
+  }
+}

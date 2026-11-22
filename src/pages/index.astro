@@ -193,6 +193,13 @@ function getYear(period: string) {
 </BaseLayout>
 
 <script>
+  import { initCurrentSection } from '../scripts/current-section';
+
+  initCurrentSection(
+    [...document.querySelectorAll<HTMLAnchorElement>('#primary-navigation a')],
+    [...document.querySelectorAll<HTMLElement>('.frame > section[id]')],
+  );
+
   const address = document.querySelector<HTMLElement>('#contact-address');
   const copyButton = document.querySelector<HTMLButtonElement>('#copy-address');
   const copyStatus = document.querySelector<HTMLElement>('#copy-status');
@@ -232,7 +239,8 @@ function getYear(period: string) {
     inset-block: 0;
     inset-inline-start: 11px;
     inline-size: 2px;
-    background-color: var(--colour-signal);
+    /* motion.css dims the track and fills it with signal while reading. */
+    background-color: var(--trace-track, var(--colour-signal));
     opacity: 0.9;
   }
 

@@ -61,7 +61,13 @@ const steps = [
       <p class="case-state" data-tone={state.tone}>
         <span aria-hidden="true">{state.symbol}</span>{' '}{state.label}
       </p>
-      <h1 id="case-title" data-case-title={project.id}>{project.title}</h1>
+      <h1
+        id="case-title"
+        data-case-title={project.id}
+        style={`view-transition-name: case-title-${project.id}`}
+      >
+        {project.title}
+      </h1>
       <p class="lede">{project.summary}</p>
       <dl class="facts" data-case-facts>
         <div>
@@ -101,7 +107,7 @@ const steps = [
           ))
         }
       </ol>
-      <div class="prose">
+      <div class="prose" data-case-prose>
         <Content />
       </div>
     </div>
@@ -117,6 +123,15 @@ const steps = [
     }
   </article>
 </BaseLayout>
+
+<script>
+  import { initCurrentSection } from '../../scripts/current-section';
+
+  initCurrentSection(
+    [...document.querySelectorAll<HTMLAnchorElement>('[data-case-steps] a')],
+    [...document.querySelectorAll<HTMLElement>('[data-case-prose] h2[id]')],
+  );
+</script>
 
 <style>
   :global(#main-content) {
@@ -153,11 +168,17 @@ const steps = [
     padding-block: var(--space-6) var(--space-7);
   }
 
+  /* Collapsed unless motion.css drives it with the page scroll. */
   .read-progress {
-    position: absolute;
-    inset-block-end: 0;
+    position: fixed;
+    z-index: 20;
+    inset-block-start: 0;
     inset-inline: 0;
-    block-size: 0;
+    block-size: 3px;
+    background-color: var(--colour-signal);
+    pointer-events: none;
+    transform: scaleX(0);
+    transform-origin: left;
   }
 
   .case-state {
@@ -248,6 +269,10 @@ const steps = [
 
   .steps a:hover {
     color: var(--colour-signal-hover);
+  }
+
+  .steps a[aria-current='true'] {
+    color: var(--colour-signal);
   }
 
   .prose {
