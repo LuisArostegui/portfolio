@@ -39,7 +39,7 @@ export const siteMetadata = {
     mimeType: 'image/png',
     width: 1200,
     height: 630,
-    alt: 'Luis Arostegui Ruiz portfolio preview',
+    alt: 'Luis Arostegui Ruiz, Software Engineer at Openbank',
   },
   owner: {
     name: 'Luis Arostegui Ruiz',

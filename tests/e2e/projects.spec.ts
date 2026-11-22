@@ -87,6 +87,29 @@ test('Evidence section links the issue and the content strategy', async ({
   );
 });
 
+test('case shares its own preview image', async ({ page, request }) => {
+  await page.goto('/projects/portfolio-foundation/');
+
+  const imageUrl =
+    'https://luis-arostegui-portfolio.luisarosteguiruizit.workers.dev/projects/portfolio-foundation/social-preview.png';
+  await expect(page.locator('meta[property="og:image"]')).toHaveAttribute(
+    'content',
+    imageUrl,
+  );
+  await expect(page.locator('meta[name="twitter:image"]')).toHaveAttribute(
+    'content',
+    imageUrl,
+  );
+  await expect(page.locator('meta[property="og:image:alt"]')).toHaveAttribute(
+    'content',
+    'Portfolio foundation, case study by Luis Arostegui Ruiz',
+  );
+
+  const response = await request.get(new URL(imageUrl).pathname);
+  expect(response.status()).toBe(200);
+  expect(response.headers()['content-type']).toContain('image/png');
+});
+
 test('back link returns to work', async ({ page }) => {
   await page.goto(casePath);
 

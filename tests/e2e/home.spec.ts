@@ -346,6 +346,18 @@ test('home exposes SEO metadata and public-safe Person structured data', async (
     socialPreviewUrl,
   );
 
+  for (const [selector, contentType] of [
+    ['link[rel="icon"][href$=".ico"]', 'image/'],
+    ['link[rel="icon"][type="image/svg+xml"]', 'image/svg+xml'],
+    ['link[rel="apple-touch-icon"]', 'image/png'],
+  ] as const) {
+    const href = await page.locator(selector).getAttribute('href');
+    expect(href, selector).not.toBeNull();
+    const response = await page.request.get(href ?? '');
+    expect(response.status(), href ?? '').toBe(200);
+    expect(response.headers()['content-type']).toContain(contentType);
+  }
+
   const jsonLd = await page
     .locator('script[type="application/ld+json"]')
     .textContent();

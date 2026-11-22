@@ -32,6 +32,14 @@ const project = projectDocument.data;
 const Content = projectDocument.Content;
 const pathname = `/projects/${project.id}/` as RootRelativePath;
 
+// A case gets its own social preview when
+// public/projects/<id>/social-preview.png exists, otherwise the site default.
+const socialImages = Object.keys(
+  import.meta.glob('/public/projects/*/social-preview.png'),
+);
+const socialImagePath = `${pathname}social-preview.png` as RootRelativePath;
+const hasSocialImage = socialImages.includes(`/public${socialImagePath}`);
+
 const state = getProjectState(project);
 const projects = await getProjects();
 const nextProject = projects.find((candidate) => candidate.id !== project.id);
@@ -52,6 +60,10 @@ const steps = [
   title={project.title}
   description={project.summary}
   pathname={pathname}
+  {...hasSocialImage && {
+    imagePath: socialImagePath,
+    imageAlt: `${project.title}, case study by Luis Arostegui Ruiz`,
+  }}
 >
   <a class="back-link" href="/#work">Back to work</a>
 
