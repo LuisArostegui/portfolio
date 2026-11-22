@@ -27,25 +27,24 @@ const pathname = Astro.url.pathname;
       <svg
         aria-hidden="true"
         class="site-header__menu-icon"
-        data-menu-icon
         fill="none"
         viewBox="0 0 24 24"
       >
         <path
-          d="M4 7h16M4 12h16M4 17h16"
+          class="site-header__menu-bar site-header__menu-bar--top"
+          d="M4 7h16"
           stroke="currentColor"
           stroke-linecap="round"
           stroke-width="2"></path>
-      </svg>
-      <svg
-        aria-hidden="true"
-        class="site-header__menu-icon"
-        data-close-icon
-        fill="none"
-        viewBox="0 0 24 24"
-      >
         <path
-          d="m6 6 12 12M18 6 6 18"
+          class="site-header__menu-bar site-header__menu-bar--middle"
+          d="M4 12h16"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-width="2"></path>
+        <path
+          class="site-header__menu-bar site-header__menu-bar--bottom"
+          d="M4 17h16"
           stroke="currentColor"
           stroke-linecap="round"
           stroke-width="2"></path>
@@ -59,8 +58,8 @@ const pathname = Astro.url.pathname;
     >
       <ul class="site-header__navigation-list">
         {
-          primaryNavigation.map((item) => (
-            <li>
+          primaryNavigation.map((item, index) => (
+            <li style={`--item-index: ${index}`}>
               <a
                 aria-current={
                   isCurrentPage(item, pathname) ? 'page' : undefined
@@ -76,6 +75,7 @@ const pathname = Astro.url.pathname;
       </ul>
       <a
         class="site-header__cv"
+        style={`--item-index: ${primaryNavigation.length}`}
         href={cvAction.href}
         {...getLinkAttributes(cvAction)}
       >
@@ -92,24 +92,18 @@ const pathname = Astro.url.pathname;
     const toggle =
       header.querySelector<HTMLButtonElement>('[data-menu-toggle]');
     const navigation = header.querySelector<HTMLElement>('[data-navigation]');
-    const menuIcon = header.querySelector<SVGElement>('[data-menu-icon]');
-    const closeIcon = header.querySelector<SVGElement>('[data-close-icon]');
     const compactNavigation = window.matchMedia('(max-width: 47.99rem)');
 
-    if (toggle && navigation && menuIcon && closeIcon) {
-      const setIconVisibility = (icon: SVGElement, visible: boolean) => {
-        icon.toggleAttribute('hidden', !visible);
-      };
-
+    if (toggle && navigation) {
       const setExpanded = (expanded: boolean) => {
         toggle.setAttribute('aria-expanded', String(expanded));
         toggle.setAttribute(
           'aria-label',
           expanded ? 'Close navigation menu' : 'Open navigation menu',
         );
+        // The state changes at once; CSS transitions play the sequence and
+        // reverse mid-way when the visitor taps again.
         navigation.hidden = !expanded;
-        setIconVisibility(menuIcon, !expanded);
-        setIconVisibility(closeIcon, expanded);
       };
 
       const updateLayout = () => {
@@ -150,6 +144,17 @@ const pathname = Astro.url.pathname;
         }
       });
 
+      // While the panel is open, the header's ::after covers the dimmed page,
+      // so a tap there reaches the header itself, never a page link below.
+      header.addEventListener('click', (event) => {
+        if (
+          event.target === header &&
+          toggle.getAttribute('aria-expanded') === 'true'
+        ) {
+          setExpanded(false);
+        }
+      });
+
       navigation.addEventListener('click', (event) => {
         const link =
           event.target instanceof Element ? event.target.closest('a') : null;
@@ -173,6 +178,8 @@ const pathname = Astro.url.pathname;
 
 <style>
   .site-header {
+    --menu-ease-spring: cubic-bezier(0.34, 1.4, 0.64, 1);
+
     position: relative;
     z-index: 10;
     top: env(safe-area-inset-top, 0px);
@@ -223,9 +230,13 @@ const pathname = Astro.url.pathname;
     transition-timing-function: var(--motion-ease-standard);
   }
 
-  .site-header__menu-toggle:hover {
-    border-color: var(--colour-signal);
-    background-color: var(--colour-surface-subtle);
+  /* Touch screens keep :hover after a tap, which left the open button
+     outlined in signal green; only real pointers get the hover state. */
+  @media (hover: hover) {
+    .site-header__menu-toggle:hover {
+      border-color: var(--colour-signal);
+      background-color: var(--colour-surface-subtle);
+    }
   }
 
   .site-header__menu-icon {
@@ -233,11 +244,28 @@ const pathname = Astro.url.pathname;
     block-size: 20px;
   }
 
-  .site-header__menu-toggle[aria-expanded='true']
-    .site-header__menu-icon[data-menu-icon],
-  .site-header__menu-toggle[aria-expanded='false']
-    .site-header__menu-icon[data-close-icon] {
-    display: none;
+  /* Menu icon: the three bars fold into a cross around the centre. */
+  .site-header__menu-bar {
+    transform-box: view-box;
+    transform-origin: 12px 12px;
+    transition:
+      transform 280ms var(--menu-ease-spring),
+      opacity 160ms var(--motion-ease-standard);
+  }
+
+  .site-header__menu-toggle[aria-expanded='true'] {
+    .site-header__menu-bar--top {
+      transform: translateY(5px) rotate(45deg) scaleX(1.18);
+    }
+
+    .site-header__menu-bar--middle {
+      opacity: 0;
+      transform: scaleX(0.2);
+    }
+
+    .site-header__menu-bar--bottom {
+      transform: translateY(-5px) rotate(-45deg) scaleX(1.18);
+    }
   }
 
   .site-header__navigation-list {
@@ -360,26 +388,158 @@ const pathname = Astro.url.pathname;
       padding-inline: 0;
     }
 
+    /*
+     * Mobile menu sequence (ADR-0007, M10). Purpose: continuity between the
+     * page and its sections. Only applies once the script has enhanced the
+     * header; without JavaScript the navigation stays in the page flow.
+     *
+     * Open: the panel unrolls over the page, a signal line draws down its
+     * edge and the links slide out of it one after another.
+     * Close: a short fade with no stagger, so the destination shows at once.
+     * Transitions, not keyframes, so a quick second tap reverses mid-way.
+     * Reduced motion: base.css removes every transition and the state
+     * changes immediately.
+     */
+    .site-header[data-navigation-enhanced] .site-header__navigation {
+      --menu-trace-x: var(--layout-gutter-mobile);
+
+      position: absolute;
+      inset-block-start: 100%;
+      inset-inline: 0;
+      padding-block: var(--space-2) var(--space-5);
+      padding-inline: calc(var(--layout-gutter-mobile) + var(--space-5))
+        var(--layout-gutter-mobile);
+      max-block-size: calc(100dvh - 72px - env(safe-area-inset-top, 0px));
+      border-block-end: 1px solid var(--colour-border-subtle);
+      background-color: var(--colour-surface-page);
+      /* The shadow dims the page below the panel; the clip keeps it off the
+         header. */
+      box-shadow: 0 0 0 100vmax
+        color-mix(in srgb, var(--colour-surface-page) 72%, transparent);
+      clip-path: inset(0 0 -100vmax 0);
+      opacity: 1;
+      transform: none;
+      transition:
+        clip-path 380ms var(--motion-ease-enter),
+        opacity 120ms var(--motion-ease-standard),
+        transform 120ms var(--motion-ease-standard),
+        display 380ms allow-discrete;
+
+      @starting-style {
+        clip-path: inset(0 0 100% 0);
+      }
+    }
+
     .site-header[data-navigation-enhanced] .site-header__navigation[hidden] {
       display: none;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(calc(-1 * var(--space-2)));
+      transition:
+        opacity 120ms var(--motion-ease-standard),
+        transform 120ms var(--motion-ease-standard),
+        display 120ms allow-discrete;
+    }
+
+    /* Close surface: a transparent layer over the page, below the header's
+       content (negative z-index inside the header's stacking context). It
+       takes the tap that closes the menu, so the dimmed page stays inert. */
+    .site-header[data-navigation-enhanced]:has(
+        .site-header__navigation:not([hidden])
+      )::after {
+      position: fixed;
+      z-index: -1;
+      inset: 0;
+      content: '';
+    }
+
+    /* The panel's own signal trace, echoing the page margin line. */
+    .site-header[data-navigation-enhanced] .site-header__navigation::before {
+      position: absolute;
+      inset-block: var(--space-4) var(--space-5);
+      inset-inline-start: calc(var(--menu-trace-x) + 7px);
+      inline-size: 2px;
+      background-color: var(--colour-signal);
+      content: '';
+      opacity: 0.55;
+      transform-origin: top;
+      transition: transform 460ms var(--motion-ease-enter) 60ms;
+
+      @starting-style {
+        transform: scaleY(0);
+      }
+    }
+
+    .site-header[data-navigation-enhanced] .site-header__navigation-list {
+      border-block-start: 0;
+    }
+
+    .site-header[data-navigation-enhanced] .site-header__navigation-list li,
+    .site-header[data-navigation-enhanced] .site-header__cv {
+      transition:
+        opacity 260ms var(--motion-ease-standard),
+        transform 420ms var(--motion-ease-enter);
+      transition-delay: calc(90ms + var(--item-index, 0) * 45ms);
+
+      /* 0.7 keeps the links at 5.6:1 and the CV action at 7.7:1 from the
+         first visible frame (WCAG AA for normal text). */
+      @starting-style {
+        opacity: 0.7;
+        transform: translateX(calc(-1 * var(--space-4)));
+      }
     }
 
     .site-header[data-navigation-enhanced]
-      .site-header__navigation:not([hidden]) {
-      animation: navigation-panel-enter var(--motion-duration-standard)
-        var(--motion-ease-enter);
-    }
-  }
-
-  @keyframes navigation-panel-enter {
-    from {
-      opacity: 0.96;
-      transform: translateY(calc(-1 * var(--space-1)));
+      .site-header__navigation[hidden]
+      :is(li, .site-header__cv) {
+      transition-delay: 0ms;
     }
 
-    to {
-      opacity: 1;
-      transform: translateY(0);
+    /* Current section: a lit node on the panel trace instead of the
+       underline used on wide screens. */
+    .site-header[data-navigation-enhanced] .site-header__navigation-list a {
+      position: relative;
+      inline-size: 100%;
+      min-block-size: 52px;
+      border-block-end: 0;
+      font-size: var(--type-heading-3-font-size);
+    }
+
+    .site-header[data-navigation-enhanced]
+      .site-header__navigation-list
+      a::before {
+      position: absolute;
+      inset-block-start: 50%;
+      inset-inline-start: calc(-1 * var(--space-5) - 1px);
+      box-sizing: border-box;
+      inline-size: 14px;
+      block-size: 14px;
+      border: 2px solid transparent;
+      border-radius: 50%;
+      content: '';
+      transform: translateY(-50%) scale(0.4);
+      transition:
+        transform 220ms var(--menu-ease-spring),
+        border-color 160ms var(--motion-ease-standard),
+        background-color 160ms var(--motion-ease-standard);
+    }
+
+    .site-header[data-navigation-enhanced]
+      .site-header__navigation-list
+      a:is([aria-current='page'], [aria-current='true'])::before {
+      border-color: var(--colour-signal);
+      background-color: var(--colour-surface-page);
+      box-shadow: inset 0 0 0 2px var(--colour-surface-page);
+      background-image: radial-gradient(
+        circle,
+        var(--colour-signal) 0 2.5px,
+        transparent 3px
+      );
+      transform: translateY(-50%) scale(1);
+    }
+
+    .site-header[data-navigation-enhanced] .site-header__cv {
+      margin-block-start: var(--space-3);
     }
   }
 </style>
