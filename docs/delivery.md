@@ -27,16 +27,19 @@ Preview URLs are public. Commit only public-safe material and do not expose secr
 
 Wrangler is an exact project development dependency. Cloudflare Workers Builds uses that reviewed repository version rather than a globally installed CLI. `workerd` is explicitly disabled in `pnpm-workspace.yaml`: it is not required for the static build/deploy flow and this project does not use local Worker development.
 
-`public/_headers` is copied into `dist/_headers` by Astro. Its hostname-scoped rule is:
+`public/_headers` is copied into `dist/_headers` by Astro. It contains two rules, and their order matters:
 
 ```text
 https://:version.:subdomain.workers.dev/*
   X-Robots-Tag: noindex
+
+https://luis-arostegui-portfolio.luisarosteguiruizit.workers.dev/*
+  ! X-Robots-Tag
 ```
 
-This is Cloudflare's documented pattern for preventing versioned and technical `workers.dev` URLs from being indexed. It does not match a future canonical custom domain, which remains indexable by default. Do not replace it with a global `/*` rule.
+The first rule is Cloudflare's documented pattern for keeping `workers.dev` URLs out of search results. Each placeholder matches one DNS label, so it covers version and alias preview URLs (`<prefix>-luis-arostegui-portfolio.<subdomain>.workers.dev`) and also the production host. The second rule detaches the header for the exact production host, which is the v1 canonical origin ([ADR 0008](architecture/decisions/0008-use-the-production-workers-dev-host-as-the-v1-canonical-origin.md)). A detach only removes headers added by earlier rules, so it must stay below the broad rule. `src/lib/crawl.test.ts` enforces this order and checks that the host matches `siteMetadata.siteUrl`. Do not replace the first rule with a global `/*` rule.
 
-The pattern also matches the current production host, `luis-arostegui-portfolio.<account>.workers.dev` (`:version` matches the Worker name and `:subdomain` the account). Production therefore responds with `X-Robots-Tag: noindex` today; this was confirmed on 2026-11-22 for `/`, the case study and `/accessibility/`. ADR 0005 states that `workers.dev` is not the public canonical URL. The production-origin decision is pending, and this rule stays unchanged until it is made.
+`robots.txt` and `sitemap.xml` are generated at build time by `src/pages/robots.txt.ts` and `src/pages/sitemap.xml.ts` from `siteMetadata.siteUrl`. The sitemap lists `/`, each case study and `/accessibility/`.
 
 `public/_redirects` holds the four 301 redirects that Direction B ([#120](https://github.com/LuisArostegui/portfolio/issues/120)) introduced: `/projects` and `/projects/` to `/#work`, and `/experience` and `/experience/` to `/#experience`. `src/lib/redirects.test.ts` covers the file. Do not add an SPA fallback. The full route contract is in [routing and error handling](architecture/routing.md).
 
@@ -90,11 +93,11 @@ Validate the repository-owned deployment configuration without publishing:
 pnpm exec wrangler deploy --dry-run
 ```
 
-Confirm that `dist/_headers` exists and contains the scoped `workers.dev` rule, and that `dist/_redirects` contains the four Direction B redirects, after each production build.
+Confirm that `dist/_headers` exists and contains the scoped `workers.dev` rule followed by the production detach rule, that `dist/robots.txt` and `dist/sitemap.xml` exist, and that `dist/_redirects` contains the four Direction B redirects, after each production build.
 
 ## Preview and production verification
 
-For a public-safe non-production branch, confirm in Workers Builds that the build runs `pnpm build` and `pnpm exec wrangler versions upload`, reports a preview URL, and does not change the active production deployment. Request the preview URL and confirm its `X-Robots-Tag` response header is `noindex`.
+For a public-safe non-production branch, confirm in Workers Builds that the build runs `pnpm build` and `pnpm exec wrangler versions upload`, reports a preview URL, and does not change the active production deployment. Request the preview URL and confirm its `X-Robots-Tag` response header is `noindex`. On production, confirm that `/`, the case study and `/accessibility/` return 200 without `X-Robots-Tag`, and that every URL in `/sitemap.xml` matches the canonical of its page.
 
 After an approved merge to `main`, confirm that Workers Builds runs `pnpm build` and `pnpm exec wrangler deploy`, creates a new active production version, exposes build/deployment logs, and appears in deployment history. Run a production smoke check against the active public URL. Production and previews must remain available with the NAS offline.
 

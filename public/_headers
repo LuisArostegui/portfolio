@@ -1,2 +1,5 @@
 https://:version.:subdomain.workers.dev/*
   X-Robots-Tag: noindex
+
+https://luis-arostegui-portfolio.luisarosteguiruizit.workers.dev/*
+  ! X-Robots-Tag
