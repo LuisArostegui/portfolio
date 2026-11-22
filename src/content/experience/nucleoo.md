@@ -26,13 +26,12 @@ Nucleoo is a technology consultancy. My work covered two client projects: Ksyos,
 
 ##### Ksyos
 
-- Contributed to a Dutch healthcare platform using TypeScript, React, Node.js, and PostgreSQL.
-- Implemented secure patient authentication with SAML and supported integrations with Medmij and Exact.
-- Worked with AWS and Terraform for scalable infrastructure.
-- Supported automated testing with Cypress, Mocha, and Chai, CI with GitHub Actions, monitoring with Datadog, and documentation with Confluence.
+- Built and shipped full-stack healthcare workflows using TypeScript, React, Node.js, and PostgreSQL.
+- Implemented secure SAML authentication for practitioner and patient workflows, and supported integrations with Medmij and Exact.
+- Built CI/CD and infrastructure workflows with GitHub Actions, AWS, and Terraform, supported by automated testing with Cypress, Mocha, and Chai, and observability with Datadog.
 
 ##### Retailisation
 
-- Contributed to a supply-chain optimisation project using Angular, ETL workflows, Azure Database, SQL, MongoDB, Python, and Spark/PySpark.
+- Developed frontend and backend capabilities for supply-chain optimisation with Angular, TypeScript, Python, MongoDB, and PySpark, including ETL workflows on Azure Database and SQL.
 - Built data-oriented backend and frontend capabilities across SQL and NoSQL persistence.
 - Worked with delivery tooling including Jira and GitLab.
