@@ -45,7 +45,7 @@ These are lab numbers from DevTools throttling, not Lighthouse scores and not fi
 
 ### Automated budget (local production build)
 
-`tests/e2e/performance-budget.spec.ts` runs with `pnpm test:e2e` (Chromium project only, because the requested resources do not depend on the viewport). It records every request from the moment it starts, loads each page from the local static preview, scrolls to the bottom, waits until no request has been in flight for 500 ms (so resources that start downloading during the scroll, such as lazy images, are counted), and fails if a request fails or any of these uncompressed limits is exceeded:
+`tests/e2e/performance-budget.spec.ts` runs with `pnpm test:e2e` (Chromium project only, because the requested resources do not depend on the viewport). It records every request from the moment it starts, loads each page from the local static preview, scrolls to the bottom, waits until no request is in flight and 500 ms have passed since the last network event (so resources that start downloading during the scroll, such as lazy images, are counted), and fails if a request fails or any of these uncompressed limits is exceeded:
 
 | Limit per page                           | Budget  | Home today | Case today |
 | ---------------------------------------- | ------- | ---------- | ---------- |

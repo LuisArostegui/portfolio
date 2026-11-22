@@ -31,14 +31,22 @@ for (const path of pages) {
     // the scroll is still pending, and therefore awaited, rather than missed.
     const pending = new Set<Request>();
     const failed: string[] = [];
+    // Every network event restarts the quiet period, including a request that
+    // starts and finishes between two checks of the loop below.
+    let lastActivity = Date.now();
     const responses: Promise<{ url: string; type: string; bytes: number }>[] =
       [];
-    page.on('request', (request) => pending.add(request));
+    page.on('request', (request) => {
+      lastActivity = Date.now();
+      pending.add(request);
+    });
     page.on('requestfailed', (request) => {
+      lastActivity = Date.now();
       pending.delete(request);
       failed.push(request.url());
     });
     page.on('requestfinished', (request) => {
+      lastActivity = Date.now();
       pending.delete(request);
       responses.push(
         Promise.all([request.response(), request.sizes()]).then(
@@ -65,12 +73,12 @@ for (const path of pages) {
     });
     // A second waitForLoadState('networkidle') resolves at once because the
     // navigation already reached it. Instead, wait until no request has been
-    // in flight for a quiet period, which also covers requests that start a
-    // little after the scroll (lazy images, observers).
+    // in flight and no network event has happened for a quiet period, which
+    // also covers requests that start a little after the scroll (lazy images,
+    // observers) or are triggered by another request finishing.
     const quietPeriod = 500;
-    let quietSince = Date.now();
-    while (Date.now() - quietSince < quietPeriod) {
-      if (pending.size > 0) quietSince = Date.now();
+    lastActivity = Date.now();
+    while (pending.size > 0 || Date.now() - lastActivity < quietPeriod) {
       await page.waitForTimeout(50);
     }
 
