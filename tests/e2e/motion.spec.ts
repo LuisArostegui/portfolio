@@ -29,7 +29,10 @@ async function settleLoadMotion(page: Page) {
       document
         .getAnimations()
         .filter((animation) => animation.timeline instanceof DocumentTimeline)
-        .map((animation) => animation.finished),
+        // A cancelled animation rejects `finished` with AbortError; it has
+        // settled all the same (e.g. header transitions dropped when the
+        // script enhances the navigation after the first style pass).
+        .map((animation) => animation.finished.catch(() => undefined)),
     ),
   );
 }
