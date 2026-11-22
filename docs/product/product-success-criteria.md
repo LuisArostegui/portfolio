@@ -139,7 +139,7 @@ Use task-based prompts and record whether each reviewer completes the task witho
 **Level:** Required.  
 **Verification:** Manual navigation testing and automated route checks where practical.
 
-Clear navigation must reach Home, Projects, Experience, About content, and Contact content. About and Contact may resolve to Home sections or dedicated routes, consistent with the information architecture.
+Clear navigation must reach the Home sections Experience, Work, About, and Contact, and the case studies from Work. About and Contact may resolve to Home sections or dedicated routes, consistent with the information architecture.
 
 ### Shallow navigation
 
@@ -160,7 +160,7 @@ Visitors must be able to determine their current page or destination through pag
 **Level:** Required.  
 **Verification:** Manual journey testing and automated internal-link checks where practical.
 
-Every project detail must offer a meaningful continuation path, such as returning to Projects, viewing related experience or another project, making contact, or opening public evidence.
+Every project detail must offer a meaningful continuation path, such as returning to Work, viewing related experience or another project, making contact, or opening public evidence.
 
 ### Link clarity
 
@@ -294,7 +294,7 @@ The MVP should avoid unnecessary client-side JavaScript; optimise images and med
 **Level:** Required.  
 **Verification:** Production-build audits and manual constrained-device or network testing.
 
-Performance verification must cover Home, Projects, one representative project detail, and Experience. Post-launch field data may be considered later when sufficient traffic exists.
+Performance verification must cover two pages: Home (`/`) and one representative case study (`/projects/<slug>/`, currently `portfolio-foundation`). Since Direction B, `/projects` and `/experience` are redirects, not pages, and are not measured. Post-launch field data may be considered later when sufficient traffic exists.
 
 ## 11. Content completeness criteria
 
@@ -482,7 +482,7 @@ The portfolio must be reachable at its intended public URL during release valida
 **Level:** Required.  
 **Verification:** Documented manual production smoke test, supported by automated checks where practical.
 
-After deployment, verify Home, Projects, at least one project detail, Experience, About and Contact destinations, CV access, GitHub and LinkedIn links, keyboard navigation, a representative mobile layout, and the absence of obvious console or network errors that affect use.
+After deployment, verify the Home page and its Experience, Work, About and Contact sections, at least one case study, CV access, GitHub and LinkedIn links, keyboard navigation, a representative mobile layout, and the absence of obvious console or network errors that affect use. Check the redirects separately over HTTP: `/projects`, `/projects/`, `/experience` and `/experience/` must return a single 301 to `/#work` or `/#experience`, as listed in [routing and error handling](../architecture/routing.md).
 
 ## 15. Release-blocking criteria
 
