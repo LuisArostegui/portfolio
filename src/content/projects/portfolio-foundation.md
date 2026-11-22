@@ -98,7 +98,7 @@ Trade-off: header and redirect rules follow Cloudflare's format, although the ou
 
 ### Motion in CSS only, and only when it explains something
 
-Scroll-driven CSS animations show reading progress, mark the current section and light this case's pipeline stage by stage. There is no animation library and no JavaScript animation runtime. With reduced motion, or in a browser without scroll timelines, every piece of content is visible in its final state.
+Scroll-driven CSS animations fill the reading-progress trace, light each section's node as the reader reaches it and light this case's pipeline stage by stage. The navigation's current-section state (`aria-current`) is a separate concern, set by a small `IntersectionObserver` script. There is no animation library and no JavaScript animation runtime. With reduced motion, or in a browser without scroll timelines, every piece of content is visible in its final state.
 
 Trade-off: behaviour differs between engines until support is universal, and the scroll ranges need retuning when the layout changes.
 
@@ -117,6 +117,6 @@ The site is published on Cloudflare Workers with Home, this case study, the Acce
 
 ## Outcome
 
-The portfolio is live and indexable on its production host. Home and this case each load seven same-origin requests (about 55 KB and 53 KB transferred) with no third-party requests, and a lab run against production measured 0 ms Total Blocking Time and no layout shift on Home and on this case.
+The portfolio is live and indexable on its production host. In the [performance baseline](https://github.com/LuisArostegui/portfolio/blob/main/docs/performance-budget.md#baseline-2026-11-22) measured on commit `6deb375` (2026-11-22), Home and this case each loaded seven same-origin requests (about 55 KB and 53 KB transferred) with no third-party requests. A lab run against that production build measured 0 ms Total Blocking Time and no layout shift on both pages.
 
 It demonstrates the same engineering practices it describes: typed content, public-safe writing, static delivery, accessible navigation, and proportionate validation. It stays intentionally small, without analytics, a CMS or forms until a real need justifies them.
