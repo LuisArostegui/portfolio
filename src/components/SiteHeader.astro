@@ -231,9 +231,13 @@ const pathname = Astro.url.pathname;
     transition-timing-function: var(--motion-ease-standard);
   }
 
-  .site-header__menu-toggle:hover {
-    border-color: var(--colour-signal);
-    background-color: var(--colour-surface-subtle);
+  /* Touch screens keep :hover after a tap, which left the open button
+     outlined in signal green; only real pointers get the hover state. */
+  @media (hover: hover) {
+    .site-header__menu-toggle:hover {
+      border-color: var(--colour-signal);
+      background-color: var(--colour-surface-subtle);
+    }
   }
 
   .site-header__menu-icon {
@@ -252,7 +256,7 @@ const pathname = Astro.url.pathname;
 
   .site-header__menu-toggle[aria-expanded='true'] {
     .site-header__menu-bar--top {
-      transform: translateY(5px) rotate(45deg);
+      transform: translateY(5px) rotate(45deg) scaleX(1.18);
     }
 
     .site-header__menu-bar--middle {
@@ -261,7 +265,7 @@ const pathname = Astro.url.pathname;
     }
 
     .site-header__menu-bar--bottom {
-      transform: translateY(-5px) rotate(-45deg);
+      transform: translateY(-5px) rotate(-45deg) scaleX(1.18);
     }
   }
 
