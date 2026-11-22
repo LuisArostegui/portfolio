@@ -39,6 +39,8 @@ https://luis-arostegui-portfolio.luisarosteguiruizit.workers.dev/*
 
 The first rule is Cloudflare's documented pattern for keeping `workers.dev` URLs out of search results. Each placeholder matches one DNS label, so it covers version and alias preview URLs (`<prefix>-luis-arostegui-portfolio.<subdomain>.workers.dev`) and also the production host. The second rule detaches the header for the exact production host, which is the v1 canonical origin ([ADR 0008](architecture/decisions/0008-use-the-production-workers-dev-host-as-the-v1-canonical-origin.md)). A detach only removes headers added by earlier rules, so it must stay below the broad rule. `src/lib/crawl.test.ts` enforces this order and checks that the host matches `siteMetadata.siteUrl`. Do not replace the first rule with a global `/*` rule.
 
+The security-header policy, what Cloudflare adds by default and the proposed additions are documented in [production security headers](security-headers.md).
+
 `robots.txt` and `sitemap.xml` are generated at build time by `src/pages/robots.txt.ts` and `src/pages/sitemap.xml.ts` from `siteMetadata.siteUrl`. The sitemap lists `/`, each case study and `/accessibility/`.
 
 `public/_redirects` holds the four 301 redirects that Direction B ([#120](https://github.com/LuisArostegui/portfolio/issues/120)) introduced: `/projects` and `/projects/` to `/#work`, and `/experience` and `/experience/` to `/#experience`. `src/lib/redirects.test.ts` covers the file. Do not add an SPA fallback. The full route contract is in [routing and error handling](architecture/routing.md).
@@ -99,7 +101,7 @@ Confirm that `dist/_headers` exists and contains the scoped `workers.dev` rule f
 
 For a public-safe non-production branch, confirm in Workers Builds that the build runs `pnpm build` and `pnpm exec wrangler versions upload`, reports a preview URL, and does not change the active production deployment. Request the preview URL and confirm its `X-Robots-Tag` response header is `noindex`. On production, confirm that `/`, the case study and `/accessibility/` return 200 without `X-Robots-Tag`, and that every URL in `/sitemap.xml` matches the canonical of its page.
 
-After an approved merge to `main`, confirm that Workers Builds runs `pnpm build` and `pnpm exec wrangler deploy`, creates a new active production version, exposes build/deployment logs, and appears in deployment history. Run a production smoke check against the active public URL. Production and previews must remain available with the NAS offline.
+After an approved merge to `main`, confirm that Workers Builds runs `pnpm build` and `pnpm exec wrangler deploy`, creates a new active production version, exposes build/deployment logs, and appears in deployment history. Run a production smoke check against the active public URL. Before a release, measure Home and the case study against the [performance budget](performance-budget.md). Production and previews must remain available with the NAS offline.
 
 ## Rollback
 
