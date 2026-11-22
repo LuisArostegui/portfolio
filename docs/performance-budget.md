@@ -37,7 +37,7 @@ A Playwright-driven Chromium run against production, emulating a Pixel 7 with ne
 | Home |             528–540 ms |           528–540 ms (a paragraph) |                0 ms |                       0 |
 | Case |             472–480 ms |           472–480 ms (a paragraph) |                0 ms |                       0 |
 
-These are lab numbers from DevTools throttling, not Lighthouse scores and not field data. Lighthouse was not run for this baseline: PageSpeed Insights' unauthenticated API quota was exhausted and Lighthouse is not a project dependency. Interaction to Next Paint needs real interactions and is not measured in the lab; Total Blocking Time stands in for it.
+These are lab numbers from DevTools throttling, not Lighthouse scores and not field data. Lighthouse was not run for this baseline: PageSpeed Insights' unauthenticated API quota was exhausted and Lighthouse is not a project dependency. Total Blocking Time is a diagnostic lab signal about main-thread blocking during load. It is not Interaction to Next Paint, which needs real user interactions; the INP target remains unverified until field data exists.
 
 **Scroll smoothness.** In the same throttled mobile context with motion allowed (`prefers-reduced-motion: no-preference`, so the scroll-driven timelines from [ADR 0007](architecture/decisions/0007-allow-purposeful-scroll-driven-motion.md) run), scrolling each page from top to bottom in 120 px wheel steps produced frame intervals with a median of 16.7 ms and a maximum of 17.7 ms, no frame longer than 50 ms, no long task and no layout shift. A check on a physical phone has not been done; it remains part of the manual review below.
 
@@ -45,7 +45,7 @@ These are lab numbers from DevTools throttling, not Lighthouse scores and not fi
 
 ### Automated budget (local production build)
 
-`tests/e2e/performance-budget.spec.ts` runs with `pnpm test:e2e` (Chromium project only, because the requested resources do not depend on the viewport). It loads each page from the local static preview, scrolls to the bottom, and fails if any of these uncompressed limits is exceeded:
+`tests/e2e/performance-budget.spec.ts` runs with `pnpm test:e2e` (Chromium project only, because the requested resources do not depend on the viewport). It records every request from the moment it starts, loads each page from the local static preview, scrolls to the bottom, waits until no request has been in flight for 500 ms (so resources that start downloading during the scroll, such as lazy images, are counted), and fails if a request fails or any of these uncompressed limits is exceeded:
 
 | Limit per page                           | Budget  | Home today | Case today |
 | ---------------------------------------- | ------- | ---------- | ---------- |
@@ -90,7 +90,7 @@ The targets are the "good" thresholds published by Google for the current stable
 | Interaction to Next Paint (INP) | ≤ 200 ms |
 | Cumulative Layout Shift (CLS)   | ≤ 0.1    |
 
-The site has too little traffic for field data, so they are verified in the lab under the mobile profile above, with Total Blocking Time ≤ 200 ms as the lab stand-in for INP. Field data may replace the lab check once the Chrome UX Report has data for the origin.
+The site has too little traffic for field data. LCP and CLS are checked in the lab under the mobile profile above. INP cannot be verified in the lab and stays **unverified** until the Chrome UX Report (for example through PageSpeed Insights) has field data for the origin. Until then, Total Blocking Time ≤ 200 ms in the lab is tracked as a diagnostic signal that load does not block the main thread, not as evidence that the INP target is met ([web.dev: INP](https://web.dev/articles/inp)).
 
 ### Lighthouse target
 

@@ -1,4 +1,4 @@
-import { expect, test } from '@playwright/test';
+import { expect, test, type Request } from '@playwright/test';
 
 // Mirrors the automated budget in docs/performance-budget.md. Sizes are the
 // uncompressed bytes the local static preview serves, so they are
@@ -27,15 +27,32 @@ for (const path of pages) {
       'Requested resources do not depend on the viewport; one project is enough.',
     );
 
+    // Track every request from the moment it starts, so one that begins during
+    // the scroll is still pending, and therefore awaited, rather than missed.
+    const pending = new Set<Request>();
+    const failed: string[] = [];
     const responses: Promise<{ url: string; type: string; bytes: number }>[] =
       [];
+    page.on('request', (request) => pending.add(request));
+    page.on('requestfailed', (request) => {
+      pending.delete(request);
+      failed.push(request.url());
+    });
     page.on('requestfinished', (request) => {
+      pending.delete(request);
       responses.push(
-        request.response().then(async (response) => ({
-          url: request.url(),
-          type: request.resourceType(),
-          bytes: response ? (await response.body()).length : 0,
-        })),
+        Promise.all([request.response(), request.sizes()]).then(
+          async ([response, sizes]) => ({
+            url: request.url(),
+            type: request.resourceType(),
+            // Chromium discards the body of an image it cannot decode, so
+            // fall back to the bytes received on the wire.
+            bytes: Math.max(
+              response ? (await response.body()).length : 0,
+              sizes.responseBodySize,
+            ),
+          }),
+        ),
       );
     });
 
@@ -46,7 +63,16 @@ for (const path of pages) {
         await new Promise((resolve) => requestAnimationFrame(resolve));
       }
     });
-    await page.waitForLoadState('networkidle');
+    // A second waitForLoadState('networkidle') resolves at once because the
+    // navigation already reached it. Instead, wait until no request has been
+    // in flight for a quiet period, which also covers requests that start a
+    // little after the scroll (lazy images, observers).
+    const quietPeriod = 500;
+    let quietSince = Date.now();
+    while (Date.now() - quietSince < quietPeriod) {
+      if (pending.size > 0) quietSince = Date.now();
+      await page.waitForTimeout(50);
+    }
 
     const inlineScriptBytes = await page.evaluate(() =>
       [...document.querySelectorAll('script:not([src])')]
@@ -67,6 +93,7 @@ for (const path of pages) {
       resources.filter((resource) => new URL(resource.url).origin !== origin),
       'third-party requests',
     ).toEqual([]);
+    expect(failed, 'failed requests').toEqual([]);
     expect(resources.length, 'requests').toBeLessThanOrEqual(budget.requests);
 
     const of = (type: ResourceType) =>

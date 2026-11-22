@@ -84,7 +84,14 @@ A CSP that restricts scripts and styles is a follow-up, not part of the proposed
 - inline `<style>` blocks for pages whose CSS Astro inlines (the accessibility statement and the 404), whose hashes change with the CSS; and
 - a `style` attribute carrying `view-transition-name` on the Work card and the case H1.
 
-A hand-maintained hash in `_headers` would break the menu silently whenever the script changed. The follow-up should therefore evaluate Astro's built-in `security.csp` option, which computes script and style hashes at build time and writes them into a per-page `<meta http-equiv="content-security-policy">`, and keep `frame-ancestors` (which a meta CSP cannot set) in the header. The evaluation must cover the inline style attribute, start with `Content-Security-Policy-Report-Only` on a preview, and include the passing browser suite before anything is enforced in production.
+A hand-maintained hash in `_headers` would break the menu silently whenever the script changed. The follow-up should therefore evaluate Astro's built-in `security.csp` option, which computes script and style hashes at build time and writes them into a per-page `<meta http-equiv="content-security-policy">`, and keep `frame-ancestors` (which a meta CSP cannot set) in the header. The evaluation must cover the inline style attribute and include the passing browser suite before anything is enforced in production.
+
+A `<meta>` CSP is always enforced; browsers ignore `Content-Security-Policy-Report-Only` in a `<meta>` element. Observing the policy without enforcing it therefore needs an HTTP header on the preview:
+
+1. On a throwaway branch that will not be merged, build with `security.csp` enabled once and copy the policy Astro writes into each page's `<meta>` (its hashes belong to that exact build).
+2. Turn the `<meta>` output off again, so nothing is enforced, and add that policy to `public/_headers` as a `Content-Security-Policy-Report-Only` header, appended after the two crawl rules. `_headers` applies to every host, so the branch must not be merged with this rule.
+3. Push the branch, open each page on its preview URL with DevTools **Console**, and record every reported violation. A reporting endpoint is not needed for this check.
+4. Only when the preview reports no violations and the browser suite passes, enable the enforced policy in a normal pull request.
 
 ## How to verify
 
@@ -109,7 +116,7 @@ In a browser, open each page with DevTools **Console** and confirm there are no 
 ## Follow-up work
 
 1. **Apply the proposed `_headers` rule.** Update `src/lib/crawl.test.ts`, deploy to a preview, verify with the commands above and the browser checks, then merge. Low risk: the evidence above shows no effect on the generated pages.
-2. **Evaluate a full CSP** with Astro `security.csp`, in Report-Only on a preview first, as described above.
+2. **Evaluate a full CSP** with Astro `security.csp`, observed first as a `Content-Security-Policy-Report-Only` HTTP header on a throwaway preview branch, as described above.
 3. **Revisit with a custom domain:** Always Use HTTPS, HSTS (and whether to preload), and whether the `workers.dev` host should redirect.
 4. **Caching (performance, not security).** Every asset, including content-hashed files under `/_astro/`, is served with `max-age=0, must-revalidate`. ADR 0005 allows long-lived immutable caching for hashed files; a separate change could add `Cache-Control: public, max-age=31536000, immutable` for `/_astro/*` after checking real production responses and rollback.
 
