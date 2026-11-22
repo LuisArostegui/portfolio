@@ -33,7 +33,7 @@ for (const path of pages) {
     const failed: string[] = [];
     // Every network event restarts the quiet period, including a request that
     // starts and finishes between two checks of the loop below.
-    let lastActivity = Date.now();
+    let lastActivity: number;
     const responses: Promise<{ url: string; type: string; bytes: number }>[] =
       [];
     page.on('request', (request) => {
