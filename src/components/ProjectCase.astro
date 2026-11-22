@@ -24,7 +24,12 @@ const titleId = `case-${project.id}-title`;
     <p class="case__state" data-tone={state.tone}>
       <span aria-hidden="true">{state.symbol}</span>{' '}{state.label}
     </p>
-    <h3 class="case__title" id={titleId} data-case-title={project.id}>
+    <h3
+      class="case__title"
+      id={titleId}
+      data-case-title={project.id}
+      style={`view-transition-name: case-title-${project.id}`}
+    >
       {project.title}
     </h3>
     <p class="case__summary">{project.summary}</p>
@@ -67,7 +72,7 @@ const titleId = `case-${project.id}-title`;
           <ol class="case__stages" aria-label="From content to production">
             {project.pipeline.map((step) => (
               <li class="case__stage" data-stage>
-                <span class="case__lamp" aria-hidden="true" />
+                <span class="case__lamp" aria-hidden="true" data-lamp />
                 <span>
                   <span class="case__stage-label">{step.label}</span>
                   <span class="case__stage-detail">{step.detail}</span>
@@ -216,6 +221,7 @@ const titleId = `case-${project.id}-title`;
 
   .case__run {
     position: relative;
+    overflow: clip;
   }
 
   .case__stages {
@@ -269,16 +275,24 @@ const titleId = `case-${project.id}-title`;
     overflow-wrap: anywhere;
   }
 
+  /* The wrapper covers the stage list; motion.css translates it by one list
+     height so the dot at its bottom edge travels down the line. */
   .case__pulse {
     position: absolute;
-    inset-block-start: 18px;
+    inset: 0;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .case__pulse::after {
+    position: absolute;
+    inset-block-end: calc(var(--space-5) - 6px);
     inset-inline-start: 22px;
     inline-size: 12px;
     block-size: 12px;
     border-radius: 50%;
     background-color: var(--colour-signal);
-    opacity: 0;
-    pointer-events: none;
+    content: '';
   }
 
   @media (max-width: 819.98px) {

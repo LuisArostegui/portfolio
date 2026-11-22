@@ -295,7 +295,8 @@ const pathname = Astro.url.pathname;
     background-color: var(--colour-signal-hover);
   }
 
-  .site-header__navigation-list a[aria-current='page'] {
+  .site-header__navigation-list a[aria-current='page'],
+  .site-header__navigation-list a[aria-current='true'] {
     border-block-end-color: var(--colour-signal);
     color: var(--colour-text-primary);
     font-weight: var(--type-label-font-weight);

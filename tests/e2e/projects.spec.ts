@@ -134,6 +134,8 @@ test('no horizontal scroll at 320 px', async ({ page }) => {
 });
 
 test('no axe violations', async ({ page }) => {
+  // Scan the settled page; motion.spec.ts scans the page at rest with motion.
+  await page.emulateMedia({ reducedMotion: 'reduce' });
   await page.goto(casePath);
 
   const results = await new AxeBuilder({ page }).analyze();
