@@ -1,5 +1,7 @@
 # Interactive prototype and interaction contract
 
+> **Historical record.** Direction B ([#120](https://github.com/LuisArostegui/portfolio/issues/120)) superseded this design. It is kept for traceability and is not an active reference. Start from the [design documentation index](README.md).
+
 ## 1. Purpose
 
 PT-24 connects the approved high-fidelity portfolio design into a representative interactive journey before production implementation. The prototype is a design-validation artefact: it helps reviewers assess hierarchy, navigation, action priority, current-location awareness, discovery and continuation. It is not a coded application and does not demonstrate implemented browser behaviour.

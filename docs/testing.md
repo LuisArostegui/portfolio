@@ -30,15 +30,17 @@ React is configured in the application, but there is currently no interactive Re
 
 Playwright runs with `pnpm test:e2e` against a freshly generated Astro production build. The command builds Astro first; Playwright then supervises Vite's static preview of `dist/` directly because the installed Astro CLI starts its own preview process in the background. The suite never uses the development server. The initial projects are Chromium and an emulated Pixel 7, which gives the focused suite one desktop and one representative mobile execution without an exhaustive browser matrix. A new machine must run `pnpm exec playwright install chromium` before browser tests; generated test results are ignored by Git.
 
-The current smoke test proves that the available Home route loads, exposes its keyboard-reachable skip link and has no axe-detectable violations in either configured project. Its axe result is an automated signal only; it does not establish WCAG 2.2 AA conformance.
+Axe results in these tests are automated signals only; they do not establish WCAG 2.2 AA conformance.
 
-As implementation adds the approved routes and shared navigation, extend this suite with real user journeys rather than fixtures or artificial controls:
+The suite follows the Direction B route contract in [routing and error handling](architecture/routing.md). It covers these journeys with real routes rather than fixtures or artificial controls:
 
-- Home reaches Projects and Experience, and project listings reach a published detail route;
-- the compact navigation can be opened and closed with keyboard input, exposes its accessible name and expanded state, preserves useful focus order, and works at the representative mobile viewport;
-- the same navigation keeps its semantic final state and usable focus when `prefers-reduced-motion: reduce` is active; and
-- representative completed routes and activated interactive states receive targeted axe scans where the browser journey makes that coverage meaningful.
+- `tests/e2e/home.spec.ts`: the first viewport, section order, legacy anchors, the Work card reaching the case study, the compact navigation with keyboard input and focus return, the header clearing anchor targets, no-JavaScript behaviour, SEO metadata and axe scans;
+- `tests/e2e/projects.spec.ts`: the case study sections, Evidence links, the return to Work, `aria-current` on Work and axe scans;
+- `tests/e2e/motion.spec.ts`: reduced motion showing the final state, scroll timelines when motion is allowed, the opacity floor, the current-section indicator, and that the home card title and the case H1 compute the same `view-transition-name` (each page is loaded separately, so the test does not observe the transition itself); and
+- `tests/e2e/release-readiness.spec.ts`: the accessibility statement and the generated 404 output.
 
-Do not simulate those outcomes in Vitest merely to increase coverage. Add tests only with the route or interaction that supplies the observable behaviour; until then, the listed journeys remain intentionally pending rather than passing against placeholders.
+The 301 redirects are checked in `src/lib/redirects.test.ts` against `public/_redirects`. The local static preview does not apply `_redirects`, so the served status, `Location`, trailing-slash 307 and real 404 status must be verified on a preview or in production. Arrival on the right section after a redirect needs a browser, because HTTP tools do not follow fragments. The cross-document view transition from the card to the case title is also a manual browser check, in a browser that supports `@view-transition`.
+
+Do not simulate those outcomes in Vitest merely to increase coverage. Add tests only with the route or interaction that supplies the observable behaviour.
 
 Manual validation remains responsible for visual quality, content accuracy and confidentiality, real keyboard and screen-reader usability, focus visibility and order, zoom and reflow, touch behaviour, animation comfort, and WCAG 2.2 AA assessment. In particular, when responsive navigation is implemented, review its visible focus, logical keyboard order, assistive-technology announcement, touch operation, no-JavaScript fallback where provided, and reduced-motion behaviour. Automated tests provide repeatable evidence for defined behaviours; they do not replace accountable human review.

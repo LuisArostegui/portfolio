@@ -111,6 +111,7 @@ Commit only `pnpm-lock.yaml`; do not create or commit lockfiles from other packa
 
 - [High-level architecture](docs/architecture/high-level-architecture.md)
 - [Architecture decision records](docs/architecture/decisions/README.md)
+- [Routing and error handling](docs/architecture/routing.md)
 - [Testing conventions and responsibilities](docs/testing.md)
 - [Continuous integration](docs/continuous-integration.md)
 - [Dependency updates](docs/dependency-updates.md)
@@ -122,16 +123,18 @@ Commit only `pnpm-lock.yaml`; do not create or commit lockfiles from other packa
 
 ## Design
 
+Start from the [design documentation index](docs/design/README.md). Direction B is the current design; the MVP page designs below are historical records.
+
 - [Design principles and visual direction](docs/design/design-principles.md)
-- [Responsive wireframes](docs/design/responsive-wireframes.md)
+- [Responsive wireframes](docs/design/responsive-wireframes.md) (historical)
 - [Design foundations and token system](docs/design/design-foundations.md)
 - [Component foundations and accessibility states](docs/design/component-foundations.md)
 - [Motion and interaction guidelines](docs/design/motion-interaction-guidelines.md)
-- [Home high-fidelity design](docs/design/home-design.md)
-- [Projects and project-detail high-fidelity design](docs/design/projects-design.md)
-- [Experience and shared navigation high-fidelity design](docs/design/experience-navigation-design.md)
-- [Interactive prototype and interaction contract](docs/design/interactive-prototype.md)
-- [Design validation and implementation handoff](docs/design/design-validation-handoff.md)
+- [Home high-fidelity design](docs/design/home-design.md) (historical)
+- [Projects and project-detail high-fidelity design](docs/design/projects-design.md) (historical)
+- [Experience and shared navigation high-fidelity design](docs/design/experience-navigation-design.md) (historical)
+- [Interactive prototype and interaction contract](docs/design/interactive-prototype.md) (historical)
+- [Design validation and implementation handoff](docs/design/design-validation-handoff.md) (historical)
 - Direction B redesign (supersedes the page designs above): [static prototype](https://claude.ai/artifact/F5AhU9xzXQYYYMWxuVhgfn) (row B), [motion prototype](https://claude.ai/artifact/V1yBk4j8fck83vbi7f1veX), [issue #120](https://github.com/LuisArostegui/portfolio/issues/120), and the revised [information architecture](docs/product/information-architecture.md)
 
 ## Git workflow

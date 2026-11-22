@@ -190,9 +190,11 @@ Present strengths as capabilities supported by evidence, not as an icon grid of 
 
 ### Selected experience
 
-Show only enough context to establish professional relevance and encourage deeper reading. Do not reproduce the complete Experience page.
+Since Direction B ([#120](https://github.com/LuisArostegui/portfolio/issues/120)), Experience is a Home section (`#experience`) and there is no separate Experience page. Show the roles with enough context to establish professional relevance, and leave the full history to the CV.
 
 ### Engineering process
+
+> Removed from Home in Direction B. Each case study now carries this evidence in its Decisions and Evidence sections. The guidance below applies to that case-study content.
 
 Explain how the repository demonstrates planning, documentation, architectural decisions, pull-request practices, testing, automation, and quality controls. Avoid presenting process as bureaucracy; connect each practice to quality, maintainability, confidence, or decision traceability.
 
@@ -540,15 +542,15 @@ This ownership follows the [information architecture](information-architecture.m
 
 ### Home
 
-Owns concise professional positioning, selected evidence, a short professional summary, project previews, an experience preview, the contact destination, and an engineering-process overview.
+Owns concise professional positioning, the Experience section, the Work section with project previews, About, and Contact. Direction B ([#120](https://github.com/LuisArostegui/portfolio/issues/120)) merged the former Experience and Projects pages into these sections.
 
-### Experience
+### Experience (Home section)
 
-Owns detailed professional history, responsibilities, contributions, professional growth, and public-safe work context.
+Owns public-safe professional history, responsibilities, contributions and work context, at the depth that fits a Home section. The CV holds the complete history.
 
-### Projects index
+### Work (Home section)
 
-Owns curated project summaries, comparison and discovery, and links to detail pages.
+Owns curated project summaries and links to the case studies. It replaces the former Projects index.
 
 ### Project detail
 

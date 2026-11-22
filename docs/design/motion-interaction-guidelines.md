@@ -1,5 +1,7 @@
 # Motion and interaction guidelines
 
+> **Amended by [ADR 0007](../architecture/decisions/0007-allow-purposeful-scroll-driven-motion.md).** ADR 0007 approves the Direction B scroll-driven motions and the case page view transition. Where this document treats scroll-driven animation or route transitions as unapproved review triggers, ADR 0007 governs for those specific motions. Every other rule here still applies.
+
 ## 1. Purpose and scope
 
 These guidelines translate the portfolio's accepted motion foundations into a canonical implementation-facing specification. They apply to later design, prototype and implementation work; they do not implement animation.

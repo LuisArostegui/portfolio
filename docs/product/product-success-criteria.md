@@ -77,7 +77,7 @@ Each prominent differentiator must correspond or link to experience, project evi
 **Level:** Required.  
 **Verification:** Content review.
 
-Positioning must remain consistent across Home, Experience, Projects, About content, and CV access or public professional profiles where practical. Review these surfaces against the product vision and content strategy. No surface should present frontend and backend as equal current specialisations unless the product vision is formally changed.
+Positioning must remain consistent across the Home sections (Experience, Work, About, Contact), case studies, and CV access or public professional profiles where practical. Review these surfaces against the product vision and content strategy. No surface should present frontend and backend as equal current specialisations unless the product vision is formally changed.
 
 ## 5. Visitor-action criteria
 
@@ -86,7 +86,7 @@ Positioning must remain consistent across Home, Experience, Projects, About cont
 **Level:** Required.  
 **Verification:** Manual desktop and mobile journey testing.
 
-Visitors must be able to discover selected projects from Home, reach the Projects index, open at least one credible project detail or case study, and continue to the project collection or another relevant destination. Dead ends, empty detail pages, and placeholder evidence fail this criterion.
+Visitors must be able to discover selected projects in the Work section of Home, open at least one credible case study at `/projects/<slug>/`, and continue from it back to Work or to another relevant destination. Direction B ([#120](https://github.com/LuisArostegui/portfolio/issues/120)) removed the Projects index; `/projects` redirects to `/#work`. Dead ends, empty detail pages, and placeholder evidence fail this criterion.
 
 ### Understand professional experience
 
@@ -139,7 +139,7 @@ Use task-based prompts and record whether each reviewer completes the task witho
 **Level:** Required.  
 **Verification:** Manual navigation testing and automated route checks where practical.
 
-Clear navigation must reach Home, Projects, Experience, About content, and Contact content. About and Contact may resolve to Home sections or dedicated routes, consistent with the information architecture.
+Clear navigation must reach the Home sections Experience, Work, About, and Contact, and the case studies from Work. About and Contact may resolve to Home sections or dedicated routes, consistent with the information architecture.
 
 ### Shallow navigation
 
@@ -160,7 +160,7 @@ Visitors must be able to determine their current page or destination through pag
 **Level:** Required.  
 **Verification:** Manual journey testing and automated internal-link checks where practical.
 
-Every project detail must offer a meaningful continuation path, such as returning to Projects, viewing related experience or another project, making contact, or opening public evidence.
+Every project detail must offer a meaningful continuation path, such as returning to Work, viewing related experience or another project, making contact, or opening public evidence.
 
 ### Link clarity
 
@@ -294,7 +294,7 @@ The MVP should avoid unnecessary client-side JavaScript; optimise images and med
 **Level:** Required.  
 **Verification:** Production-build audits and manual constrained-device or network testing.
 
-Performance verification must cover Home, Projects, one representative project detail, and Experience. Post-launch field data may be considered later when sufficient traffic exists.
+Performance verification must cover two pages: Home (`/`) and one representative case study (`/projects/<slug>/`, currently `portfolio-foundation`). Since Direction B, `/projects` and `/experience` are redirects, not pages, and are not measured. Post-launch field data may be considered later when sufficient traffic exists.
 
 ## 11. Content completeness criteria
 
@@ -303,14 +303,14 @@ Performance verification must cover Home, Projects, one representative project d
 **Level:** Required.  
 **Verification:** Content inventory and content review.
 
-Home must contain my name and positioning, concise value proposition, selected project evidence, engineering strengths, experience preview, engineering-process evidence, contact destination, and CV and professional-profile access.
+Home must contain my name and positioning, a concise value proposition, the Experience, Work, About, and Contact sections, and CV and professional-profile access. Direction B removed the separate engineering-strengths and engineering-process sections; that evidence now lives in each case study.
 
 ### Projects
 
 **Level:** Required.  
 **Verification:** Content inventory, link validation, and confidentiality review.
 
-Projects must contain a curated index and at least one credible, public-safe detail page with clear status. Empty cards and placeholder routes fail. No arbitrary minimum beyond one credible detail page applies.
+Projects must contain a curated Work section on Home and at least one credible, public-safe case study with clear status. Empty cards and placeholder routes fail. No arbitrary minimum beyond one credible case study applies. v1 launches with one approved case, `portfolio-foundation` (decision of 2026-11-22, [#85](https://github.com/LuisArostegui/portfolio/issues/85)).
 
 ### Experience
 
@@ -482,7 +482,7 @@ The portfolio must be reachable at its intended public URL during release valida
 **Level:** Required.  
 **Verification:** Documented manual production smoke test, supported by automated checks where practical.
 
-After deployment, verify Home, Projects, at least one project detail, Experience, About and Contact destinations, CV access, GitHub and LinkedIn links, keyboard navigation, a representative mobile layout, and the absence of obvious console or network errors that affect use.
+After deployment, verify the Home page and its Experience, Work, About and Contact sections, at least one case study, CV access, GitHub and LinkedIn links, keyboard navigation, a representative mobile layout, and the absence of obvious console or network errors that affect use. Check the redirects separately over HTTP: `/projects`, `/projects/`, `/experience` and `/experience/` must return a single 301 to `/#work` or `/#experience`, as listed in [routing and error handling](../architecture/routing.md).
 
 ## 15. Release-blocking criteria
 

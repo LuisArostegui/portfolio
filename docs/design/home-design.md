@@ -1,5 +1,7 @@
 # Home high-fidelity design
 
+> **Historical record.** Direction B ([#120](https://github.com/LuisArostegui/portfolio/issues/120)) superseded this design. It is kept for traceability and is not an active reference. Start from the [design documentation index](README.md).
+
 ## 1. Purpose and scope
 
 This document is the canonical implementation-facing written record of the approved high-fidelity Home experience for PT-21. It explains how the existing product, architecture and design foundations apply to Home without redefining those foundations or prescribing production component APIs.

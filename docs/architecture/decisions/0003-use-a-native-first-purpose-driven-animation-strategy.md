@@ -1,6 +1,7 @@
 # ADR 0003: Use a native-first, purpose-driven animation strategy
 
 - **Status:** Accepted
+- **Amended by:** [ADR 0007](0007-allow-purposeful-scroll-driven-motion.md), which approves purposeful scroll-driven motion for Direction B
 - **Date:** 2026-08-03
 - **Decision owners:** Portfolio maintainer
 - **Related issue:** [PT-10 — Evaluate animation strategy](https://github.com/LuisArostegui/portfolio/issues/13)

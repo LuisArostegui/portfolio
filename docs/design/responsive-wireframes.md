@@ -1,5 +1,7 @@
 # Responsive wireframes
 
+> **Historical record.** Direction B ([#120](https://github.com/LuisArostegui/portfolio/issues/120)) superseded this design. It is kept for traceability and is not an active reference. Start from the [design documentation index](README.md).
+
 ## 1. Purpose and scope
 
 The approved low-fidelity wireframes validate page hierarchy, content priority, navigation, visitor journeys, accessibility expectations and responsive structural behaviour for the portfolio MVP. They translate the accepted information architecture and design principles into a reviewable structure before high-fidelity design or implementation begins.
