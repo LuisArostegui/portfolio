@@ -285,7 +285,7 @@ test('mobile menu closes after choosing a link and the target clears the header'
     .toBeGreaterThanOrEqual(-1);
 });
 
-test('mobile menu opens over the page without moving it and closes on an outside tap', async ({
+test('mobile menu opens over the page without moving it and an outside tap only closes it', async ({
   page,
 }, testInfo) => {
   test.skip(
@@ -300,15 +300,36 @@ test('mobile menu opens over the page without moving it and closes on an outside
     name: 'Primary navigation',
   });
   const heroName = page.locator('#hero-name');
+  const pageLink = page.getByRole('link', { name: 'See my experience' });
+
+  // Put a page link in the dimmed area below the open panel.
+  await pageLink.evaluate((link) => {
+    window.scrollTo({
+      top: window.scrollY + link.getBoundingClientRect().top - 620,
+      behavior: 'instant',
+    });
+  });
   const before = await heroName.boundingBox();
 
   await menuButton.tap();
   await expect(navigation.getByRole('link', { name: 'Work' })).toBeVisible();
   expect((await heroName.boundingBox())?.y).toBe(before?.y);
 
-  await page.touchscreen.tap(200, 760);
+  // A tap on a dimmed page link closes the menu and does not follow it.
+  const urlBefore = page.url();
+  const linkBox = await pageLink.boundingBox();
+
+  if (!linkBox) {
+    throw new Error('The page link below the menu has no layout box.');
+  }
+
+  await page.touchscreen.tap(
+    linkBox.x + linkBox.width / 2,
+    linkBox.y + linkBox.height / 2,
+  );
   await expect(menuButton).toHaveAttribute('aria-expanded', 'false');
   await expect(navigation).toBeHidden();
+  expect(page.url()).toBe(urlBefore);
 });
 
 test('mobile menu settles in the state of the last of several quick taps', async ({

@@ -65,7 +65,7 @@ Rules for every motion:
 - No parallax, large zoom, typewriter effect or blinking cursor. No scroll hijacking or forced smooth scrolling.
 - Each animation documents its purpose next to its CSS. Motion lives in `src/styles/motion.css`; components expose hooks (`data-*` attributes and custom properties) rather than their own scroll animations.
 
-M10 also animates `clip-path` to unroll the panel. It is the one exception to the transform-and-opacity rule, and it does not hide content. The links are visible inside the panel as it opens and never start below 0.35 opacity. Without JavaScript the navigation stays in the page flow with no motion. With reduced motion every transition is removed and the menu opens and closes at once. Browsers without `@starting-style` or discrete `display` transitions open and close without the sequence.
+M10 also animates `clip-path` to unroll the panel. It is the one exception to the transform-and-opacity rule, and it does not hide content. The links are visible inside the panel as it opens and start at 0.7 opacity, which keeps their text at WCAG AA contrast from the first visible frame. A transparent close surface covers the dimmed page, so a tap there only closes the menu. Without JavaScript the navigation stays in the page flow with no motion. With reduced motion every transition is removed and the menu opens and closes at once. Browsers without `@starting-style` or discrete `display` transitions open and close without the sequence.
 
 ## Consequences
 

@@ -144,13 +144,12 @@ const pathname = Astro.url.pathname;
         }
       });
 
-      // The open panel covers the page, so a tap outside the header closes it.
-      document.addEventListener('pointerdown', (event) => {
+      // While the panel is open, the header's ::after covers the dimmed page,
+      // so a tap there reaches the header itself, never a page link below.
+      header.addEventListener('click', (event) => {
         if (
-          compactNavigation.matches &&
-          toggle.getAttribute('aria-expanded') === 'true' &&
-          event.target instanceof Node &&
-          !header.contains(event.target)
+          event.target === header &&
+          toggle.getAttribute('aria-expanded') === 'true'
         ) {
           setExpanded(false);
         }
@@ -442,6 +441,18 @@ const pathname = Astro.url.pathname;
         display 120ms allow-discrete;
     }
 
+    /* Close surface: a transparent layer over the page, below the header's
+       content (negative z-index inside the header's stacking context). It
+       takes the tap that closes the menu, so the dimmed page stays inert. */
+    .site-header[data-navigation-enhanced]:has(
+        .site-header__navigation:not([hidden])
+      )::after {
+      position: fixed;
+      z-index: -1;
+      inset: 0;
+      content: '';
+    }
+
     /* The panel's own signal trace, echoing the page margin line. */
     .site-header[data-navigation-enhanced] .site-header__navigation::before {
       position: absolute;
@@ -470,8 +481,10 @@ const pathname = Astro.url.pathname;
         transform 420ms var(--motion-ease-enter);
       transition-delay: calc(90ms + var(--item-index, 0) * 45ms);
 
+      /* 0.7 keeps the links at 5.6:1 and the CV action at 7.7:1 from the
+         first visible frame (WCAG AA for normal text). */
       @starting-style {
-        opacity: 0.35;
+        opacity: 0.7;
         transform: translateX(calc(-1 * var(--space-4)));
       }
     }
