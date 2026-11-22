@@ -36,8 +36,9 @@ The suite follows the Direction B route contract in [routing and error handling]
 
 - `tests/e2e/home.spec.ts`: the first viewport, section order, legacy anchors, the Work card reaching the case study, the compact navigation with keyboard input and focus return, the header clearing anchor targets, no-JavaScript behaviour, SEO metadata and axe scans;
 - `tests/e2e/projects.spec.ts`: the case study sections, Evidence links, the return to Work, `aria-current` on Work and axe scans;
-- `tests/e2e/motion.spec.ts`: reduced motion showing the final state, scroll timelines when motion is allowed, the opacity floor, the current-section indicator, and that the home card title and the case H1 compute the same `view-transition-name` (each page is loaded separately, so the test does not observe the transition itself); and
-- `tests/e2e/release-readiness.spec.ts`: the accessibility statement and the generated 404 output.
+- `tests/e2e/motion.spec.ts`: reduced motion showing the final state, scroll timelines when motion is allowed, the opacity floor, the current-section indicator, and that the home card title and the case H1 compute the same `view-transition-name` (each page is loaded separately, so the test does not observe the transition itself);
+- `tests/e2e/release-readiness.spec.ts`: the accessibility statement and the generated 404 output; and
+- `tests/e2e/performance-budget.spec.ts`: the requests, file counts and uncompressed bytes per resource type that Home and the case study load, against the automated limits in the [performance budget](performance-budget.md). It runs in the Chromium project only. Lighthouse scores, Core Web Vitals and compressed production transfer sizes are measured manually as that document describes.
 
 The 301 redirects are checked in `src/lib/redirects.test.ts` against `public/_redirects`. The local static preview does not apply `_redirects`, so the served status, `Location`, trailing-slash 307 and real 404 status must be verified on a preview or in production. Arrival on the right section after a redirect needs a browser, because HTTP tools do not follow fragments. The cross-document view transition from the card to the case title is also a manual browser check, in a browser that supports `@view-transition`.
 

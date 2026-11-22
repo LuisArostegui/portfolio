@@ -113,6 +113,8 @@ Commit only `pnpm-lock.yaml`; do not create or commit lockfiles from other packa
 - [Architecture decision records](docs/architecture/decisions/README.md)
 - [Routing and error handling](docs/architecture/routing.md)
 - [Testing conventions and responsibilities](docs/testing.md)
+- [Performance budget](docs/performance-budget.md)
+- [Production security headers](docs/security-headers.md)
 - [Continuous integration](docs/continuous-integration.md)
 - [Dependency updates](docs/dependency-updates.md)
 
