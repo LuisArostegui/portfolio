@@ -88,9 +88,11 @@
       animation-range: 25vh 55vh;
     }
 
+    /* Ends at the 0.35 floor: on short or wide viewports part of the name
+       can still be on screen when the range ends. */
     @keyframes motion-name-out {
       to {
-        opacity: 0;
+        opacity: 0.35;
         transform: translateY(-12%) scale(0.72);
       }
     }
@@ -339,7 +341,7 @@
     }
 
     [data-case-prose] .decision,
-    [data-case-prose] .evidence li {
+    [data-case-prose] table {
       animation-name: motion-settle;
       animation-timing-function: linear;
       animation-fill-mode: both;

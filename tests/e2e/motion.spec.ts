@@ -96,6 +96,9 @@ test.describe('reduced motion', () => {
         ),
       ),
     ).toEqual(new Set(['1']));
+    expect(
+      await computed(page.locator('[data-case-prose] table'), 'animation-name'),
+    ).toBe('none');
   });
 });
 
@@ -156,6 +159,63 @@ test.describe('motion allowed', () => {
       .analyze();
 
     expect(results.violations).toEqual([]);
+  });
+
+  test('hero name keeps the opacity floor while it is on screen', async ({
+    page,
+  }) => {
+    await page.goto('/');
+    await settleLoadMotion(page);
+
+    const samples = await page.evaluate(async () => {
+      const name = document.querySelector<HTMLElement>('.hero-name');
+      const frame = () =>
+        new Promise((resolve) => requestAnimationFrame(() => resolve(null)));
+      const results: { scroll: number; bottom: number; opacity: number }[] = [];
+
+      if (!name) {
+        return results;
+      }
+
+      for (let scroll = 0; scroll <= window.innerHeight; scroll += 40) {
+        window.scrollTo({ top: scroll, behavior: 'instant' });
+        await frame();
+        await frame();
+        results.push({
+          scroll,
+          bottom: name.getBoundingClientRect().bottom,
+          opacity: Number(getComputedStyle(name).opacity),
+        });
+      }
+
+      return results;
+    });
+
+    const onScreen = samples.filter((sample) => sample.bottom > 0);
+    expect(onScreen.length).toBeGreaterThan(3);
+    expect(onScreen.some((sample) => sample.opacity < 1)).toBe(true);
+    for (const sample of onScreen) {
+      expect(
+        sample.opacity,
+        `opacity at ${sample.scroll}px`,
+      ).toBeGreaterThanOrEqual(0.35);
+    }
+  });
+
+  test('case evidence table settles with the decisions', async ({ page }) => {
+    await page.goto(`/projects/${caseId}/`);
+
+    expect(
+      await computed(page.locator('[data-case-prose] table'), 'animation-name'),
+    ).toBe('motion-settle');
+    expect(
+      new Set(
+        await computedAll(
+          page.locator('[data-case-prose] .decision'),
+          'animation-name',
+        ),
+      ),
+    ).toEqual(new Set(['motion-settle']));
   });
 
   test('compact name stays out of motion on case pages', async ({ page }) => {
@@ -224,4 +284,21 @@ test('case steps rail follows scroll', async ({ page }) => {
   await expect(evidence).toHaveAttribute('aria-current', 'true', {
     timeout: 1000,
   });
+});
+
+test('case steps rail follows link clicks', async ({ page }) => {
+  await page.goto(`/projects/${caseId}/`);
+
+  const rail = page.locator('[data-case-steps]');
+
+  for (const step of ['problem', 'evidence', 'decisions', 'outcome']) {
+    await rail.locator(`a[href="#${step}"]`).click();
+    await expect(page).toHaveURL(new RegExp(`#${step}$`));
+    await expect(rail.locator(`a[href="#${step}"]`)).toHaveAttribute(
+      'aria-current',
+      'true',
+      { timeout: 3000 },
+    );
+    await expect(rail.locator('a[aria-current]')).toHaveCount(1);
+  }
 });

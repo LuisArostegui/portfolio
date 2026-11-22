@@ -41,17 +41,17 @@ Native CSS now covers this need without a library. `animation-timeline` with `sc
 
 Amend ADR 0003's assumption "the MVP does not require scrollytelling or coordinated timelines". Scroll-driven motion is allowed for the motions listed below and for later additions that meet the same rules and are recorded here or in a new ADR.
 
-| #   | Moment            | What happens                                                                                        | Purpose                  | Technique                                    |
-| --- | ----------------- | --------------------------------------------------------------------------------------------------- | ------------------------ | -------------------------------------------- |
-| M1  | Load              | The hero name rises line by line (0.7 s) and the status lamp lights once. Only time-based sequence. | Hierarchy, identity      | Keyframes, `backwards` fill                  |
-| M2  | Hero to header    | The large name shrinks and fades over the first 55vh; the compact header name takes over.           | Orientation, continuity  | `scroll(root)` with `animation-range`        |
-| M3  | Signal trace      | The margin line fills with reading progress.                                                        | Progress                 | `scroll(root)`, `scaleY`                     |
-| M4  | Section nodes     | Each section node lights as its heading reaches mid-viewport.                                       | Orientation              | `view()`, `entry 100%` to `cover 45%`        |
-| M5  | Experience        | Each role slides out of the trace (28 px, opacity from 0.35) and its connector draws.               | Relation to the timeline | `view()`                                     |
-| M6  | Case pipeline     | Stages light in order, a pulse travels down the line, and the check marks tick one after another.   | Explain a relationship   | `view-timeline: --run` with staggered ranges |
-| M7  | Home card to case | The card title becomes the case H1.                                                                 | Continuity               | `@view-transition`, `view-transition-name`   |
-| M8  | Case page         | A reading progress bar grows; decisions and evidence settle in.                                     | Progress                 | `scroll(root)`, `view()`                     |
-| M9  | Hover and focus   | Colour and border change in 120–160 ms.                                                             | Feedback                 | Transitions                                  |
+| #   | Moment            | What happens                                                                                                | Purpose                  | Technique                                    |
+| --- | ----------------- | ----------------------------------------------------------------------------------------------------------- | ------------------------ | -------------------------------------------- |
+| M1  | Load              | The hero name rises line by line (0.7 s) and the status lamp lights once. Only time-based sequence.         | Hierarchy, identity      | Keyframes, `backwards` fill                  |
+| M2  | Hero to header    | The large name shrinks and fades to the 0.35 floor over the first 55vh; the compact header name takes over. | Orientation, continuity  | `scroll(root)` with `animation-range`        |
+| M3  | Signal trace      | The margin line fills with reading progress.                                                                | Progress                 | `scroll(root)`, `scaleY`                     |
+| M4  | Section nodes     | Each section node lights as its heading reaches mid-viewport.                                               | Orientation              | `view()`, `entry 100%` to `cover 45%`        |
+| M5  | Experience        | Each role slides out of the trace (28 px, opacity from 0.35) and its connector draws.                       | Relation to the timeline | `view()`                                     |
+| M6  | Case pipeline     | Stages light in order, a pulse travels down the line, and the check marks tick one after another.           | Explain a relationship   | `view-timeline: --run` with staggered ranges |
+| M7  | Home card to case | The card title becomes the case H1.                                                                         | Continuity               | `@view-transition`, `view-transition-name`   |
+| M8  | Case page         | A reading progress bar grows; decisions and evidence settle in.                                             | Progress                 | `scroll(root)`, `view()`                     |
+| M9  | Hover and focus   | Colour and border change in 120–160 ms.                                                                     | Feedback                 | Transitions                                  |
 
 The current-section link in the header and the case steps rail use one small `IntersectionObserver` script for orientation. Without JavaScript the links work without a current state.
 
